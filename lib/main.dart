@@ -5,13 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:deego_client/point.dart';
 import 'package:deego_client/map.dart';
 import 'package:deego_client/setting.dart';
+import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
 // import 'naver.dart';
 
 
-void main() {
+void main () async {
   KakaoSdk.init(nativeAppKey: '413db6c1481faf48ecd19af7a9b474e4');
+  WidgetsFlutterBinding.ensureInitialized();
+  await NaverMapSdk.instance.initialize(clientId: '02pij2jc6t');
   runApp(const MyApp());
 }
 
