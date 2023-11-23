@@ -3,10 +3,22 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
+import 'package:geolocator/geolocator.dart';
+
 
 void main() async {
   runApp(const NaverMapApp());
 }
+
+
+void getLocationData() async {
+  Location location = Location();
+  await location.getCurrentLocation();
+  print(location.latitude);
+  print(location.longitude);
+}
+
+
 
 
 
@@ -17,6 +29,7 @@ class NaverMapApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    getLocationData();
     // NaverMapController 객체의 비동기 작업 완료를 나타내는 Completer 생성
     final Completer<NaverMapController> mapControllerCompleter = Completer();
 
@@ -66,5 +79,26 @@ class NaverMapApp extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class Location {
+  double latitude = 0;
+  double longitude = 0;
+
+  Future<void> getCurrentLocation() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    // print(permission);
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      latitude = position.latitude;
+      longitude = position.longitude;
+    } catch (e) {
+      print(e);
+    }
   }
 }
