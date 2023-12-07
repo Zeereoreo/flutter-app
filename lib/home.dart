@@ -39,25 +39,6 @@ class Home extends StatelessWidget {
               ),
             ),
           Container(
-            decoration: BoxDecoration(
-                border: Border.all(color: Colors.black)
-            ),
-              width: double.infinity,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(onPressed: (){
-                  },
-                    child: Text('적립 내역',style: TextStyle(
-                          fontSize: 10,
-                          color: Color(0xFFCCCCCC),
-                          decoration: TextDecoration.underline,
-                        ),),
-                      ),
-                ],
-              ),
-            ),
-          Container(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -68,51 +49,78 @@ class Home extends StatelessWidget {
                         border: Border.all(color: Colors.black)
                     ),
                     child: Container(
-                      width: 200,
+                      width: MediaQuery.of(context).size.width,
                       color: Color(0x5000BEFF),
-                      height: 150,
+                      height: MediaQuery.of(context).size.height/6,
                       margin: EdgeInsets.all(10),
                       child: Column(
                         children: [
                           Container(
                             margin: EdgeInsets.only(top: 10),
-                            height: 50,
+                            height: MediaQuery.of(context).size.height/18,
                             child: Text('현재 포인트',style: TextStyle(color: Colors.white,),),
                           ),
                           Container(
                             // margin: EdgeInsets.all(10),
-                            height: 60,
-                            child: Text('0', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
+                            height: MediaQuery.of(context).size.height/18,
+                            child: Text('0 P', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
                           )
                         ],
                       ),
                     ),
                   ),
                 ),
-                Flexible(
-                  flex: 1,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black)
+              ],
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.black)
+            ),
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height/5,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: double.infinity,
+                  child: TextButton(
+                    onPressed: () {},
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.grey,
+                      padding: EdgeInsets.all(16),
                     ),
-                    child: Container(
-                      width: 200,
-                      color: Color(0x5000BEFF),
-                      height: 150,
-                      margin: EdgeInsets.all(10),
-                      child: Column(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(top: 10),
-                            height: 50,
-                            child: Text('누적 포인트'),
-                          ),
-                          Container(
-                            // margin: EdgeInsets.all(10),
-                            height: 60,
-                            child: Text('0', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
-                          )
-                        ],
+                    child: const Center(
+                      child: Text(
+                        '적립 내역',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Color(0xFFCCCCCC),
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
+                Container(
+                  width: double.infinity,
+                  child: TextButton(
+                    onPressed: () {},
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.grey,
+                      padding: EdgeInsets.all(16),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        '포인트 사용하러 가기',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Color(0xFFCCCCCC),
+                          decoration: TextDecoration.underline,
+                        ),
                       ),
                     ),
                   ),
@@ -128,8 +136,8 @@ class Home extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.all(10),
               padding: EdgeInsets.all(20),
-              width: 300,
-              height: 200,
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height/4,
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.black)
               ),

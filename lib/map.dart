@@ -1,35 +1,45 @@
 import 'dart:async';
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:geolocator/geolocator.dart';
 
 
-void main() async {
-  runApp(const NaverMapApp());
+class NaverMapApp extends StatefulWidget {
+  const NaverMapApp({Key? key}) : super(key: key);
+
+  @override
+  State<NaverMapApp> createState() => _NaverMapAppState();
 }
 
+class _NaverMapAppState extends State<NaverMapApp> {
+  late double initialLat;
+  late double initialLng;
 
-void getLocationData() async {
-  Location location = Location();
-  await location.getCurrentLocation();
-  print(location.latitude);
-  print(location.longitude);
-}
-
-
-
-
-
-class NaverMapApp extends StatelessWidget {
-  const NaverMapApp({Key? key});
+  @override
+  void initState() {
+    super.initState();
+    getInitialLocation();
+  }
 
 
 
   @override
+
+
+  void getInitialLocation() async {
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    setState(() {
+      initialLat = position.latitude;
+      initialLng = position.longitude;
+    });
+  }
+
+
+
+
+
   Widget build(BuildContext context) {
-    getLocationData();
     // NaverMapController 객체의 비동기 작업 완료를 나타내는 Completer 생성
     final Completer<NaverMapController> mapControllerCompleter = Completer();
 
@@ -41,7 +51,8 @@ class NaverMapApp extends StatelessWidget {
                 target: NLatLng(37.568963, 126.646476),
                 zoom: 10,
                 bearing: 0,
-                tilt: 0
+                tilt: 0,
+
             ),
             mapType: NMapType.basic,   // 맵 스타일
             liteModeEnable: true,   // 경량모드
@@ -59,8 +70,13 @@ class NaverMapApp extends StatelessWidget {
             ),
           ),
           onMapReady: (controller) async {
+            getInitialLocation();
+            NCameraUpdate.withParams(
+              zoom: 20,
+            );
             // final marker1 = NMarker(id: '1', position: (37.568963,126.646476));
             mapControllerCompleter.complete(controller);  // Completer에 지도 컨트롤러 완료 신호 전송
+            // getLocation();
             log("onMapReady", name: "onMapReady");
                 final marker = NMarker(
                 id: 'test',
@@ -75,30 +91,12 @@ class NaverMapApp extends StatelessWidget {
                 final onMarkerInfoWindow =
                 NInfoWindow.onMarker(id: marker.info.id, text: "디고 빈");
                 marker.openInfoWindow(onMarkerInfoWindow);
+
                 },              // 지도 준비 완료 시 호출되는 콜백 함수
+
         ),
       ),
     );
   }
 }
 
-class Location {
-  double latitude = 0;
-  double longitude = 0;
-
-  Future<void> getCurrentLocation() async {
-    LocationPermission permission = await Geolocator.checkPermission();
-    // print(permission);
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-    }
-    try {
-      Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
-      latitude = position.latitude;
-      longitude = position.longitude;
-    } catch (e) {
-      print(e);
-    }
-  }
-}
