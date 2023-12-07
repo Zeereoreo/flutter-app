@@ -1,3 +1,4 @@
+import 'package:deego_client/header.dart';
 import 'package:flutter/material.dart';
 
 
@@ -19,11 +20,12 @@ class Home extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+           const Header(),
              Container(
                decoration: BoxDecoration(
                    border: Border.all(color: Colors.black)
                ),
-               margin: EdgeInsets.only(top:40,left: 10,right: 10),
+               margin: EdgeInsets.only(top:10,left: 10,right: 10),
                alignment: Alignment.centerLeft,
               child: Text.rich(
                 TextSpan(

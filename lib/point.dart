@@ -1,4 +1,5 @@
 import 'package:deego_client/earn.dart';
+import 'package:deego_client/header.dart';
 import 'package:flutter/material.dart';
 
 class Point extends StatelessWidget {
@@ -8,10 +9,12 @@ class Point extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+      margin: EdgeInsets.all(10),
       child: Column(
         // mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const Header(),
           Container(
             // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
             margin: EdgeInsets.all(20),
@@ -20,8 +23,8 @@ class Point extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children:  [
                 Container(
-                    // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
-                    // margin: EdgeInsets.all(20),
+                    decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+                    margin: EdgeInsets.all(10),
                     child: Row(
                       children: [
                         Text('현재 보유 포인트'),
@@ -31,7 +34,7 @@ class Point extends StatelessWidget {
                             MaterialPageRoute(builder: (context) => Earn()), // Earn 클래스의 인스턴스 반환
                           );
                         },
-                            child: Text('적립 내역',style: TextStyle(
+                            child: const Text('적립 내역',style: TextStyle(
                           fontSize: 10,
                           color: Color(0xFFDFDFDF),
                           decoration: TextDecoration.underline,
@@ -44,7 +47,7 @@ class Point extends StatelessWidget {
                   width: 100,
                   // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
                   child:
-                    Text('0', style: TextStyle(
+                    const Text('0', style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
 
@@ -55,8 +58,8 @@ class Point extends StatelessWidget {
                       Container(
                         // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
                         child:
-                        Column(
-                          children: const [
+                        const Column(
+                          children: [
                             Text('총 적립 포인트 : 0',
                               style: TextStyle(
                               fontSize: 10,
@@ -84,8 +87,8 @@ class Point extends StatelessWidget {
                   height: 150, width: 200,
                     child : (
                         Text('사진 들어갈 자리'))),
-                Text('시흥 화폐 시루'),
-                Text('1만원권'),
+                        Text('시흥 화폐 시루'),
+                        Text('1만원권'),
               ],
             ),
             // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),

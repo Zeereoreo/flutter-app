@@ -44,7 +44,7 @@ class _LogState extends State<Log> {
             width: 400,
             child: Column(
               children: [
-                TextField(
+                const TextField(
                   decoration: InputDecoration(
                     labelText: '아이디',
                     hintText: 'Enter your email',
@@ -65,7 +65,7 @@ class _LogState extends State<Log> {
                   keyboardType: TextInputType.emailAddress,
                 ),
                 SizedBox(height: 10),
-                TextField(
+                const TextField(
                   decoration: InputDecoration(
                     labelText: '비밀번호',
                     hintText: 'Enter your password',
