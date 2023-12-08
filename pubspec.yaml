@@ -37,6 +37,7 @@ dependencies:
   kakao_flutter_sdk: ^1.5.0
   geolocator: ^10.1.0
   location: ^5.0.3
+  lottie: ^2.7.0
 
 
 
@@ -64,6 +65,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/images/
+    - assets/lottie/
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
