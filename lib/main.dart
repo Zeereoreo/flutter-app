@@ -1,4 +1,3 @@
-import 'package:deego_client/footer.dart';
 import 'package:deego_client/home.dart';
 import 'package:deego_client/login.dart';
 import 'package:flutter/material.dart';
@@ -24,41 +23,49 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  int tap = 0; // tap 상태는 클래스 멤버 변수로 선언해야 합니다
-
-  final List<Widget> pages = [
-    Home(),
-    NaverMapApp(),
-    Point(),
-    Setting(),
-  ];
+  // int tap = 0; // tap 상태는 클래스 멤버 변수로 선언해야 합니다
+  //
+  // final List<Widget> pages = [
+  //   Home(),
+  //   NaverMapApp(),
+  //   Point(),
+  //   Setting(),
+  // ];
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: IndexedStack(
-          index: tap,
-          children: pages,
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          showUnselectedLabels: true,
-          selectedItemColor: Colors.black,
-          unselectedItemColor: Colors.grey,
-          onTap: (i) {
-            setState(() {
-              tap = i;
-            });
-          },
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: '홈'),
-            BottomNavigationBarItem(icon: Icon(Icons.map_rounded), label: '디고찾기'),
-            BottomNavigationBarItem(icon: Icon(Icons.store_rounded), label: '포인트'),
-            BottomNavigationBarItem(icon: Icon(Icons.settings), label: '설정'),
-          ],
-        ),
-      ),
+      initialRoute: "/",
+      routes: {
+        "/" : (context) => const Home(),
+        "/map" :(context) => const NaverMapApp(),
+        "/point" :(context) => const Point(),
+        "/setting" :(context) => const Setting(),
+        "/login" : (context) => const Log(),
+      },
+       // home: Scaffold(
+       //  body: IndexedStack(
+       //    index: tap,
+       //    children: pages,
+       //  ),
+       //  bottomNavigationBar: BottomNavigationBar(
+       //    showUnselectedLabels: true,
+       //    selectedItemColor: Colors.black,
+       //    unselectedItemColor: Colors.grey,
+       //    onTap: (i) {
+       //      setState(() {
+       //        tap = i;
+       //      });
+       //    },
+       //    items: const [
+       //      BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: '홈'),
+       //      BottomNavigationBarItem(icon: Icon(Icons.map_rounded), label: '디고찾기'),
+       //      BottomNavigationBarItem(icon: Icon(Icons.store_rounded), label: '포인트'),
+       //      BottomNavigationBarItem(icon: Icon(Icons.settings), label: '설정'),
+       //    ],
+       //  ),
+      // ),
     );
   }
 }

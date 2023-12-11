@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:geolocator/geolocator.dart';
 
+import 'bottom_menu.dart';
+
 
 class NaverMapApp extends StatefulWidget {
   const NaverMapApp({Key? key}) : super(key: key);
@@ -43,8 +45,8 @@ class _NaverMapAppState extends State<NaverMapApp> {
     // NaverMapController 객체의 비동기 작업 완료를 나타내는 Completer 생성
     final Completer<NaverMapController> mapControllerCompleter = Completer();
 
-    return MaterialApp(
-      home: Scaffold(
+    return
+       Scaffold(
         body: NaverMap(
           options: const NaverMapViewOptions(
             initialCameraPosition: NCameraPosition(
@@ -95,8 +97,8 @@ class _NaverMapAppState extends State<NaverMapApp> {
                 },              // 지도 준비 완료 시 호출되는 콜백 함수
 
         ),
-      ),
-    );
+        bottomNavigationBar: const BottomMenu(),
+      );
   }
 }
 
