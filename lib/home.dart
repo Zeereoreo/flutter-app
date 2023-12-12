@@ -1,5 +1,3 @@
-
-
 import 'package:deego_client/bottom_menu.dart';
 import 'package:deego_client/footer.dart';
 import 'package:deego_client/header.dart';
@@ -10,7 +8,7 @@ import 'package:deego_client/point.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
-  static const String routeName = '/home';
+
   @override
   Widget build(BuildContext context) {
 
@@ -117,7 +115,9 @@ class Home extends StatelessWidget {
                   Container(
                     width: double.infinity,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const Point()));
+                      },
                       style: TextButton.styleFrom(
                         backgroundColor: Colors.grey,
                         padding: EdgeInsets.all(16),

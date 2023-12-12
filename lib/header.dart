@@ -23,13 +23,7 @@ class _HeaderState extends State<Header> {
         children: [
           GestureDetector(
             onTap: () {
-              // 현재 페이지가 Home 페이지인 경우에만 동작하도록 설정
-              if (!(ModalRoute.of(context)?.settings.name == Home.routeName)) {
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => const MyApp()),
-                      (route) => false,
-                );
-              }
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Home()));
             },
             child: const Image(image: AssetImage('assets/images/deego_logo.png')),
           ),
