@@ -1,6 +1,9 @@
 import 'package:deego_client/home.dart';
+import 'package:deego_client/login.dart';
 import 'package:deego_client/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_naver_login/flutter_naver_login.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
 class Header extends StatefulWidget {
   const Header({super.key});
@@ -28,10 +31,12 @@ class _HeaderState extends State<Header> {
             child: const Image(image: AssetImage('assets/images/deego_logo.png')),
           ),
           GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Home()));
+            onTap: () async {
+              await FlutterNaverLogin.logOut();
+              await UserApi.instance.logout();
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Log()));
             },
-            child: Icon(Icons.notifications_none, size: 40),
+            child: Icon(Icons.logout_rounded, size: 40),
           ),
         ],
       ),

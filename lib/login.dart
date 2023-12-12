@@ -3,6 +3,9 @@ import 'package:deego_client/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:flutter_naver_login/flutter_naver_login.dart';
+
+import 'login_platform.dart';
 
 
 
@@ -16,6 +19,7 @@ class Log extends StatefulWidget {
 }
 
 class _LogState extends State<Log> {
+
 
   @override
   void initState() {
@@ -34,13 +38,12 @@ class _LogState extends State<Log> {
           mainAxisAlignment: MainAxisAlignment.start,
           // crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            const Header(),
             Container(
               width: double.infinity,
-              height: 200,
-              margin: EdgeInsets.all(20),
-              decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
-              child: Text("디고로고"),
+              height: MediaQuery.of(context).size.height/5,
+              margin: EdgeInsets.only(top: 200,right: 20,left: 20,bottom: 20),
+              // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+              child: const Image(image: AssetImage('assets/images/deego_logo.png')),
             ),
             Container(
               margin: EdgeInsets.all(10),
@@ -51,7 +54,7 @@ class _LogState extends State<Log> {
                   const TextField(
                     decoration: InputDecoration(
                       labelText: '아이디',
-                      hintText: 'Enter your email',
+                      hintText: 'Enter your id',
                       filled: true, // 배경색을 적용하기 위해 filled 속성을 true로 설정
                       fillColor: Color(0xFFF5F7FB),
                       focusedBorder: OutlineInputBorder(
@@ -151,9 +154,23 @@ class OuthBtn extends StatefulWidget {
   State<OuthBtn> createState() => _OuthBtnState();
 }
 
+
 class _OuthBtnState extends State<OuthBtn> {
 
+  getNaver()async{
+    final NaverLoginResult result = await FlutterNaverLogin.logIn();
 
+    if (result.status == NaverLoginStatus.loggedIn) {
+      print('accessToken = ${result.accessToken}');
+      print('id = ${result.account.id}');
+      print('email = ${result.account.email}');
+      print('name = ${result.account.name}');
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Home()));
+
+    }
+
+
+  }
 
   getData() async {
     // 카카오 로그인 구현 예제
@@ -194,6 +211,7 @@ class _OuthBtnState extends State<OuthBtn> {
           '\n회원번호: ${user.id}'
           '\n닉네임: ${user.kakaoAccount?.profile?.nickname}'
           '\n이메일: ${user.kakaoAccount?.email}');
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Home()));
     } catch (error) {
       print('사용자 정보 요청 실패 $error');
     }
@@ -261,6 +279,7 @@ class _OuthBtnState extends State<OuthBtn> {
       }
     }
 
+
   }
   @override
   void initState() {
@@ -277,7 +296,12 @@ class _OuthBtnState extends State<OuthBtn> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Container(
-            child: Text('네이버로고'),
+            child: TextButton(onPressed: (){
+              setState(() {
+                getNaver();
+              });
+            },
+                child: const Text('네이버로고')),
           ),
           Container(
             child: TextButton(onPressed: (){
