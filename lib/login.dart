@@ -166,14 +166,16 @@ LoginPlatform _loginPlatform = LoginPlatform.none;
 class _OuthBtnState extends State<OuthBtn> {
 
   getNaver()async{
-    final NaverLoginResult result = await FlutterNaverLogin.logIn();
 
+    final NaverLoginResult result = await FlutterNaverLogin.logIn();
+    NaverAccessToken res = await FlutterNaverLogin.currentAccessToken;
+    print("토큰:${res.accessToken}");
     if (result.status == NaverLoginStatus.loggedIn) {
       print('accessToken = ${result.accessToken}');
       print('id = ${result.account.id}');
       print('email = ${result.account.email}');
       print('name = ${result.account.name}');
-
+      await SnsApiService().sendTokenToServer('Naver', res.accessToken);
       setState(() {
         _loginPlatform = LoginPlatform.naver;
       });

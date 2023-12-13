@@ -21,7 +21,8 @@ class SnsApiService {
         //   // Add more fields as needed
         // }),
       );
-
+      print("유알엘 : ${Uri.parse(url)}");
+      print("리스폰스 $response");
       if (response.statusCode == 200) {
         // Successful request
         print('Token sent successfully');

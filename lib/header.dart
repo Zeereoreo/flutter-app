@@ -36,7 +36,7 @@ class _HeaderState extends State<Header> {
     setState(() {
       _loginPlatform = LoginPlatform.none;
     });
-    var a = await UserApi.instance.accessTokenInfo();
+    var a = await FlutterNaverLogin.currentAccessToken;
     print("로그아웃 : ${a}");
   }
 
