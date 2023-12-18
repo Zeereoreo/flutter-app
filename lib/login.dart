@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:deego_client/phone_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:deego_client/header.dart';
 import 'package:deego_client/home.dart';
@@ -142,7 +143,7 @@ class TextBtn extends StatelessWidget {
           ),
           Text(' | '), TextButton(
               onPressed: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Sign()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => PhoneAuth()));
               },
               child: Text('회원가입', style: TextStyle(color: Colors.black),),
           )
