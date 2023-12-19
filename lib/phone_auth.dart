@@ -1,4 +1,9 @@
+import 'dart:convert';
+
+import 'package:deego_client/login.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 
 class PhoneAuth extends StatefulWidget {
   const PhoneAuth({super.key});
@@ -8,14 +13,209 @@ class PhoneAuth extends StatefulWidget {
 }
 
 class _PhoneAuthState extends State<PhoneAuth> {
+  String num = "";
+  String authNum = "";
+  String userId = "";
+  bool showAdditionalInput = false;
+  bool blueBtn = false;
+  bool showAuthBtn = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Container(
-          child: Text("핸드폰인증"),
+      body: Container(
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height / 5,
+              margin: EdgeInsets.only(top: 150, right: 20, left: 20, bottom: 20),
+              child: const Image(image: AssetImage('assets/images/deego_logo.png')),
+            ),
+            Container(
+              child: Padding(
+                padding: EdgeInsets.all(15),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        onChanged: (text) {
+                          setState(() {
+                            num = text;
+                            blueBtn = text.length == 11;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          labelText: "핸드폰 번호",
+                          hintText: "-를 제외한 핸드폰번호를 입력해주세요",
+                        ),
+                        keyboardType: TextInputType.number,
+                        textInputAction: TextInputAction.done,
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        maxLength: 11,
+                      ),
+                    ),
+                    SizedBox(width: 16.0),
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      padding: EdgeInsets.all(10),
+                      child: ElevatedButton(
+                        onPressed: blueBtn
+                            ? () async {
+                          sendPhoneNumberToServer(num);
+                          setState(() {
+                            showAdditionalInput = true;
+
+                          });
+                        }
+                            : null,
+                        style: ElevatedButton.styleFrom(
+                          primary: blueBtn ? Colors.blue : Colors.grey,
+                        ),
+                        child: Text("인증하기"),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            if (showAdditionalInput)
+              Container(
+                padding: EdgeInsets.all(15),
+                child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          onChanged: (text) {
+                            setState(() {
+                              authNum = text;
+                              showAuthBtn = text.length == 4;
+                            });
+                          },
+                          decoration: InputDecoration(
+                            labelText: "인증 번호",
+                            hintText: "받으신 인증번호를 입력해 주세요",
+                          ),
+                          keyboardType: TextInputType.number,
+                          textInputAction: TextInputAction.done,
+                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                          maxLength: 4,
+                        ),
+                      ),
+                      SizedBox(width: 16.0),
+                      Container(
+                        margin: EdgeInsets.only(top: 10),
+                        padding: EdgeInsets.all(10),
+                        child: ElevatedButton(
+                          onPressed: showAuthBtn
+                              ? () async {
+                            await sendAuthCodeToServer(authNum, userId);
+                            print("인증번호:$authNum");
+                            setState(() {
+
+                            });
+                          }
+                              : null,
+                          style: ElevatedButton.styleFrom(
+                            primary: showAuthBtn ? Colors.blue : Colors.grey,
+                          ),
+                          child: Text("인증완료"),
+                        ),
+                      ),
+                    ]
+                ),
+              ),
+            Container(
+              margin: EdgeInsets.all(50),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => Log()));
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFF00BEFF),
+                        minimumSize: Size(150, 50), // 크기 조절
+                      ),
+                      child: Text("뒤로가기")
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFF00BEFF),
+                        minimumSize: Size(150, 50), // 크기 조절
+                      ),
+                      child: Text("다음으로")
+                  ),
+                ],
+              ),
+            )
+          ],
         ),
-      )
+      ),
     );
+  }
+
+  Future<void> sendPhoneNumberToServer(String phoneNumber) async {
+    final Uri url = Uri.parse('https://test.deegolabs.com:3000/common/phone');
+
+    try {
+      final response = await http.post(
+        url,
+        body: {'phone': phoneNumber},
+      );
+
+      if (response.statusCode == 201) {
+        // 서버로의 요청이 성공한 경우
+        print('핸드폰 번호 전송 성공');
+        print("리스폰스 값 : ${response.body}");
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        setState(() {
+          userId = responseData['id']; // userId를 클래스 변수에 할당합니다.
+        });
+      } else {
+        // 서버로의 요청이 실패한 경우
+        print('핸드폰 번호 전송 실패');
+        print('HTTP Status Code: ${response.statusCode}');
+        print('Response Body: ${response.body}');
+      }
+    } catch (error) {
+      // 오류 처리
+      print('에러 발생: $error');
+    }
+
+  }
+}
+
+
+
+Future<void> sendAuthCodeToServer(String authCode, String userId) async {
+  final Uri authUrl =
+  Uri.parse('https://test.deegolabs.com:3000/common/phone/$userId');
+
+  try {
+    final authResponse = await http.put(
+      authUrl,
+      body: {'code': authCode},
+    );
+
+    if (authResponse.statusCode == 200) {
+      // 서버로의 인증번호 전송이 성공한 경우
+      print('인증번호 전송 성공');
+      // 추가 작업 수행 가능
+    } else {
+      // 서버로의 인증번호 전송이 실패한 경우
+      print('인증번호 전송 실패');
+      print('HTTP Status Code: ${authResponse.statusCode}');
+      print('Response Body: ${authResponse.body}');
+    }
+  } catch (error) {
+    // 오류 처리
+    print('에러 발생: $error');
   }
 }
