@@ -11,9 +11,13 @@ class _SignState extends State<Sign> {
   String idText = "";
   String nameText = "";
   String emailText = "";
+  String passwordText = "";
+  String passwordCheckText = "";
   bool _idError = false;
   bool _nameError = false;
   bool _emailError = false;
+  bool _passwordError = false;
+  bool _passwordCheckError = false;
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +94,39 @@ class _SignState extends State<Sign> {
                   ),
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
+                ),
+                TextField(
+                  onChanged: (text) {
+                    setState(() {
+                      passwordText = text;
+                      _passwordError = text.length < 8 || text.length > 16;
+                    });
+                  },
+                  decoration: InputDecoration(
+                    labelText: "비밀번호",
+                    hintText: "8글자 이상 16글자 이하로 입력해주세요",
+                    errorText: _passwordError ? '올바른 비밀번호를 입력하세요.' : null,
+                  ),
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.next,
+                  obscureText: true,
+                ),
+                TextField(
+                  onChanged: (text) {
+                    setState(() {
+                      passwordCheckText = text;
+                      _passwordCheckError = text.length < 8 || text.length > 16;
+                      _passwordCheckError = passwordText != passwordCheckText;
+                    });
+                  },
+                  decoration: InputDecoration(
+                    labelText: "비밀번호 확인",
+                    hintText: "위의 비밀번호와 똑같이 입력해주세요",
+                    errorText: _passwordCheckError ? '올바른 비밀번호를 입력하세요.' : null,
+                  ),
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.next,
+                  obscureText: true,
                 ),
                 SizedBox(
                   height: 30,
