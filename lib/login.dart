@@ -143,7 +143,7 @@ class TextBtn extends StatelessWidget {
           ),
           Text(' | '), TextButton(
               onPressed: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => PhoneAuth()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => Sign()));
               },
               child: Text('회원가입', style: TextStyle(color: Colors.black),),
           )

@@ -1,343 +1,116 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 
 class Sign extends StatefulWidget {
-  Sign({Key? key}) : super(key: key);
+  const Sign({Key? key});
 
   @override
   State<Sign> createState() => _SignState();
 }
 
 class _SignState extends State<Sign> {
-  final formKey = GlobalKey<FormState>();
-  String id = '';
-  String email = '';
-  String password = '';
-  String checkpassword = '';
-  String name = '';
-  String phoneId = '';
-  bool isVerificationInProgress = false;
-  bool isVerificationCompleted = false;
-  bool showAdditionalInput = false;
-  bool blueBtn = false;
+  String idText = "";
+  String nameText = "";
+  String emailText = "";
+  bool _idError = false;
+  bool _nameError = false;
+  bool _emailError = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Container(
-        width: double.infinity,
-        // height: MediaQuery.of(context).size.height/3,
-        // decoration: BoxDecoration(
-        //     border: Border.all(color: Colors.black)
-        // ),
-        child: SingleChildScrollView(
-          child: Form(
-            key: formKey,
-            child: Padding(
-              // decoration: BoxDecoration(
-              //     border: Border.all(color: Colors.black)
-              // ),
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  renderTextFormField(
-                      label: '아이디',
-                      onSaved: (val) {
-                        setState(() {
-                          id = val!;
-                        });
-                      },
-                      validator: (val) {
-                        if (val!.isEmpty) {
-                          return '아이디는 필수사항입니다.';
-                        }
+      body: SingleChildScrollView(
+        child: Container(
+          width: double.infinity,
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height / 8,
+                  margin: EdgeInsets.only(top: 100, right: 20, left: 20, bottom: 20),
+                  child: const Image(image: AssetImage('assets/images/deego_logo.png')),
+                ),
+                TextField(
+                  onChanged: (text) {
+                    setState(() {
+                      // 영어와 숫자만 사용 가능한 정규식
+                      RegExp regex = RegExp(r'^[a-zA-Z0-9]*$');
+                      bool isValid = regex.hasMatch(text);
 
-                        if (val.length < 2) {
-                          return '아이디는 두 글자 이상 입력 해주셔야합니다.';
-                        }
-                        if (val.length > 16) {
-                          return '아이디는 열 여섯자 이하로 입력 해주셔야합니다.';
-                        }
+                      // 길이가 16이상인 경우에는 추가로 입력을 막음
+                      _idError = text.length < 2 || text.length > 16 || !isValid;
 
-                        return null;
-                      },
-                      textInputAction: TextInputAction.next
-
+                      if (!_idError) {
+                        // 글자 수가 16 미만이면 입력된 값 저장
+                        idText = text;
+                      }
+                    });
+                  },
+                  decoration: InputDecoration(
+                    labelText: "아이디",
+                    hintText: "2글자 이상 16글자 이하로 입력해주세요",
+                    errorText: _idError ? '영어와 숫자로만 입력해주세요.' : null,
                   ),
-                  renderTextFormField(
-                      label: '이메일',
-                      onSaved: (val) {
-                        setState(() {
-                          email = val!;
-                        });
-                      },
-                      validator: (val) {
-                        if (val!.isEmpty) {
-                          return '이메일은 필수사항입니다.';
-                        }
-
-                        if (!RegExp(
-                            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
-                            .hasMatch(val)) {
-                          return '잘못된 이메일 형식입니다.';
-                        }
-
-                        return null;
-                      },
-                      textInputAction: TextInputAction.next
-
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.next,
+                  maxLength: 16, // 최대 길이 제한
+                ),
+                TextField(
+                  onChanged: (text) {
+                    setState(() {
+                      nameText = text;
+                      _nameError = text.length < 2 || text.length >10;
+                    });
+                  },
+                  decoration: InputDecoration(
+                    labelText: "이름",
+                    hintText: "2글자 이상 10글자 이하로 입력해주세요",
+                    errorText: _nameError ? '올바른 이름을 입력하세요.' : null,
                   ),
-                  renderTextFormField(
-                      label: '비밀번호',
-                      onSaved: (val) {
-                        setState(() {
-                          password = val!;
-                        });
-                      },
-                      validator: (val) {
-                        print(val);
-                        if (val!.isEmpty) {
-                          return '비밀번호는 필수사항입니다.';
-                        }
-
-                        if (val.length < 8) {
-                          return '8자 이상 입력해주세요!';
-                        }
-                        return null;
-                      },
-                      textInputAction: TextInputAction.next
-
-                    // obscureText: true,
+                  keyboardType: TextInputType.name,
+                  textInputAction: TextInputAction.next,
+                  maxLength: 10,
+                ),
+                TextField(
+                  onChanged: (text) {
+                    setState(() {
+                      emailText = text;
+                      RegExp emailRegex = RegExp(
+                        r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$',
+                      );
+                      _emailError = !emailRegex.hasMatch(text);
+                    });
+                  },
+                  decoration: InputDecoration(
+                    labelText: "이메일",
+                    hintText: "사용 가능한 이메일을 입력해주세요",
+                    errorText: _emailError ? '올바른 이메일을 입력하세요.' : null,
                   ),
-                  renderTextFormField(
-                      label: '비밀번호 확인',
-                      onSaved: (val) {
-                        setState(() {
-                          checkpassword = val!;
-                        });
-                      },
-                      validator: (val) {
-                        print(val);
-                        if (val!.isEmpty) {
-                          return '비밀번호 확인은 필수사항입니다.';
-                        }
-                        // if (val != password) {
-                        //   print("어디지");
-                        //   return '비밀번호가 일치하지 않습니다.';
-                        // } else {
-                        //   print("어디야");
-                        //   return null;
-                        // }
-                        print("어디서");
-                        return null; // 일치할 때는 null을 반환하여 에러 메시지가 표시되지 않도록 함
-                      },
-                      textInputAction: TextInputAction.next
-
-                    // obscureText: true,
+                  keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // 가입하기 버튼 눌렀을 때의 동작
+                    if (!_idError) {
+                      // 모든 조건을 충족하면 여기에 로직 추가
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(150, 50),
                   ),
-                  renderTextFormField(
-                      label: '이름',
-                      onSaved: (val) {
-                        setState(() {
-                          name = val!;
-                        });
-                      },
-                      validator: (val) {
-                        if (val!.isEmpty) {
-                          return '이름 필수사항입니다.';
-                        }
-                        if (val.length < 2) {
-                          return '이름 2자 이상 입력해주세요!';
-                        }
-                        return null;
-                      },
-                      textInputAction: TextInputAction.next
-
-                  ),
-                   Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: renderTextFormField(
-                            label: '핸드폰 번호',
-                            onSaved: (val) {
-                              setState(() {
-                                phoneId = val!;
-                                blueBtn = val.length == 11;
-                              });
-                            },
-                            validator: (val) {
-                              if (val!.isEmpty) {
-                                return '핸드폰 번호는 필수사항입니다.';
-                              }
-                              return null;
-                            },
-                            obscureText: false,
-                            keyboardType: TextInputType.number,
-                            textInputAction: TextInputAction.done,
-                            onChanged: (value) {
-                              setState(() {
-                                // 여기에서 입력된 값을 반영
-                                phoneId = value;
-                              });
-                            },
-                          ),
-                        ),
-                        SizedBox(width: 16.0),
-                        ElevatedButton(
-                          onPressed: blueBtn
-                              ? () async {
-                            setState(() {
-                              showAdditionalInput = true;
-                            });
-                          }
-                              : null,
-                          style: ElevatedButton.styleFrom(
-                            primary: blueBtn ? Colors.blue : Colors.grey,
-                          ),
-                          child: showAdditionalInput
-                              ? Text("기다려요")
-                              : Text("인증하기"),
-                        ),
-                      ],
-                    ),
-                  if (showAdditionalInput)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: renderTextFormField(
-                            label: '인증번호 입력',
-                            onSaved: (val) {
-                              setState(() {
-                                phoneId = val!;
-                              });
-                            },
-                            validator: (val) {
-                              if (val!.isEmpty) {
-                                return '핸드폰 번호는 필수사항입니다.';
-                              }
-                              return null;
-                            },
-                            obscureText: false,
-                            keyboardType: TextInputType.number,
-                            textInputAction: TextInputAction.done,
-                          ),
-                        ),
-                        SizedBox(width: 16.0),
-                        ElevatedButton(
-                          onPressed: () {
-                            // 인증 버튼 클릭 시 수행할 작업
-                            setState(() {
-                              // 인증 버튼 클릭 시 추가 입력 창 토글
-                              showAdditionalInput = !showAdditionalInput;
-                            });
-                          },
-                          child: Text("인증완료"),
-                        ),
-                      ],
-                    ),
-                  renderButton(),
-                  renderValues(),
-                ],
-              ),
+                  child: Text("가입하기"),
+                ),
+              ],
             ),
           ),
         ),
       ),
-    );
-  }
-
-  renderValues() {
-    return Column(
-      children: [
-        Text(
-            'id: $id'
-        ),
-        Text(
-            'email: $email'
-        ),
-        Text(
-          'password: $password',
-        ),
-        Text(
-          'checkpassword: $checkpassword',
-        ),
-        Text(
-          'name: $name',
-        ),
-        Text('phoneId: $phoneId')
-      ],
-    );
-  }
-
-
-  Widget renderButton() {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(primary: Colors.blue),
-      onPressed: () async {
-        if (formKey.currentState!.validate()) {
-          formKey.currentState?.save();
-          // validation이 성공하면 true가 리턴됩니다.
-          setState(() {});
-        }
-      },
-      child: Text(
-        '저장하기!',
-        style: TextStyle(
-          color: Colors.white,
-        ),
-      ),
-    );
-  }
-
-  Widget renderTextFormField({
-    required String label,
-    required FormFieldSetter<String?> onSaved,
-    required FormFieldValidator<String?> validator,
-    bool obscureText = false,
-    TextInputType keyboardType = TextInputType.text,
-    TextInputAction? textInputAction,
-    ValueChanged<String>? onChanged,
-  }) {
-    assert(onSaved != null);
-    assert(validator != null);
-
-    List<TextInputFormatter>? inputFormatters;
-
-    if (label == '핸드폰 번호') {
-      inputFormatters = [
-        FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-        LengthLimitingTextInputFormatter(11),
-      ];
-    }
-
-    return Column(
-      children: [
-        Row(
-          children: [
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 12.0,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ],
-        ),
-        TextFormField(
-          onSaved: onSaved,
-          onChanged: onChanged,
-          validator: validator,
-          obscureText: obscureText,
-          keyboardType: keyboardType,
-          textInputAction: textInputAction,
-          inputFormatters: inputFormatters,
-        ),
-        SizedBox(height: 16.0),
-      ],
     );
   }
 }
