@@ -2,9 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:deego_client/phone_auth.dart';
 import 'package:http/http.dart' as http;
-import 'package:deego_client/header.dart';
 import 'package:deego_client/home.dart';
-import 'package:deego_client/sign.dart';
 import 'package:deego_client/sns_api_sevice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,15 +23,16 @@ class Log extends StatefulWidget {
 }
 
 class _LogState extends State<Log> {
+  String id = "";
+  String password = "";
+  bool _idError = false;
+  bool _passwordError = false;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
+
 
   @override
   Widget build(BuildContext context) {
+
 
     return Scaffold(
       body: Container(
@@ -53,14 +52,22 @@ class _LogState extends State<Log> {
             Container(
               margin: EdgeInsets.all(10),
               // decoration: BoxDecoration(border: Border.all(color: Colors.black)),
-              width: 400,
+              width: double.infinity,
               child: Column(
                 children: [
-                  const TextField(
+                   TextField(
+                    onChanged: (text){
+                      setState(() {
+                        _idError = text.length < 2 || text.length > 16 ;
+
+                        id = text;
+                      });
+                    },
                     decoration: InputDecoration(
                       labelText: '아이디',
                       hintText: 'Enter your id',
-                      filled: true, // 배경색을 적용하기 위해 filled 속성을 true로 설정
+                      errorText: _idError ? '영어와 숫자로만 입력해주세요.' : null,
+                      filled: true,
                       fillColor: Color(0xFFF5F7FB),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -74,16 +81,24 @@ class _LogState extends State<Log> {
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                       ),
                     ),
-                    keyboardType: TextInputType.emailAddress,
-                  ),
+                    keyboardType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                   ),
                   SizedBox(height: 10),
-                  const TextField(
+                  TextField(
+                     onChanged: (text){
+                       setState(() {
+                         _passwordError = text.length < 8 || text.length > 16;
+                         password = text;
+                       });
+                     },
                     decoration: InputDecoration(
                       labelText: '비밀번호',
                       hintText: 'Enter your password',
+                      errorText: _passwordError ? '올바른 비밀번호를 입력하세요.' : null,
                       labelStyle: TextStyle(color: Colors.grey),
-                      filled: true, // 배경색을 적용하기 위해 filled 속성을 true로 설정
-                      fillColor: Color(0xFFF5F7FB), // 배경색을 #F5F7FB로 지정
+                      filled: true,
+                      fillColor: Color(0xFFF5F7FB),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(width: 1, color: Colors.white),
@@ -97,16 +112,25 @@ class _LogState extends State<Log> {
                       ),
                     ),
                     keyboardType: TextInputType.visiblePassword,
+                    textInputAction: TextInputAction.done,
+                    obscureText: true,
                   ),
                   SizedBox(height: 10),
                   SizedBox(
                     width: 400,
                     height: 40,
                     child: ElevatedButton(
-                        onPressed: (){},
+                        onPressed: (){
+                          _loginToServer();
+                        },
                         child: Text('로그인'),
-                        style: ElevatedButton.styleFrom(
-                          primary: Color(0xFFB2EBFC)
+                        style:
+                        ElevatedButton.styleFrom(
+                          primary:
+                              !_idError && !_passwordError ?
+                              Color(0xFF00BEFF)
+                              :
+                              Color(0xFFB2EBFC)
                         ),
                     ),
                   ),
@@ -119,6 +143,28 @@ class _LogState extends State<Log> {
         ),
       ),
     );
+  }
+  Future<void> _loginToServer() async {
+    final Uri uri = Uri.parse("https://test.deegolabs.com:3000/mobile/auth");
+
+    final Map<String, dynamic> data = {
+      'id': id,
+      'password': password,
+    };
+
+    final http.Response response = await http.post(uri,
+        body: data
+    );
+
+    if(response.statusCode == 200){
+      print("${response.body}");
+    }
+    else{
+      print("${response.statusCode}");
+      print("${response.statusCode}");
+
+    }
+
   }
 }
 
@@ -143,7 +189,7 @@ class TextBtn extends StatelessWidget {
           ),
           Text(' | '), TextButton(
               onPressed: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => Sign()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => PhoneAuth()));
               },
               child: Text('회원가입', style: TextStyle(color: Colors.black),),
           )
@@ -256,4 +302,5 @@ class _OuthBtnState extends State<OuthBtn> {
       ),
     );
   }
+
 }

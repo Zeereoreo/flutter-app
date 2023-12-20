@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:deego_client/login.dart';
 import 'package:deego_client/sign.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +21,8 @@ class _PhoneAuthState extends State<PhoneAuth> {
   bool blueBtn = false;
   bool showAuthBtn = false;
   bool completeAuth = false;
+  bool authenticationCompleted = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +60,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
                           textInputAction: TextInputAction.done,
                           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                           maxLength: 11,
+                          enabled: !showAdditionalInput,
                         ),
                       ),
                       SizedBox(width: 16.0),
@@ -70,7 +73,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
                             sendPhoneNumberToServer(num);
                             setState(() {
                               showAdditionalInput = true;
-
+                              blueBtn = false;
                             });
                           }
                               : null,
@@ -105,6 +108,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
                             textInputAction: TextInputAction.done,
                             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                             maxLength: 4,
+                              enabled: !authenticationCompleted
                           ),
                         ),
                         SizedBox(width: 16.0),
@@ -115,7 +119,6 @@ class _PhoneAuthState extends State<PhoneAuth> {
                             onPressed: showAuthBtn
                                 ? () async {
                               await sendAuthCodeToServer(authNum, userId);
-                              print("인증번호:$authNum");
                               setState(() {
 
                               });
@@ -148,7 +151,9 @@ class _PhoneAuthState extends State<PhoneAuth> {
                     ElevatedButton(
                         onPressed: completeAuth ?
                             () async {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => Sign()));
+                          Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) => Sign(userId : userId),
+                              ));
                         }
                         : null ,
                         style: ElevatedButton.styleFrom(
@@ -159,7 +164,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -196,6 +201,26 @@ class _PhoneAuthState extends State<PhoneAuth> {
     }
   }
 
+  void showCompletionDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("인증 완료"),
+          content: Text("인증이 완료되었습니다."),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // 다이얼로그 닫기
+              },
+              child: Text("확인"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> sendAuthCodeToServer(String authCode, String userId) async {
     final Uri authUrl =
     Uri.parse('https://test.deegolabs.com:3000/common/phone/$userId');
@@ -211,7 +236,10 @@ class _PhoneAuthState extends State<PhoneAuth> {
         print('인증번호 전송 성공');
         setState(() {
           completeAuth = true;
+          authenticationCompleted = true;
+          showAuthBtn = false;
         });
+        showCompletionDialog(context);
         // 추가 작업 수행 가능
       } else {
         // 서버로의 인증번호 전송이 실패한 경우

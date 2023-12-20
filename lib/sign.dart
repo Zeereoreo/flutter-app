@@ -1,26 +1,42 @@
+import 'package:deego_client/home.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
+import 'package:http/http.dart' as http;
+
+import 'login.dart';
 
 class Sign extends StatefulWidget {
-  const Sign({Key? key});
+
+  Sign({Key? key, required this.userId}) : super(key: key);
+  final userId;
+
 
   @override
   State<Sign> createState() => _SignState();
 }
 
 class _SignState extends State<Sign> {
+
+
   String idText = "";
   String nameText = "";
   String emailText = "";
   String passwordText = "";
   String passwordCheckText = "";
+  String birthText = "";
   bool _idError = false;
   bool _nameError = false;
   bool _emailError = false;
   bool _passwordError = false;
   bool _passwordCheckError = false;
+  bool _birthError = false;
+
+
+
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -59,13 +75,13 @@ class _SignState extends State<Sign> {
                   ),
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.next,
-                  maxLength: 16, // 최대 길이 제한
+                  maxLength: 16,
                 ),
                 TextField(
                   onChanged: (text) {
                     setState(() {
                       nameText = text;
-                      _nameError = text.length < 2 || text.length >10;
+                      _nameError = text.length < 2 || text.length > 10;
                     });
                   },
                   decoration: InputDecoration(
@@ -95,6 +111,9 @@ class _SignState extends State<Sign> {
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
                 ),
+                SizedBox(
+                  height: 15,
+                ),
                 TextField(
                   onChanged: (text) {
                     setState(() {
@@ -111,22 +130,64 @@ class _SignState extends State<Sign> {
                   textInputAction: TextInputAction.next,
                   obscureText: true,
                 ),
+                SizedBox(
+                  height: 15,
+                ),
                 TextField(
                   onChanged: (text) {
                     setState(() {
                       passwordCheckText = text;
-                      _passwordCheckError = text.length < 8 || text.length > 16;
-                      _passwordCheckError = passwordText != passwordCheckText;
+                      _passwordCheckError = text.length < 8 || text.length > 16 || passwordText != passwordCheckText;
                     });
                   },
                   decoration: InputDecoration(
                     labelText: "비밀번호 확인",
                     hintText: "위의 비밀번호와 똑같이 입력해주세요",
-                    errorText: _passwordCheckError ? '올바른 비밀번호를 입력하세요.' : null,
+                    errorText: _passwordCheckError ? '비밀번호가 일치하지 않습니다.' : null,
                   ),
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.next,
                   obscureText: true,
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                TextField(
+                  onChanged: (text) {
+                    setState(() {
+                      // RegExp regex = RegExp(r'^[0-9]*$');
+                      // bool isValid = regex.hasMatch(text);
+                      //
+                      // // 길이가 8이 아니거나 숫자가 아닌 경우 에러 표시
+                      // _birthError = text.length != 8 || !isValid;
+
+                      // if (!_birthError) {
+                        // 숫자만 입력된 경우 값 저장
+                        birthText = text;
+                      // }
+                    });
+                  },
+                  decoration: InputDecoration(
+                    labelText: "생년월일",
+                    hintText: "예시) 19970920",
+                    errorText: _birthError ? '숫자로 8자리를 입력하세요.' : null,
+                  ),
+                  keyboardType: TextInputType.number,
+                  textInputAction: TextInputAction.done,
+                  maxLength: 10,
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Container(
+                  width: double.infinity,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      CustomRadioButton("남",1),
+                      CustomRadioButton("여",2),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 30,
@@ -134,8 +195,9 @@ class _SignState extends State<Sign> {
                 ElevatedButton(
                   onPressed: () {
                     // 가입하기 버튼 눌렀을 때의 동작
-                    if (!_idError) {
-                      // 모든 조건을 충족하면 여기에 로직 추가
+                    if (!_idError && !_passwordCheckError) {
+                      // 서버로 데이터 전송
+                      _sendDataToServer();
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -149,5 +211,66 @@ class _SignState extends State<Sign> {
         ),
       ),
     );
+  }
+
+  int value = 0;
+
+  Widget CustomRadioButton(String text, int index) {
+    return Container(
+      width: MediaQuery.of(context).size.width/3,
+      child: OutlinedButton(
+        onPressed: () {
+          setState(() {
+            value = index;
+          });
+        },
+        child: Text(
+          text,
+          style: TextStyle(
+            color: (value == index) ? Color(0xFF00BEFF) : Colors.black,
+          ),
+        ),
+        style: OutlinedButton.styleFrom(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          side: BorderSide(color: (value == index) ? Color(0xFF00BEFF) : Colors.black),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _sendDataToServer() async {
+    // 여기에 실제 서버로 데이터를 전송하는 로직을 작성합니다.
+    final Uri uri = Uri.parse('https://test.deegolabs.com:3000/mobile/auth/user');
+
+
+    final Map<String, dynamic> data = {
+      'id': idText,
+      'name': nameText,
+      'email': emailText,
+      'password': passwordText,
+      'gender': (value == 1) ? '남' : '여',
+      'phoneId' : widget.userId,
+      "birthDateFormat" : birthText
+      // 여기에 필요한 다른 데이터도 추가할 수 있습니다.
+    };
+
+    final http.Response response = await http.post(uri, body: data);
+
+    // 서버 응답에 대한 처리를 추가할 수 있습니다.
+    if (response.statusCode == 201) {
+      // 성공적으로 데이터를 전송한 경우
+      print('Data sent successfully');
+      print("${response.body}");
+      print(data);
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => Log()));
+
+    } else {
+      print(data);
+
+      // 데이터 전송 실패
+      print('Failed to send data. Status code: ${response.statusCode}');
+      print('Failed to send data. Status code: ${response.body}');
+
+    }
   }
 }
