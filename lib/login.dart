@@ -8,8 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
-
+import 'package:provider/provider.dart';
 import 'login_platform.dart';
+import 'main.dart';
 
 
 
@@ -158,6 +159,19 @@ class _LogState extends State<Log> {
 
     if(response.statusCode == 200){
       print("${response.body}");
+      final Map<String, dynamic> responseData = json.decode(response.body);
+
+
+      context.read<userStore>().name = responseData['user']["name"];
+
+      context.read<AuthStore>().accessToken = responseData['accessToken'];
+
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => Home(accessToken: responseData['accessToken']),
+        ),
+      );
+
     }
     else{
       print("${response.statusCode}");
@@ -227,7 +241,7 @@ class _OuthBtnState extends State<OuthBtn> {
         _loginPlatform = LoginPlatform.naver;
       });
 
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Home()));
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => Home(accessToken : res.accessToken)));
 
     }
 
@@ -255,6 +269,7 @@ class _OuthBtnState extends State<OuthBtn> {
       await SnsApiService().sendTokenToServer('Kakao', token.accessToken);
       final profileInfo = json.decode(response.body);
       print(profileInfo.toString());
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => Home(accessToken: token.accessToken)));
 
       setState(() {
         _loginPlatform = LoginPlatform.kakao;
@@ -264,7 +279,6 @@ class _OuthBtnState extends State<OuthBtn> {
       print('카카오톡으로 로그인 실패 $error');
     }
 
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Home()));
 
     }
 

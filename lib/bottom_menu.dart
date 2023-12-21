@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'main.dart';
 
 class BottomMenu extends StatelessWidget {
   const BottomMenu({super.key});
@@ -13,6 +16,7 @@ class BottomMenu extends StatelessWidget {
           switch(i){
             case 0:
               Navigator.pushNamed(context, "/");
+              // Provider.of<AuthStore>(context, listen: false).accessToken;
               break;
             case 1:
               Navigator.pushNamed(context, "/map");

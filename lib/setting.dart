@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'bottom_menu.dart';
+import 'main.dart';
 
 class Setting extends StatelessWidget {
   const Setting({super.key});
@@ -8,7 +10,8 @@ class Setting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var a = 'login아이디';
+    var name = '${context.read<userStore>().name}';
+
     return Scaffold(
       body: Container(
         // alignment: Alignment.topLeft,
@@ -19,7 +22,7 @@ class Setting extends StatelessWidget {
           children: [
             Text.rich(
               TextSpan(
-                  text: a,
+                  text: name,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   children: const <TextSpan>[
                     TextSpan(text: '님, 디고와 함께 \n 지구의 온도를 낮춰보세요!',

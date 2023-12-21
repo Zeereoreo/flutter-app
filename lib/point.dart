@@ -1,15 +1,28 @@
 
+import 'dart:convert';
+
 import 'package:deego_client/header.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'bottom_menu.dart';
+import 'main.dart';
 
-class Point extends StatelessWidget {
-  const Point({super.key});
+class Point extends StatefulWidget {
+  const Point({super.key, required this.accessToken}) : super() ;
+  final String accessToken;
+
+  @override
+  State<Point> createState() => _PointState();
+}
+
+class _PointState extends State<Point> {
 
   @override
   Widget build(BuildContext context) {
+    var currentPoint = '${context.read<pointStore>().current}';
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
@@ -50,7 +63,7 @@ class Point extends StatelessWidget {
                                       Container(
                                         // margin: EdgeInsets.all(10),
                                         height: MediaQuery.of(context).size.height/18,
-                                        child: Text('0 P', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
+                                        child: Text('$currentPoint P', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
                                       )
                                     ],
                                   ),

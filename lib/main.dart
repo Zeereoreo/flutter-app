@@ -1,3 +1,6 @@
+
+import 'dart:convert';
+
 import 'package:deego_client/home.dart';
 import 'package:deego_client/login.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +9,8 @@ import 'package:deego_client/map.dart';
 import 'package:deego_client/setting.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 
 void main () async {
@@ -23,51 +28,64 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  // int tap = 0; // tap 상태는 클래스 멤버 변수로 선언해야 합니다
-  //
-  // final List<Widget> pages = [
-  //   Home(),
-  //   NaverMapApp(),
-  //   Point(),
-  //   Setting(),
-  // ];
+  String accessToken = "";
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: "/login",
-      routes: {
-        "/" : (context) => const Home(),
-        "/map" :(context) => const NaverMapApp(),
-        "/point" :(context) => const Point(),
-        "/setting" :(context) => const Setting(),
-        "/login" : (context) => const Log(),
-      },
-       // home: Scaffold(
-       //  body: IndexedStack(
-       //    index: tap,
-       //    children: pages,
-       //  ),
-       //  bottomNavigationBar: BottomNavigationBar(
-       //    showUnselectedLabels: true,
-       //    selectedItemColor: Colors.black,
-       //    unselectedItemColor: Colors.grey,
-       //    onTap: (i) {
-       //      setState(() {
-       //        tap = i;
-       //      });
-       //    },
-       //    items: const [
-       //      BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: '홈'),
-       //      BottomNavigationBarItem(icon: Icon(Icons.map_rounded), label: '디고찾기'),
-       //      BottomNavigationBarItem(icon: Icon(Icons.store_rounded), label: '포인트'),
-       //      BottomNavigationBarItem(icon: Icon(Icons.settings), label: '설정'),
-       //    ],
-       //  ),
-      // ),
+
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => AuthStore(accessToken)),
+        ChangeNotifierProvider(create: (context) => pointStore()),
+        ChangeNotifierProvider(create: (context) => userStore()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        initialRoute: "/login",
+        routes: {
+          "/" : (context) => Home(accessToken: accessToken),
+          "/map" :(context) => const NaverMapApp(),
+          "/point" :(context) => Point(accessToken: accessToken),
+          "/setting" :(context) => const Setting(),
+          "/login" : (context) => const Log(),
+        },
+      ),
     );
   }
+}
+
+class AuthStore extends ChangeNotifier{
+  String _accessToken;
+
+  AuthStore(this._accessToken);
+
+  String get accessToken => _accessToken;
+
+  set accessToken(String newToken) {
+    _accessToken = newToken;
+    notifyListeners();
+    print("엑세스토큰 $accessToken");
+  }
+}
+
+class userStore extends ChangeNotifier{
+  var id = "";
+  var name = "";
+  var phone = "";
+  var email = "";
+
+  notifyListeners();
+
+}
+
+class pointStore extends ChangeNotifier{
+  var incomes = 0;
+  var spents = 0;
+  var current = 0;
+
+    notifyListeners();
+
+
 }
 
 
