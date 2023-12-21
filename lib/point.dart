@@ -17,11 +17,27 @@ class Point extends StatefulWidget {
   State<Point> createState() => _PointState();
 }
 
+
 class _PointState extends State<Point> {
+   var shopList ;
+  // late List<Map<String, dynamic>> shopList;
+
+  @override
+  void initState() {
+    super.initState();
+    getShop(); // 위젯이 초기화될 때 한 번만 호출
+  }
 
   @override
   Widget build(BuildContext context) {
+
+    if (shopList == null) {
+      // 초기화되지 않았다면 로딩 또는 기본 화면을 표시
+      return CircularProgressIndicator(); // 예시로 로딩 표시
+    }
+
     var currentPoint = '${context.read<pointStore>().current}';
+
 
     return Scaffold(
       body: Container(
@@ -167,33 +183,27 @@ class _PointState extends State<Point> {
                 ],
               ),
             ),
-            Container(
-              height: MediaQuery.of(context).size.height/10,
-              child:
-                Row(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
-                        height: MediaQuery.of(context).size.height/10,
-                        width: MediaQuery.of(context).size.width/3,
-                        child : (
-                            Text('사진 들어갈 자리'))
-                    ),
-                    Container(
-                        decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
-                        height: MediaQuery.of(context).size.height/10,
-                        width: MediaQuery.of(context).size.width/1.7,
-                        alignment: Alignment.center,
-                        child : (
-                            Text('네이버 포인트로 환전하기'))
-                    ),
-                  ],
-                ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Container(
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      // itemExtent: MediaQuery.of(context).size.height / 30,
+                      itemCount: shopList.length,
+                      itemBuilder: (c, i){
+                        var item = shopList[i];
+                        return ListTile(
+                          leading: Container(
+                            width: 100, // 원하는 너비 설정
+                            height: 100, // 원하는 높이 설정
+                            child: Image.network("${item["image"]}"),
+                          ),
+                          title: Container(
+                              child: Text("${item["name"]}")),
+                        );
+                      })
+                  ),
               ),
-              // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
-            Container(
-              height: 100,
-              decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
             ),
           ],
         ),
@@ -201,4 +211,22 @@ class _PointState extends State<Point> {
       bottomNavigationBar: const BottomMenu(),
     );
   }
+  getShop()async{
+    var response = await http.get(Uri.parse("https://test.deegolabs.com:3000/mobile/shop/item/list"),
+        headers:
+        {
+          "Authorization": "Bearer ${context.read<AuthStore>().accessToken}"
+        });
+    var itemList = jsonDecode(response.body);
+    if(response.statusCode == 200) print("성공");
+    else {
+      print(response.statusCode);
+      print("실패");
+    };
+    setState(() {
+      shopList = itemList["shopItemPage"]["items"];
+    });
+    // print(shopList[2]);
+  }
 }
+

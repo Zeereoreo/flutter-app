@@ -24,6 +24,12 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   String id = "";
   int point = 0;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getPoint();
+  }
 
   @override
   Widget build(BuildContext context) {
