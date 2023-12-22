@@ -40,7 +40,7 @@ class Setting extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: const BottomMenu(),
+      bottomNavigationBar: BottomMenu(),
     );
   }
 }

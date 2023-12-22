@@ -3,20 +3,33 @@ import 'package:provider/provider.dart';
 
 import 'main.dart';
 
-class BottomMenu extends StatelessWidget {
+class BottomMenu extends StatefulWidget {
   const BottomMenu({super.key});
 
+  @override
+  State<BottomMenu> createState() => _BottomMenuState();
+}
+
+class _BottomMenuState extends State<BottomMenu> {
+  int _selectedIndex = 0;
+  void _onItemTapped(int index){
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       showUnselectedLabels: true,
       selectedItemColor: Colors.black,
       unselectedItemColor: Colors.grey,
+      currentIndex: _selectedIndex,
       onTap: (i) {
+        _onItemTapped(i);
+        print(_selectedIndex);
           switch(i){
             case 0:
               Navigator.pushNamed(context, "/");
-              // Provider.of<AuthStore>(context, listen: false).accessToken;
               break;
             case 1:
               Navigator.pushNamed(context, "/map");

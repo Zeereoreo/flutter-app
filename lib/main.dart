@@ -1,6 +1,4 @@
 
-import 'dart:convert';
-
 import 'package:deego_client/home.dart';
 import 'package:deego_client/login.dart';
 import 'package:flutter/material.dart';
@@ -44,11 +42,12 @@ class _MyAppState extends State<MyApp> {
         initialRoute: "/login",
         routes: {
           "/" : (context) => Home(accessToken: accessToken),
-          "/map" :(context) => const NaverMapApp(),
+          "/map" :(context) =>  NaverMapApp(),
           "/point" :(context) => Point(accessToken: accessToken),
-          "/setting" :(context) => const Setting(),
-          "/login" : (context) => const Log(),
+          "/setting" :(context) =>  Setting(),
+          "/login" : (context) =>  Log(),
         },
+
       ),
     );
   }

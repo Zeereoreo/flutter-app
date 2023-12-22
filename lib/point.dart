@@ -108,7 +108,7 @@ class _PointState extends State<Point> {
                         Container(
                           // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
                           child:
-                          const Column(
+                           Column(
                             children: [
                               Text('총 적립 포인트 : 0',
                                 style: TextStyle(
@@ -123,6 +123,7 @@ class _PointState extends State<Point> {
                           ),
                         ),
                       Container(
+                        margin: EdgeInsets.all(10),
                         decoration: BoxDecoration(
                             border: Border.all(color: Colors.black)
                         ),
@@ -184,33 +185,50 @@ class _PointState extends State<Point> {
               ),
             ),
             Expanded(
-              child: SingleChildScrollView(
                 child: Container(
-                  child: ListView.builder(
+                    // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+                    child: ListView.builder(
                       shrinkWrap: true,
-                      // itemExtent: MediaQuery.of(context).size.height / 30,
+                      // itemExtent: MediaQuery.of(context).size.height / 10,
                       itemCount: shopList.length,
                       itemBuilder: (c, i){
                         var item = shopList[i];
-                        return ListTile(
-                          leading: Container(
-                            width: 100, // 원하는 너비 설정
-                            height: 100, // 원하는 높이 설정
-                            child: Image.network("${item["image"]}"),
-                          ),
-                          title: Container(
-                              child: Text("${item["name"]}")),
+                        return Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+                            child: ListTile(
+                              leading: Container(
+                                decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+                                width: MediaQuery.of(context).size.width/4,
+                                height: MediaQuery.of(context).size.height/2,
+                                child: Image.network("${item["image"]}",fit: BoxFit.cover,)
+                                ,
+                              ),
+                              title: Container(
+                                  decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+                                  child:  Container(
+                                      child: Column(
+                                        children: [
+                                          Text("${item["name"]}"),
+                                          ElevatedButton(onPressed: (){
+
+                                          }, child: Text("구매하기"))
+                                        ],
+                                      ),
+                                    ),
+                              ),
+                            ),
                         );
                       })
                   ),
               ),
-            ),
           ],
         ),
       ),
-      bottomNavigationBar: const BottomMenu(),
+      bottomNavigationBar: BottomMenu(),
     );
   }
+
   getShop()async{
     var response = await http.get(Uri.parse("https://test.deegolabs.com:3000/mobile/shop/item/list"),
         headers:

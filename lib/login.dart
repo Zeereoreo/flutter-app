@@ -166,6 +166,9 @@ class _LogState extends State<Log> {
 
       context.read<AuthStore>().accessToken = responseData['accessToken'];
 
+
+      await getUserPoint();
+
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => Home(accessToken: responseData['accessToken']),
@@ -179,6 +182,27 @@ class _LogState extends State<Log> {
 
     }
 
+  }
+
+  Future<void> getUserPoint() async {
+
+    final url = Uri.https("test.deegolabs.com:3000", "/mobile/point");
+
+    final response = await http.get(
+        url,
+        headers : {
+          "Authorization" : "Bearer ${context.read<AuthStore>().accessToken}"
+        }
+    );
+
+    if(response.statusCode == 200){
+      print("포인트불러오기성공");
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      context.read<pointStore>().current = responseData["current"];
+    } else{
+
+      print("실패 :${response.body}");
+    }
   }
 }
 

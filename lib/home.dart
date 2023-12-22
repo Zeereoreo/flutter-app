@@ -23,26 +23,21 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   String id = "";
-  int point = 0;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getPoint();
+
   }
 
   @override
   Widget build(BuildContext context) {
 
-    // print("Access Token in Home: ${widget.accessToken}");
-    // getPoint();
-    // print(context.read<pointStore>().getPoint(widget.accessToken));
     var name = '${context.read<userStore>().name}';
     var currentPoint = '${context.read<pointStore>().current}';
 
-    return FutureBuilder(
-      future: getPoint(),
-      builder: (context, snapshot) {
+    print("홈페이지 $currentPoint");
         return Scaffold(
           body: Container(
             decoration: BoxDecoration(
@@ -53,26 +48,27 @@ class _HomeState extends State<Home> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                 const Header(),
-                   Container(
-                     decoration: BoxDecoration(
-                         border: Border.all(color: Colors.black)
-                     ),
-                     margin: EdgeInsets.only(top:10,left: 10,right: 10),
-                     alignment: Alignment.centerLeft,
-                    child: Text.rich(
-                      TextSpan(
-                          text: name,
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                          children: const <TextSpan>[
-                            TextSpan(text: '님, 디고와 함께 \n 지구의 온도를 낮춰보세요!',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20)
-                            )
-                          ]
-                      ),
-
-                    ),
+                const Header(),
+                Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black)
                   ),
+                  margin: EdgeInsets.only(top: 10, left: 10, right: 10),
+                  alignment: Alignment.centerLeft,
+                  child: Text.rich(
+                    TextSpan(
+                        text: name,
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                        children: const <TextSpan>[
+                          TextSpan(text: '님, 디고와 함께 \n 지구의 온도를 낮춰보세요!',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.normal, fontSize: 20)
+                          )
+                        ]
+                    ),
+
+                  ),
+                ),
                 Container(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -84,21 +80,35 @@ class _HomeState extends State<Home> {
                               border: Border.all(color: Colors.black)
                           ),
                           child: Container(
-                            width: MediaQuery.of(context).size.width,
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width,
                             color: Color(0x5000BEFF),
-                            height: MediaQuery.of(context).size.height/6,
+                            height: MediaQuery
+                                .of(context)
+                                .size
+                                .height / 6,
                             margin: EdgeInsets.all(10),
                             child: Column(
                               children: [
                                 Container(
                                   margin: EdgeInsets.only(top: 10),
-                                  height: MediaQuery.of(context).size.height/18,
-                                  child: Text('현재 포인트',style: TextStyle(color: Colors.white,),),
+                                  height: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height / 18,
+                                  child: Text('현재 포인트',
+                                    style: TextStyle(color: Colors.white,),),
                                 ),
                                 Container(
                                   // margin: EdgeInsets.all(10),
-                                  height: MediaQuery.of(context).size.height/18,
-                                  child: Text('$currentPoint P', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
+                                  height: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height / 18,
+                                  child: Text('$currentPoint P', style: TextStyle(
+                                      fontWeight: FontWeight.bold, fontSize: 30),),
                                 )
                               ],
                             ),
@@ -113,7 +123,10 @@ class _HomeState extends State<Home> {
                       border: Border.all(color: Colors.black)
                   ),
                   width: double.infinity,
-                  height: MediaQuery.of(context).size.height/5,
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height / 5,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -176,7 +189,10 @@ class _HomeState extends State<Home> {
                     margin: EdgeInsets.all(10),
                     padding: EdgeInsets.all(20),
                     width: double.infinity,
-                    height: MediaQuery.of(context).size.height/4,
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height / 4,
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.black)
                     ),
@@ -190,25 +206,6 @@ class _HomeState extends State<Home> {
           bottomNavigationBar: BottomMenu(),
         );
       }
-    );
-  }
-
-  getPoint() async {
-
-    final url = Uri.https("test.deegolabs.com:3000", "/mobile/point");
-
-    final response = await http.get(
-      url,
-      headers : {
-        "Authorization" : "Bearer ${context.read<AuthStore>().accessToken}"
-      }
-    );
-
-    if(response.statusCode == 200){
-      final Map<String, dynamic> responseData = json.decode(response.body);
-      context.read<pointStore>().current = responseData["current"];
 
 
-    }
-  }
 }
