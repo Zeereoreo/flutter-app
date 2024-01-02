@@ -1,4 +1,6 @@
 
+import 'package:deego_client/bottom_menu.dart';
+import 'package:deego_client/header.dart';
 import 'package:deego_client/home.dart';
 import 'package:deego_client/login.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +29,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String accessToken = "";
+  int tab = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +39,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (context) => AuthStore(accessToken)),
         ChangeNotifierProvider(create: (context) => pointStore()),
         ChangeNotifierProvider(create: (context) => userStore()),
+        ChangeNotifierProvider(create: (context) => footerStore()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -47,7 +51,11 @@ class _MyAppState extends State<MyApp> {
           "/setting" :(context) =>  Setting(),
           "/login" : (context) =>  Log(),
         },
-
+        // home: Scaffold(
+        //   // appBar: Header(),
+        //   body: [Home(accessToken: accessToken),NaverMapApp(),Point(accessToken: accessToken),Setting()][tab],
+        //   bottomNavigationBar: BottomMenu(),
+        // ),
       ),
     );
   }
@@ -83,8 +91,12 @@ class pointStore extends ChangeNotifier{
   var current = 0;
 
     notifyListeners();
+}
 
+class footerStore extends ChangeNotifier{
+  var tab = 0;
 
+  notifyListeners();
 }
 
 

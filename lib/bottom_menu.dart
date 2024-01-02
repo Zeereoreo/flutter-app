@@ -4,46 +4,52 @@ import 'package:provider/provider.dart';
 import 'main.dart';
 
 class BottomMenu extends StatefulWidget {
-  const BottomMenu({super.key});
+  const BottomMenu({Key? key}) : super(key: key);
 
   @override
   State<BottomMenu> createState() => _BottomMenuState();
 }
 
 class _BottomMenuState extends State<BottomMenu> {
-  int _selectedIndex = 0;
-  void _onItemTapped(int index){
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+
   @override
   Widget build(BuildContext context) {
+    void _onItemTapped(int index) {
+      if(context.read<footerStore>().tab == index){
+        return null;
+      }
+
+      setState(() {
+        context.read<footerStore>().tab = index;
+      });
+    }
+
     return BottomNavigationBar(
       showUnselectedLabels: true,
       selectedItemColor: Colors.black,
       unselectedItemColor: Colors.grey,
-      currentIndex: _selectedIndex,
+      currentIndex: context.read<footerStore>().tab,
+
       onTap: (i) {
         _onItemTapped(i);
-        print(_selectedIndex);
-          switch(i){
-            case 0:
-              Navigator.pushNamed(context, "/");
-              break;
-            case 1:
-              Navigator.pushNamed(context, "/map");
-              break;
-            case 2:
-              Navigator.pushNamed(context, "/point");
-              break;
-            case 3:
-              Navigator.pushNamed(context, "/setting");
-              break;
-            case 4:
-              Navigator.pushNamed(context, "/login");
-              break;
-          }
+        print(i);
+        switch (i) {
+          case 0:
+            Navigator.pushReplacementNamed(context, "/");
+            break;
+          case 1:
+            Navigator.pushReplacementNamed(context, "/map");
+            break;
+          case 2:
+            Navigator.pushReplacementNamed(context, "/point");
+            break;
+          case 3:
+            Navigator.pushReplacementNamed(context, "/setting");
+            break;
+          case 4:
+            Navigator.pushNamed(context, "/login");
+            break;
+        }
       },
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: '홈'),
