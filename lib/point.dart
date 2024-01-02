@@ -210,8 +210,13 @@ class _PointState extends State<Point> {
                                       child: Column(
                                         children: [
                                           Text("${item["name"]}"),
-                                          ElevatedButton(onPressed: (){
-
+                                          ElevatedButton(
+                                              onPressed: (){
+                                                showDialog(context: context, builder: (context){
+                                                  return Dialog(
+                                                    child: Purchase(item: item,),
+                                                  );
+                                                });
                                           }, child: Text("구매하기"))
                                         ],
                                       ),
@@ -248,3 +253,43 @@ class _PointState extends State<Point> {
   }
 }
 
+class Purchase extends StatelessWidget {
+  final Map<String, dynamic> item;
+
+  const Purchase({Key? key, required this.item}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(20),
+      width: MediaQuery.of(context).size.width/2,
+      height: MediaQuery.of(context).size.height/3,
+      child: Center(
+        child: Column(
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width/2,
+              height: MediaQuery.of(context).size.height/4.8,
+              decoration: BoxDecoration(
+                color: Colors.grey
+              ),
+              child: Text("${item["name"]}"),
+            ),
+            Container(
+              margin: EdgeInsets.all(10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(onPressed: (){}, child: Text("다음으로")),
+                  TextButton(onPressed: (){
+
+                  }, child: Text("이전으로"))
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
