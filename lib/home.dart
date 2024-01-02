@@ -37,7 +37,6 @@ class _HomeState extends State<Home> {
     var name = '${context.read<userStore>().name}';
     var currentPoint = '${context.read<pointStore>().current}';
 
-    print("홈페이지 $currentPoint");
         return Scaffold(
           body: Container(
             decoration: BoxDecoration(
@@ -158,7 +157,7 @@ class _HomeState extends State<Home> {
                         width: double.infinity,
                         child: TextButton(
                           onPressed: () {
-                            // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const Point()));
+                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Point(accessToken: context.read<AuthStore>().accessToken,)));
                           },
                           style: TextButton.styleFrom(
                             backgroundColor: Colors.grey,

@@ -167,7 +167,7 @@ class _LogState extends State<Log> {
       context.read<AuthStore>().accessToken = responseData['accessToken'];
 
 
-      await getUserPoint();
+      await getUserPoint(context);
 
       Navigator.of(context).push(
         MaterialPageRoute(
@@ -177,33 +177,13 @@ class _LogState extends State<Log> {
 
     }
     else{
-      print("${response.statusCode}");
-      print("${response.statusCode}");
+      // print("${response.statusCode}");
+      // print("${response.statusCode}");
 
     }
 
   }
 
-  Future<void> getUserPoint() async {
-
-    final url = Uri.https("test.deegolabs.com:3000", "/mobile/point");
-
-    final response = await http.get(
-        url,
-        headers : {
-          "Authorization" : "Bearer ${context.read<AuthStore>().accessToken}"
-        }
-    );
-
-    if(response.statusCode == 200){
-      print("포인트불러오기성공");
-      final Map<String, dynamic> responseData = json.decode(response.body);
-      context.read<pointStore>().current = responseData["current"];
-    } else{
-
-      print("실패 :${response.body}");
-    }
-  }
 }
 
 class TextBtn extends StatelessWidget {
@@ -256,13 +236,16 @@ class _OuthBtnState extends State<OuthBtn> {
     NaverAccessToken res = await FlutterNaverLogin.currentAccessToken;
     print("토큰:${res.accessToken}");
     if (result.status == NaverLoginStatus.loggedIn) {
-      print('accessToken = ${result.accessToken}');
+      print('액세스토큰 = ${result.accessToken.accessToken}');
       print('id = ${result.account.id}');
       print('email = ${result.account.email}');
       print('name = ${result.account.name}');
-      await SnsApiService().sendTokenToServer('Naver', res.accessToken);
+      await SnsApiService().sendTokenToServer(context, 'Naver', res.accessToken);
+
       setState(() {
         _loginPlatform = LoginPlatform.naver;
+        // context.read<AuthStore>().accessToken = result.accessToken as String;
+
       });
 
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => Home(accessToken : res.accessToken)));
@@ -290,11 +273,12 @@ class _OuthBtnState extends State<OuthBtn> {
       );
       print("토큰:$token");
       print("토큰:${token.accessToken}");
-      await SnsApiService().sendTokenToServer('Kakao', token.accessToken);
+      context.read<AuthStore>().accessToken = token.accessToken;
+      await SnsApiService().sendTokenToServer(context, 'Kakao', token.accessToken);
       final profileInfo = json.decode(response.body);
       print(profileInfo.toString());
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => Home(accessToken: token.accessToken)));
-
+      await getUserPoint(context);
       setState(() {
         _loginPlatform = LoginPlatform.kakao;
       });
@@ -341,4 +325,25 @@ class _OuthBtnState extends State<OuthBtn> {
     );
   }
 
+}
+
+Future<void> getUserPoint(context) async {
+
+  final url = Uri.https("test.deegolabs.com:3000", "/mobile/point");
+
+  final response = await http.get(
+      url,
+      headers : {
+        "Authorization" : "Bearer ${context.read<AuthStore>().accessToken}"
+      }
+  );
+
+  if(response.statusCode == 200){
+    print("포인트불러오기성공");
+    final Map<String, dynamic> responseData = json.decode(response.body);
+    context.read<pointStore>().current = responseData["current"];
+  } else{
+
+    print("실패 :${response.body}");
+  }
 }

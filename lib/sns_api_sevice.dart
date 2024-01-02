@@ -1,10 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'dart:convert';
+
+import 'main.dart';
 
 class SnsApiService {
   static const String baseUrl = 'https://test.deegolabs.com:3000/mobile/auth/sns';
 
-  Future<void> sendTokenToServer(String snsType, String snsToken) async {
+  Future<void> sendTokenToServer(BuildContext context, String snsType, String snsToken) async {
     final String url = '$baseUrl/$snsType/$snsToken';
     print("url: $url");
     try {
@@ -13,13 +17,6 @@ class SnsApiService {
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
-        // You can add more headers or customize the request as needed.
-
-        // Example payload (you might need to customize it based on your server's requirements):
-        // 'data': jsonEncode({
-        //   'token': snsToken,
-        //   // Add more fields as needed
-        // }),
       );
       print("유알엘 : ${Uri.parse(url)}");
       print("리스폰스 $response");
@@ -27,6 +24,11 @@ class SnsApiService {
         // Successful request
         print('Token sent successfully');
         print('Response: ${response.body}');
+        var result = json.decode(response.body);
+        context.read<AuthStore>().accessToken = result["userSNS"]["accessToken"];
+        context.read<userStore>().name = result["userSNS"]["user"]["name"];
+        await getUserPoint();
+        print("${result["userSNS"]["accessToken"]}");
       } else {
         // Request failed
         print('Failed to send token. Status code: ${response.statusCode}');

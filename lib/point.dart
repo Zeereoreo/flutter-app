@@ -278,7 +278,10 @@ class _PurchaseState extends State<Purchase> {
           });
 
       var itemList = jsonDecode(response.body);
-      if(response.statusCode == 200) print("성공");
+      if(response.statusCode == 200) {
+        print("성공");
+
+      }
       else {
         print(response.statusCode);
         print(response.body);
