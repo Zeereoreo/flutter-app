@@ -253,13 +253,42 @@ class _PointState extends State<Point> {
   }
 }
 
-class Purchase extends StatelessWidget {
+
+
+class Purchase extends StatefulWidget {
   final Map<String, dynamic> item;
 
   const Purchase({Key? key, required this.item}) : super(key: key);
 
   @override
+  State<Purchase> createState() => _PurchaseState();
+}
+
+class _PurchaseState extends State<Purchase> {
+  @override
   Widget build(BuildContext context) {
+    print("${widget.item["id"]}");
+    print("${context.read<AuthStore>().accessToken}");
+    getPoint()async{
+
+      var response =  await http.get(Uri.parse("https://test.deegolabs.com:3000/mobile/shop/item/${widget.item["id"]}/purchase"),
+          headers:
+          {
+            "Authorization": "Bearer ${context.read<AuthStore>().accessToken}"
+          });
+
+      var itemList = jsonDecode(response.body);
+      if(response.statusCode == 200) print("성공");
+      else {
+        print(response.statusCode);
+        print(response.body);
+        print("실패");
+      };
+      setState(() {
+
+      });
+    }
+
     return Container(
       padding: EdgeInsets.all(20),
       width: MediaQuery.of(context).size.width/2,
@@ -273,22 +302,70 @@ class Purchase extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.grey
               ),
-              child: Text("${item["name"]}"),
+              child: Center(child: Container(
+                  child: Text("${widget.item["name"]}\n 구매하시겠습니까??", style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold
+                  ),)
+              )
+              ),
             ),
             Container(
               margin: EdgeInsets.all(10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextButton(onPressed: (){}, child: Text("다음으로")),
                   TextButton(onPressed: (){
-
-                  }, child: Text("이전으로"))
+                    showDialog( context: context,
+                    builder: (context) {
+                          return AlertDialog(
+                          title: Text("포인트 등록"),
+                          content: Text("구매하신 포인트는 한달 안에 등록해주셔야 사용 가능합니다 \n 동의하시고 진행하시겠습니까??"),
+                          actions: [
+                            TextButton(onPressed: (){
+                              getPoint();
+                            }, child: Text("동의")),
+                            TextButton(
+                              onPressed: () {
+                              Navigator.pop(context);
+                              },
+                              child: Text("닫기"),
+                              ),
+                                ],
+                                );
+                                },
+                                );
+                                },
+                                  child: Text("다음으로"),
+                      ),
+                  TextButton(onPressed: (){
+                      Navigator.pop(context);
+                  }, child: Text("취소하기"))
                 ],
               ),
             )
           ],
         ),
+      ),
+    );
+  }
+}
+
+class Confirm extends StatelessWidget {
+  const Confirm({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(20),
+      width: MediaQuery.of(context).size.width/10,
+      height: MediaQuery.of(context).size.height/3,
+      color: Colors.black,
+      child: Column(
+        children: [
+          Text("ㅎㅇ")
+        ],
       ),
     );
   }
