@@ -36,6 +36,8 @@ class _HomeState extends State<Home> {
 
     var name = '${context.read<userStore>().name}';
     var currentPoint = '${context.read<pointStore>().current}';
+    print("home point :${context.read<pointStore>().current}");
+    print("cur point :${context.read<pointStore>().current}");
 
         return Scaffold(
           body: Container(

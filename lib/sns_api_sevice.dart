@@ -8,6 +8,7 @@ import 'main.dart';
 class SnsApiService {
   static const String baseUrl = 'https://test.deegolabs.com:3000/mobile/auth/sns';
 
+
   Future<void> sendTokenToServer(BuildContext context, String snsType, String snsToken) async {
     final String url = '$baseUrl/$snsType/$snsToken';
     print("url: $url");
@@ -27,7 +28,6 @@ class SnsApiService {
         var result = json.decode(response.body);
         context.read<AuthStore>().accessToken = result["userSNS"]["accessToken"];
         context.read<userStore>().name = result["userSNS"]["user"]["name"];
-        await getUserPoint();
         print("${result["userSNS"]["accessToken"]}");
       } else {
         // Request failed
@@ -39,4 +39,5 @@ class SnsApiService {
       print('Error during the request: $error');
     }
   }
+
 }
