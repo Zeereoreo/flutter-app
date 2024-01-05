@@ -49,7 +49,7 @@ class _HeaderState extends State<Header> {
 
       }
     return Container(
-      decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+      // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
       width: double.infinity,
       height: MediaQuery.of(context).size.height / 20,
       margin: EdgeInsets.only(top: 40),

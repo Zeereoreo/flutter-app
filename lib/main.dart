@@ -1,4 +1,7 @@
 
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:deego_client/bottom_menu.dart';
 import 'package:deego_client/header.dart';
 import 'package:deego_client/home.dart';
@@ -12,13 +15,21 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext? context){
+    return super.createHttpClient(context)..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+  }
+}
 
 void main () async {
   KakaoSdk.init(nativeAppKey: '413db6c1481faf48ecd19af7a9b474e4');
   WidgetsFlutterBinding.ensureInitialized();
   await NaverMapSdk.instance.initialize(clientId: '02pij2jc6t');
+  HttpOverrides.global = MyHttpOverrides();
   runApp(const MyApp());
 }
+
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
