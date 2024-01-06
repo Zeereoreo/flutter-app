@@ -159,6 +159,7 @@ class _HomeState extends State<Home> {
                         width: double.infinity,
                         child: TextButton(
                           onPressed: () {
+                            context.read<footerStore>().tab = 2;
                             Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Point(accessToken: context.read<AuthStore>().accessToken,)));
                           },
                           style: TextButton.styleFrom(

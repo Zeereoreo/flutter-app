@@ -38,7 +38,7 @@ class _LogState extends State<Log> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+          // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
           width: double.infinity,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -261,19 +261,20 @@ class _OuthBtnState extends State<OuthBtn> {
     NaverAccessToken res = await FlutterNaverLogin.currentAccessToken;
     print("토큰:${res.accessToken}");
     if (result.status == NaverLoginStatus.loggedIn) {
+      print("리스폰스 = ${result}");
       print('액세스토큰 = ${result.accessToken.accessToken}');
       print('id = ${result.account.id}');
       print('email = ${result.account.email}');
       print('name = ${result.account.name}');
       await SnsApiService().sendTokenToServer(context, 'Naver', res.accessToken);
-      await getUserPoint(context);
+      // await getUserPoint(context);
       setState(() {
         _loginPlatform = LoginPlatform.naver;
         // context.read<AuthStore>().accessToken = result.accessToken as String;
 
       });
 
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => Home(accessToken : res.accessToken)));
+      // Navigator.of(context).push(MaterialPageRoute(builder: (context) => Home(accessToken : res.accessToken)));
 
     }
 

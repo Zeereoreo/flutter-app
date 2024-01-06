@@ -16,15 +16,18 @@ class _BottomMenuState extends State<BottomMenu> {
   Widget build(BuildContext context) {
     void _onItemTapped(int index) {
       if(context.read<footerStore>().tab == index){
-        return null;
+        print("${context.read<footerStore>().tab}이랑 ${index}");
+        return ;
       }
 
       setState(() {
         context.read<footerStore>().tab = index;
+        print("여기냐2");
       });
     }
 
     return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
       showUnselectedLabels: true,
       selectedItemColor: Colors.black,
       unselectedItemColor: Colors.grey,
@@ -32,19 +35,22 @@ class _BottomMenuState extends State<BottomMenu> {
 
       onTap: (i) {
         _onItemTapped(i);
-        print(i);
         switch (i) {
           case 0:
             Navigator.pushReplacementNamed(context, "/");
             break;
           case 1:
             Navigator.pushReplacementNamed(context, "/map");
+            print("여기냐4");
+
             break;
           case 2:
             Navigator.pushReplacementNamed(context, "/point");
+            print("여기냐5");
             break;
           case 3:
             Navigator.pushReplacementNamed(context, "/setting");
+            print("여기냐6");
             break;
           case 4:
             Navigator.pushNamed(context, "/login");
