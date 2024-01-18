@@ -41,7 +41,7 @@ class _PointState extends State<Point> {
 
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+        // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
         margin: EdgeInsets.all(10),
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -59,9 +59,9 @@ class _PointState extends State<Point> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                      Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black)
-                            ),
+                            // decoration: BoxDecoration(
+                            //     border: Border.all(color: Colors.black)
+                            // ),
                             child: Row(
                               children: [
                                 Container(
@@ -124,9 +124,9 @@ class _PointState extends State<Point> {
                         ),
                       Container(
                         margin: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black)
-                        ),
+                        // decoration: BoxDecoration(
+                        //     border: Border.all(color: Colors.black)
+                        // ),
                         width: double.infinity,
                         height: MediaQuery.of(context).size.height/10,
                         child: Row(
@@ -195,17 +195,17 @@ class _PointState extends State<Point> {
                         var item = shopList[i];
                         return Container(
                             padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+                            // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
                             child: ListTile(
                               leading: Container(
-                                decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+                                // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
                                 width: MediaQuery.of(context).size.width/4,
                                 height: MediaQuery.of(context).size.height/2,
                                 child: Image.network("${item["image"]}",fit: BoxFit.cover,)
                                 ,
                               ),
                               title: Container(
-                                  decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+                                  // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
                                   child:  Container(
                                       child: Column(
                                         children: [
@@ -271,7 +271,8 @@ class _PurchaseState extends State<Purchase> {
     print("${context.read<AuthStore>().accessToken}");
     getPoint()async{
 
-      var response =  await http.get(Uri.parse("https://test.deegolabs.com:3000/mobile/shop/item/${widget.item["id"]}/purchase"),
+      var response =  await http.post(Uri.parse("https://test.deegolabs.com:3000/mobile/shop/item/${widget.item["id"]}/purchase"),
+
           headers:
           {
             "Authorization": "Bearer ${context.read<AuthStore>().accessToken}"

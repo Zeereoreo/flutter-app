@@ -338,15 +338,22 @@ class _OuthBtnState extends State<OuthBtn> {
                 getNaver();
               });
             },
-                child: const Text('네이버로고')),
+                child: const Image(
+                  image: AssetImage('assets/images/naverlogo.png'),
+                  width: 100,
+                  height: 50,
+                ),),
           ),
           Container(
             child: TextButton(onPressed: (){
               setState(() {
                 getData();
               });
-            }, child: Text('카카오로그인')),
-
+            }, child: const Image(
+              image: AssetImage('assets/images/kakaologo.png'),
+              width: 100,
+              height: 50,
+            ),),
           )
         ],
       ),

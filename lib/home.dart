@@ -41,9 +41,9 @@ class _HomeState extends State<Home> {
 
         return Scaffold(
           body: Container(
-            decoration: BoxDecoration(
-                border: Border.all(color: Colors.black)
-            ),
+            // decoration: BoxDecoration(
+            //     border: Border.all(color: Colors.black)
+            // ),
             margin: EdgeInsets.all(10),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -51,9 +51,9 @@ class _HomeState extends State<Home> {
               children: [
                 const Header(),
                 Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black)
-                  ),
+                  // decoration: BoxDecoration(
+                  //     border: Border.all(color: Colors.black)
+                  // ),
                   margin: EdgeInsets.only(top: 10, left: 10, right: 10),
                   alignment: Alignment.centerLeft,
                   child: Text.rich(
@@ -77,9 +77,9 @@ class _HomeState extends State<Home> {
                       Flexible(
                         flex: 1,
                         child: Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black)
-                          ),
+                          // decoration: BoxDecoration(
+                          //     border: Border.all(color: Colors.black)
+                          // ),
                           child: Container(
                             width: MediaQuery
                                 .of(context)
@@ -120,9 +120,9 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black)
-                  ),
+                  // decoration: BoxDecoration(
+                  //     border: Border.all(color: Colors.black)
+                  // ),
                   width: double.infinity,
                   height: MediaQuery
                       .of(context)
@@ -195,9 +195,9 @@ class _HomeState extends State<Home> {
                         .of(context)
                         .size
                         .height / 4,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black)
-                    ),
+                    // decoration: BoxDecoration(
+                    //     border: Border.all(color: Colors.black)
+                    // ),
                     child: Text('즐겨찾는 디고가 없습니다.'),
                   ),
                 ),

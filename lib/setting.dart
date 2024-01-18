@@ -13,51 +13,54 @@ class Setting extends StatelessWidget {
     var name = '${context.read<userStore>().name}';
 
     return Scaffold(
-      body: Column(
-        children: [
-          const Header(),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Container(
-                margin: EdgeInsets.all(10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text.rich(
-                      TextSpan(
-                        text: name,
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                        children: const <TextSpan>[
-                          TextSpan(
-                            text: '님, 디고와 함께 \n 지구의 온도를 낮춰보세요!',
-                            style: TextStyle(fontWeight: FontWeight.normal, fontSize: 17),
-                          )
+      body: Container(
+        margin: EdgeInsets.all(10),
+        child: Column(
+          children: [
+            const Header(),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Container(
+                  margin: EdgeInsets.all(10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text.rich(
+                        TextSpan(
+                          text: name,
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                          children: const <TextSpan>[
+                            TextSpan(
+                              text: '님, 디고와 함께 \n 지구의 온도를 낮춰보세요!',
+                              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 17),
+                            )
+                          ],
+                        ),
+                      ),
+                      Column(
+                        children: [
+                          setBtn(buttonText: '정보 관리',),
+                          setBtn(buttonText: '고객 센터',),
+                          setBtn(buttonText: '공지 사항',),
+                          setBtn(buttonText: '서비스 이용 약관',),
+                          setBtn(buttonText: '개인정보 처리 방침',),
+                          setBtn(buttonText: '버전 정보',),
+                          setBtn(buttonText: '버전 정보',),
+                          setBtn(buttonText: '버전 정보',),
+                          setBtn(buttonText: '버전 정보',),
+                          setBtn(buttonText: '버전 정보',),
+                          setBtn(buttonText: '버전 정보',),
+                          setBtn(buttonText: '버전 정보',),
                         ],
                       ),
-                    ),
-                    Column(
-                      children: [
-                        setBtn(buttonText: '정보 관리',),
-                        setBtn(buttonText: '고객 센터',),
-                        setBtn(buttonText: '공지 사항',),
-                        setBtn(buttonText: '서비스 이용 약관',),
-                        setBtn(buttonText: '개인정보 처리 방침',),
-                        setBtn(buttonText: '버전 정보',),
-                        setBtn(buttonText: '버전 정보',),
-                        setBtn(buttonText: '버전 정보',),
-                        setBtn(buttonText: '버전 정보',),
-                        setBtn(buttonText: '버전 정보',),
-                        setBtn(buttonText: '버전 정보',),
-                        setBtn(buttonText: '버전 정보',),
-                      ],
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: BottomMenu(),
     );
