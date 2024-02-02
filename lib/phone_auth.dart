@@ -173,7 +173,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
   }
 
   Future<void> sendPhoneNumberToServer(String phoneNumber) async {
-    final Uri url = Uri.parse('https://test.deegolabs.com:3000/common/phone');
+    final Uri url = Uri.parse('https://test.deegolabs.kr/common/phone');
 
     try {
       final response = await http.post(
@@ -223,7 +223,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
 
   Future<void> sendAuthCodeToServer(String authCode, String userId) async {
     final Uri authUrl =
-    Uri.parse('https://test.deegolabs.com:3000/common/phone/$userId');
+    Uri.parse('https://test.deegolabs.kr/common/phone/$userId');
 
     try {
       final authResponse = await http.put(

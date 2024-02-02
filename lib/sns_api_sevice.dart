@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'main.dart';
 
 class SnsApiService {
-  static const String baseUrl = 'https://test.deegolabs.com:3000/mobile/auth/sns';
+  static const String baseUrl = 'https://test.deegolabs.kr/mobile/auth/sns';
 
 
   Future<void> sendTokenToServer(BuildContext context, String snsType, String snsToken) async {

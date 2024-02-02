@@ -148,7 +148,7 @@ class _LogState extends State<Log> {
     );
   }
   Future<void> _loginToServer() async {
-    final Uri uri = Uri.parse("https://test.deegolabs.com:3000/mobile/auth");
+    final Uri uri = Uri.parse("https://test.deegolabs.kr/mobile/auth");
 
     final Map<String, dynamic> data = {
       'id': id,
@@ -188,7 +188,7 @@ class _LogState extends State<Log> {
 }
 Future<void> getUserPoint(BuildContext context) async {
   print("context : ${context}");
-  final url = Uri.https("test.deegolabs.com:3000", "/mobile/point");
+  final url = Uri.https("test.deegolabs.kr", "/mobile/point");
   print("header : ${context.read<AuthStore>().accessToken}");
   final response = await http.get(
       url,

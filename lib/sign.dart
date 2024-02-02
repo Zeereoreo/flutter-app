@@ -240,7 +240,7 @@ class _SignState extends State<Sign> {
 
   Future<void> _sendDataToServer() async {
     // 여기에 실제 서버로 데이터를 전송하는 로직을 작성합니다.
-    final Uri uri = Uri.parse('https://test.deegolabs.com:3000/mobile/auth/user');
+    final Uri uri = Uri.parse('https://test.deegolabs.kr/mobile/auth/user');
 
 
     final Map<String, dynamic> data = {

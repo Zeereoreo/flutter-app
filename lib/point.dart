@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:deego_client/header.dart';
 import 'package:flutter/material.dart';
@@ -235,7 +236,7 @@ class _PointState extends State<Point> {
   }
 
   getShop()async{
-    var response = await http.get(Uri.parse("https://test.deegolabs.com:3000/mobile/shop/item/list"),
+    var response = await http.get(Uri.parse("https://test.deegolabs.kr/mobile/shop/item/list"),
         headers:
         {
           "Authorization": "Bearer ${context.read<AuthStore>().accessToken}"
@@ -265,13 +266,16 @@ class Purchase extends StatefulWidget {
 }
 
 class _PurchaseState extends State<Purchase> {
+
+  dynamic pin = ''; // PIN을 저장하는 변수
+
   @override
   Widget build(BuildContext context) {
     print("${widget.item["id"]}");
     print("${context.read<AuthStore>().accessToken}");
     getPoint()async{
 
-      var response =  await http.post(Uri.parse("https://test.deegolabs.com:3000/mobile/shop/item/${widget.item["id"]}/purchase"),
+      var response =  await http.post(Uri.parse("https://test.deegolabs.kr/mobile/shop/item/${widget.item["id"]}/purchase"),
 
           headers:
           {
@@ -281,7 +285,11 @@ class _PurchaseState extends State<Purchase> {
       var itemList = jsonDecode(response.body);
       if(response.statusCode == 200) {
         print("성공");
-
+        var result = jsonDecode(response.body);
+        print("$result");
+        setState(() {
+          pin = result; // 응답에서 PIN 값을 추출하여 저장
+        });
       }
       else {
         print(response.statusCode);
@@ -295,24 +303,34 @@ class _PurchaseState extends State<Purchase> {
 
     return Container(
       padding: EdgeInsets.all(20),
-      width: MediaQuery.of(context).size.width/2,
-      height: MediaQuery.of(context).size.height/3,
+      width: MediaQuery.of(context).size.width / 2,
+      height: MediaQuery.of(context).size.height / 2,
       child: Center(
         child: Column(
           children: [
-            Container(
-              width: MediaQuery.of(context).size.width/2,
-              height: MediaQuery.of(context).size.height/4.8,
-              decoration: BoxDecoration(
-                color: Colors.grey
-              ),
-              child: Center(child: Container(
-                  child: Text("${widget.item["name"]}\n 구매하시겠습니까??", style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold
-                  ),)
-              )
+            Expanded(
+              child: Container(
+                width: MediaQuery.of(context).size.width / 2,
+                height: MediaQuery.of(context).size.height / 2,
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                ),
+                child: Center(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Text("${widget.item["name"]}\n 구매하시겠습니까??",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                        Text("${widget.item["description"]}")
+                      ]
+                    ),
+                  ),
+                ),
               ),
             ),
             Container(
@@ -320,35 +338,65 @@ class _PurchaseState extends State<Purchase> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextButton(onPressed: (){
-                    showDialog( context: context,
-                    builder: (context) {
+                  TextButton(
+                    onPressed: () async {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
                           return AlertDialog(
-                          title: Text("포인트 등록"),
-                          content: Text("구매하신 포인트는 한달 안에 등록해주셔야 사용 가능합니다 \n 동의하시고 진행하시겠습니까??"),
-                          actions: [
-                            TextButton(onPressed: (){
-                              getPoint();
-                            }, child: Text("동의")),
-                            TextButton(
-                              onPressed: () {
-                              Navigator.pop(context);
-                              },
-                              child: Text("닫기"),
+                            title: Text("포인트 구매"),
+                            content: Text(
+                                "구매하신 포인트는 한달 안에 등록해주셔야 사용 가능합니다 \n 동의하시고 진행하시겠습니까??"),
+                            actions: [
+                              TextButton(
+                                onPressed: () async {
+                                  await getPoint();
+                                  // 구매 성공 시 PIN을 받아옴
+                                  setState(() {
+                                    // pin = "1234"; // 여기에 실제로 받아온 PIN 값 대입
+                                  });
+                                  Navigator.pop(context);
+                                  showDialog(context: context, builder: (context){
+                                    return AlertDialog(
+                                      title: Text("네이버포인트 쿠폰번호"),
+                                      content: Text(
+                                        "$pin"
+                                      ),
+                                      actions: [
+                                        TextButton(onPressed: (){
+                                          Navigator.pop(context);
+                                        }, child: Text("확인")),
+                                        TextButton(onPressed: (){
+
+                                        }, child: Text("구매 내역"))
+                                      ],
+                                    );
+                                  });
+                                },
+                                child: Text("동의"),
                               ),
-                                ],
-                                );
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
                                 },
-                                );
-                                },
-                                  child: Text("다음으로"),
-                      ),
-                  TextButton(onPressed: (){
+                                child: Text("닫기"),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    child: Text("다음으로"),
+                  ),
+                  TextButton(
+                    onPressed: () {
                       Navigator.pop(context);
-                  }, child: Text("취소하기"))
+                    },
+                    child: Text("취소하기"),
+                  )
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
