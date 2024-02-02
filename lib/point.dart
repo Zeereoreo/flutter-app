@@ -27,6 +27,7 @@ class _PointState extends State<Point> {
   void initState() {
     super.initState();
     getShop(); // 위젯이 초기화될 때 한 번만 호출
+
   }
 
   @override
@@ -352,9 +353,7 @@ class _PurchaseState extends State<Purchase> {
                                 onPressed: () async {
                                   await getPoint();
                                   // 구매 성공 시 PIN을 받아옴
-                                  setState(() {
-                                    // pin = "1234"; // 여기에 실제로 받아온 PIN 값 대입
-                                  });
+                                  getUserPoint(context);
                                   Navigator.pop(context);
                                   showDialog(context: context, builder: (context){
                                     return AlertDialog(
@@ -420,5 +419,30 @@ class Confirm extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+Future<void> getUserPoint(BuildContext context) async {
+  print("context : ${context}");
+  final url = Uri.https("test.deegolabs.kr", "/mobile/point");
+  print("header : ${context.read<AuthStore>().accessToken}");
+  final response = await http.get(
+      url,
+      headers : {
+        "Authorization" : "Bearer ${context.read<AuthStore>().accessToken}"
+      }
+  );
+
+  print("body :${response.body}");
+
+  if(response.statusCode == 200){
+    print("포인트불러오기성공");
+    final Map<String, dynamic> responseData = json.decode(response.body);
+    context.read<pointStore>().current = responseData["current"];
+    print("point :${context.read<pointStore>().current}");
+
+  } else{
+
+    print("실패 :${response.body}");
   }
 }
