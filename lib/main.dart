@@ -55,6 +55,9 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         initialRoute: "/login",
+        theme: ThemeData(
+          scaffoldBackgroundColor: Colors.transparent,
+        ),
         routes: {
           "/" : (context) => Home(accessToken: accessToken),
           "/map" :(context) =>  NaverMapApp(),

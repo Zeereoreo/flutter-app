@@ -41,198 +41,206 @@ class _PointState extends State<Point> {
     var currentPoint = '${context.read<pointStore>().current}';
 
 
-    return Scaffold(
-      body: Container(
-        // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
-        margin: EdgeInsets.all(10),
-        child: Column(
-          // mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Header(),
-            Container(
-              // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children:  [
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                     Container(
-                            // decoration: BoxDecoration(
-                            //     border: Border.all(color: Colors.black)
-                            // ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: MediaQuery.of(context).size.width/2,
-                                  color: Color(0x5000BEFF),
-                                  height: MediaQuery.of(context).size.height/6,
-                                  margin: EdgeInsets.all(10),
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        margin: EdgeInsets.only(top: 10),
-                                        height: MediaQuery.of(context).size.height/18,
-                                        child: Text('현재 포인트',style: TextStyle(color: Colors.white,),),
-                                      ),
-                                      Container(
-                                        // margin: EdgeInsets.all(10),
-                                        height: MediaQuery.of(context).size.height/18,
-                                        child: Text('$currentPoint P', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
-                                      )
-                                    ],
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          image: AssetImage('assets/images/bgimage.png'),
+        ),
+      ),
+      child: Scaffold(
+        body: Container(
+          // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+          margin: EdgeInsets.all(10),
+          child: Column(
+            // mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Header(),
+              Container(
+                // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children:  [
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                       Container(
+                              // decoration: BoxDecoration(
+                              //     border: Border.all(color: Colors.black)
+                              // ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: MediaQuery.of(context).size.width/2,
+                                    color: Color(0x5000BEFF),
+                                    height: MediaQuery.of(context).size.height/6,
+                                    margin: EdgeInsets.all(10),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(top: 10),
+                                          height: MediaQuery.of(context).size.height/18,
+                                          child: Text('현재 포인트',style: TextStyle(color: Colors.white,),),
+                                        ),
+                                        Container(
+                                          // margin: EdgeInsets.all(10),
+                                          height: MediaQuery.of(context).size.height/18,
+                                          child: Text('$currentPoint P', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
+                                        )
+                                      ],
+                                    ),
                                   ),
+                                  Container(
+                                    width: MediaQuery.of(context).size.width/3,
+                                    height: MediaQuery.of(context).size.height/6,
+                                    // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+                                    child: Lottie.asset(
+                                        "assets/lottie/point_lottie.json",
+                                        fit:BoxFit.fill),
+                                  )
+                                ],
+                              ),
+                            ),
+
+                        ],
+                      ),
+                    ),
+                    Container(
+
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                          Container(
+                            // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+                            child:
+                             Column(
+                              children: [
+                                Text('총 적립 포인트 : 0',
+                                  style: TextStyle(
+                                  fontSize: 10,
+                                  color: Color(0xFFDFDFDF),),),
+                                Text('사용 완료 포인트 : 0',
+                                  style: TextStyle(
+                                  fontSize: 10,
+                                  color: Color(0xFFDFDFDF),)
                                 ),
-                                Container(
-                                  width: MediaQuery.of(context).size.width/3,
-                                  height: MediaQuery.of(context).size.height/6,
-                                  // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
-                                  child: Lottie.asset(
-                                      "assets/lottie/point_lottie.json",
-                                      fit:BoxFit.fill),
-                                )
                               ],
                             ),
                           ),
-
-                      ],
-                    ),
-                  ),
-                  Container(
-
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
                         Container(
-                          // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
-                          child:
-                           Column(
+                          margin: EdgeInsets.all(10),
+                          // decoration: BoxDecoration(
+                          //     border: Border.all(color: Colors.black)
+                          // ),
+                          width: double.infinity,
+                          height: MediaQuery.of(context).size.height/10,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Text('총 적립 포인트 : 0',
-                                style: TextStyle(
-                                fontSize: 10,
-                                color: Color(0xFFDFDFDF),),),
-                              Text('사용 완료 포인트 : 0',
-                                style: TextStyle(
-                                fontSize: 10,
-                                color: Color(0xFFDFDFDF),)
+                              Container(
+                                width: MediaQuery.of(context).size.width/3,
+                                height: MediaQuery.of(context).size.height/15,
+                                child: TextButton(
+                                  onPressed: () {},
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: Colors.grey,
+                                    padding: EdgeInsets.all(16),
+                                  ),
+                                  child: const Center(
+                                    child: Text(
+                                      '적립 내역',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: Color(0xFFCCCCCC),
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width/3,
+                                height: MediaQuery.of(context).size.height/15,
+                                child: TextButton(
+                                  onPressed: () {},
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: Colors.grey,
+                                    padding: EdgeInsets.all(16),
+                                  ),
+                                  child: const Center(
+                                    child: Text(
+                                      '구매 내역',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: Color(0xFFCCCCCC),
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
                             ],
                           ),
                         ),
-                      Container(
-                        margin: EdgeInsets.all(10),
-                        // decoration: BoxDecoration(
-                        //     border: Border.all(color: Colors.black)
-                        // ),
-                        width: double.infinity,
-                        height: MediaQuery.of(context).size.height/10,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Container(
-                              width: MediaQuery.of(context).size.width/3,
-                              height: MediaQuery.of(context).size.height/15,
-                              child: TextButton(
-                                onPressed: () {},
-                                style: TextButton.styleFrom(
-                                  backgroundColor: Colors.grey,
-                                  padding: EdgeInsets.all(16),
-                                ),
-                                child: const Center(
-                                  child: Text(
-                                    '적립 내역',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      color: Color(0xFFCCCCCC),
-                                      decoration: TextDecoration.underline,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              width: MediaQuery.of(context).size.width/3,
-                              height: MediaQuery.of(context).size.height/15,
-                              child: TextButton(
-                                onPressed: () {},
-                                style: TextButton.styleFrom(
-                                  backgroundColor: Colors.grey,
-                                  padding: EdgeInsets.all(16),
-                                ),
-                                child: const Center(
-                                  child: Text(
-                                    '구매 내역',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      color: Color(0xFFCCCCCC),
-                                      decoration: TextDecoration.underline,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      ],
-                  )
-                ],
+                        ],
+                    )
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-                child: Container(
-                    // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      // itemExtent: MediaQuery.of(context).size.height / 10,
-                      itemCount: shopList.length,
-                      itemBuilder: (c, i){
-                        var item = shopList[i];
-                        return Container(
-                            padding: EdgeInsets.all(10),
-                            // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
-                            child: ListTile(
-                              leading: Container(
-                                // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
-                                width: MediaQuery.of(context).size.width/4,
-                                height: MediaQuery.of(context).size.height/2,
-                                child: Image.network("${item["image"]}",fit: BoxFit.cover,)
-                                ,
-                              ),
-                              title: Container(
+              Expanded(
+                  child: Container(
+                      // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        // itemExtent: MediaQuery.of(context).size.height / 10,
+                        itemCount: shopList.length,
+                        itemBuilder: (c, i){
+                          var item = shopList[i];
+                          return Container(
+                              padding: EdgeInsets.all(10),
+                              // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+                              child: ListTile(
+                                leading: Container(
                                   // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
-                                  child:  Container(
-                                      child: Column(
-                                        children: [
-                                          Text("${item["name"]}"),
-                                          ElevatedButton(
-                                              onPressed: (){
-                                                showDialog(context: context, builder: (context){
-                                                  return Dialog(
-                                                    child: Purchase(item: item,),
-                                                  );
-                                                });
-                                          }, child: Text("구매하기"))
-                                        ],
+                                  width: MediaQuery.of(context).size.width/4,
+                                  height: MediaQuery.of(context).size.height/2,
+                                  child: Image.network("${item["image"]}",fit: BoxFit.cover,)
+                                  ,
+                                ),
+                                title: Container(
+                                    // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+                                    child:  Container(
+                                        child: Column(
+                                          children: [
+                                            Text("${item["name"]}"),
+                                            ElevatedButton(
+                                                onPressed: (){
+                                                  showDialog(context: context, builder: (context){
+                                                    return Dialog(
+                                                      child: Purchase(item: item,),
+                                                    );
+                                                  });
+                                            }, child: Text("구매하기"))
+                                          ],
+                                        ),
                                       ),
-                                    ),
+                                ),
                               ),
-                            ),
-                        );
-                      })
-                  ),
-              ),
-          ],
+                          );
+                        })
+                    ),
+                ),
+            ],
+          ),
         ),
+        bottomNavigationBar: BottomMenu(),
       ),
-      bottomNavigationBar: BottomMenu(),
     );
   }
 

@@ -37,175 +37,183 @@ class _SignState extends State<Sign> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          width: double.infinity,
-          child: Padding(
-            padding: EdgeInsets.all(10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height / 8,
-                  margin: EdgeInsets.only(top: 100, right: 20, left: 20, bottom: 20),
-                  child: const Image(image: AssetImage('assets/images/deego_logo.png')),
-                ),
-                TextField(
-                  onChanged: (text) {
-                    setState(() {
-                      // 영어와 숫자만 사용 가능한 정규식
-                      RegExp regex = RegExp(r'^[a-zA-Z0-9]*$');
-                      bool isValid = regex.hasMatch(text);
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          image: AssetImage('assets/images/bgimage.png'), // 배경 이미지
+        ),
+      ),
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Container(
+            width: double.infinity,
+            child: Padding(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height / 8,
+                    margin: EdgeInsets.only(top: 100, right: 20, left: 20, bottom: 20),
+                    child: const Image(image: AssetImage('assets/images/deego_logo.png')),
+                  ),
+                  TextField(
+                    onChanged: (text) {
+                      setState(() {
+                        // 영어와 숫자만 사용 가능한 정규식
+                        RegExp regex = RegExp(r'^[a-zA-Z0-9]*$');
+                        bool isValid = regex.hasMatch(text);
 
-                      // 길이가 16이상인 경우에는 추가로 입력을 막음
-                      _idError = text.length < 2 || text.length > 16 || !isValid;
+                        // 길이가 16이상인 경우에는 추가로 입력을 막음
+                        _idError = text.length < 2 || text.length > 16 || !isValid;
 
-                      if (!_idError) {
-                        // 글자 수가 16 미만이면 입력된 값 저장
-                        idText = text;
+                        if (!_idError) {
+                          // 글자 수가 16 미만이면 입력된 값 저장
+                          idText = text;
+                        }
+                      });
+                    },
+                    decoration: InputDecoration(
+                      labelText: "아이디",
+                      hintText: "2글자 이상 16글자 이하로 입력해주세요",
+                      errorText: _idError ? '영어와 숫자로만 입력해주세요.' : null,
+                    ),
+                    keyboardType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    maxLength: 16,
+                  ),
+                  TextField(
+                    onChanged: (text) {
+                      setState(() {
+                        nameText = text;
+                        _nameError = text.length < 2 || text.length > 10;
+                      });
+                    },
+                    decoration: InputDecoration(
+                      labelText: "이름",
+                      hintText: "2글자 이상 10글자 이하로 입력해주세요",
+                      errorText: _nameError ? '올바른 이름을 입력하세요.' : null,
+                    ),
+                    keyboardType: TextInputType.name,
+                    textInputAction: TextInputAction.next,
+                    maxLength: 10,
+                  ),
+                  TextField(
+                    onChanged: (text) {
+                      setState(() {
+                        emailText = text;
+                        RegExp emailRegex = RegExp(
+                          r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$',
+                        );
+                        _emailError = !emailRegex.hasMatch(text);
+                      });
+                    },
+                    decoration: InputDecoration(
+                      labelText: "이메일",
+                      hintText: "사용 가능한 이메일을 입력해주세요",
+                      errorText: _emailError ? '올바른 이메일을 입력하세요.' : null,
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  TextField(
+                    onChanged: (text) {
+                      setState(() {
+                        passwordText = text;
+                        _passwordError = text.length < 8 || text.length > 16;
+                      });
+                    },
+                    decoration: InputDecoration(
+                      labelText: "비밀번호",
+                      hintText: "8글자 이상 16글자 이하로 입력해주세요",
+                      errorText: _passwordError ? '올바른 비밀번호를 입력하세요.' : null,
+                    ),
+                    keyboardType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    obscureText: true,
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  TextField(
+                    onChanged: (text) {
+                      setState(() {
+                        passwordCheckText = text;
+                        _passwordCheckError = text.length < 8 || text.length > 16 || passwordText != passwordCheckText;
+                      });
+                    },
+                    decoration: InputDecoration(
+                      labelText: "비밀번호 확인",
+                      hintText: "위의 비밀번호와 똑같이 입력해주세요",
+                      errorText: _passwordCheckError ? '비밀번호가 일치하지 않습니다.' : null,
+                    ),
+                    keyboardType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    obscureText: true,
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  TextField(
+                    onChanged: (text) {
+                      setState(() {
+                        // RegExp regex = RegExp(r'^[0-9]*$');
+                        // bool isValid = regex.hasMatch(text);
+                        //
+                        // // 길이가 8이 아니거나 숫자가 아닌 경우 에러 표시
+                        // _birthError = text.length != 8 || !isValid;
+
+                        // if (!_birthError) {
+                          // 숫자만 입력된 경우 값 저장
+                          birthText = text;
+                        // }
+                      });
+                    },
+                    decoration: InputDecoration(
+                      labelText: "생년월일",
+                      hintText: "예시) 19970920",
+                      errorText: _birthError ? '숫자로 8자리를 입력하세요.' : null,
+                    ),
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.done,
+                    maxLength: 10,
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        CustomRadioButton("남",1),
+                        CustomRadioButton("여",2),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      // 가입하기 버튼 눌렀을 때의 동작
+                      if (!_idError && !_passwordCheckError) {
+                        // 서버로 데이터 전송
+                        _sendDataToServer();
                       }
-                    });
-                  },
-                  decoration: InputDecoration(
-                    labelText: "아이디",
-                    hintText: "2글자 이상 16글자 이하로 입력해주세요",
-                    errorText: _idError ? '영어와 숫자로만 입력해주세요.' : null,
+                    },
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: Size(150, 50),
+                    ),
+                    child: Text("가입하기"),
                   ),
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.next,
-                  maxLength: 16,
-                ),
-                TextField(
-                  onChanged: (text) {
-                    setState(() {
-                      nameText = text;
-                      _nameError = text.length < 2 || text.length > 10;
-                    });
-                  },
-                  decoration: InputDecoration(
-                    labelText: "이름",
-                    hintText: "2글자 이상 10글자 이하로 입력해주세요",
-                    errorText: _nameError ? '올바른 이름을 입력하세요.' : null,
-                  ),
-                  keyboardType: TextInputType.name,
-                  textInputAction: TextInputAction.next,
-                  maxLength: 10,
-                ),
-                TextField(
-                  onChanged: (text) {
-                    setState(() {
-                      emailText = text;
-                      RegExp emailRegex = RegExp(
-                        r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$',
-                      );
-                      _emailError = !emailRegex.hasMatch(text);
-                    });
-                  },
-                  decoration: InputDecoration(
-                    labelText: "이메일",
-                    hintText: "사용 가능한 이메일을 입력해주세요",
-                    errorText: _emailError ? '올바른 이메일을 입력하세요.' : null,
-                  ),
-                  keyboardType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                TextField(
-                  onChanged: (text) {
-                    setState(() {
-                      passwordText = text;
-                      _passwordError = text.length < 8 || text.length > 16;
-                    });
-                  },
-                  decoration: InputDecoration(
-                    labelText: "비밀번호",
-                    hintText: "8글자 이상 16글자 이하로 입력해주세요",
-                    errorText: _passwordError ? '올바른 비밀번호를 입력하세요.' : null,
-                  ),
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.next,
-                  obscureText: true,
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                TextField(
-                  onChanged: (text) {
-                    setState(() {
-                      passwordCheckText = text;
-                      _passwordCheckError = text.length < 8 || text.length > 16 || passwordText != passwordCheckText;
-                    });
-                  },
-                  decoration: InputDecoration(
-                    labelText: "비밀번호 확인",
-                    hintText: "위의 비밀번호와 똑같이 입력해주세요",
-                    errorText: _passwordCheckError ? '비밀번호가 일치하지 않습니다.' : null,
-                  ),
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.next,
-                  obscureText: true,
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                TextField(
-                  onChanged: (text) {
-                    setState(() {
-                      // RegExp regex = RegExp(r'^[0-9]*$');
-                      // bool isValid = regex.hasMatch(text);
-                      //
-                      // // 길이가 8이 아니거나 숫자가 아닌 경우 에러 표시
-                      // _birthError = text.length != 8 || !isValid;
-
-                      // if (!_birthError) {
-                        // 숫자만 입력된 경우 값 저장
-                        birthText = text;
-                      // }
-                    });
-                  },
-                  decoration: InputDecoration(
-                    labelText: "생년월일",
-                    hintText: "예시) 19970920",
-                    errorText: _birthError ? '숫자로 8자리를 입력하세요.' : null,
-                  ),
-                  keyboardType: TextInputType.number,
-                  textInputAction: TextInputAction.done,
-                  maxLength: 10,
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Container(
-                  width: double.infinity,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      CustomRadioButton("남",1),
-                      CustomRadioButton("여",2),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    // 가입하기 버튼 눌렀을 때의 동작
-                    if (!_idError && !_passwordCheckError) {
-                      // 서버로 데이터 전송
-                      _sendDataToServer();
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size(150, 50),
-                  ),
-                  child: Text("가입하기"),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
