@@ -97,9 +97,7 @@ class _PointState extends State<Point> {
                                     width: MediaQuery.of(context).size.width/3,
                                     height: MediaQuery.of(context).size.height/6,
                                     // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
-                                    child: Lottie.asset(
-                                        "assets/lottie/point_lottie.json",
-                                        fit:BoxFit.fill),
+                                    child: Text("비었음")
                                   )
                                 ],
                               ),

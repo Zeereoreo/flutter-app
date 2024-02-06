@@ -230,19 +230,19 @@ class TextBtn extends StatelessWidget {
         children: [
           TextButton(
               onPressed: (){},
-              child: Text('아이디 찾기', style: TextStyle(color: Colors.black),),
+              child: Text('아이디 찾기', style: TextStyle(color: Colors.white),),
           ),
-          Text(' | '),
+
           TextButton(
               onPressed: (){},
-              child: Text('비밀번호 찾기', style: TextStyle(color: Colors.black),),
+              child: Text('비밀번호 찾기', style: TextStyle(color: Colors.white),),
 
           ),
-          Text(' | '), TextButton(
+           TextButton(
               onPressed: (){
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => PhoneAuth()));
               },
-              child: Text('회원가입', style: TextStyle(color: Colors.black),),
+              child: Text('회원가입', style: TextStyle(color: Colors.white),),
           )
         ],
       ),
