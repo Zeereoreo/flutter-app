@@ -66,11 +66,11 @@ class _HomeState extends State<Home> {
                     child: Text.rich(
                       TextSpan(
                           text: name,
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25,color: Colors.white),
                           children: const <TextSpan>[
                             TextSpan(text: '님, 디고와 함께 \n 지구의 온도를 낮춰보세요!',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.normal, fontSize: 20)
+                                    fontWeight: FontWeight.normal, fontSize: 20,color: Colors.white)
                             )
                           ]
                       ),
@@ -78,25 +78,28 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                   Container(
+                    // decoration: BoxDecoration(
+                    //   border: Border.all(color: Colors.white),
+                    // ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Flexible(
                           flex: 1,
                           child: Container(
-                            // decoration: BoxDecoration(
-                            //     border: Border.all(color: Colors.black)
-                            // ),
                             child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                color: Color(0xFF00BEFF),
+                              ),
                               width: MediaQuery
                                   .of(context)
                                   .size
                                   .width,
-                              color: Color(0x5000BEFF),
                               height: MediaQuery
                                   .of(context)
                                   .size
-                                  .height / 6,
+                                  .height / 7,
                               margin: EdgeInsets.all(10),
                               child: Column(
                                 children: [
@@ -116,7 +119,7 @@ class _HomeState extends State<Home> {
                                         .size
                                         .height / 18,
                                     child: Text('$currentPoint P', style: TextStyle(
-                                        fontWeight: FontWeight.bold, fontSize: 30),),
+                                        fontWeight: FontWeight.bold, fontSize: 30,color: Colors.white),),
                                   )
                                 ],
                               ),
@@ -134,18 +137,22 @@ class _HomeState extends State<Home> {
                     height: MediaQuery
                         .of(context)
                         .size
-                        .height / 5,
-                    child: Column(
+                        .height / 14,
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          width: double.infinity,
+                          width: MediaQuery.of(context).size.width/2.3,
+                          height: MediaQuery.of(context).size.height/13,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12.0),
+                            color: Colors.grey,
+                          ),
                           child: TextButton(
                             onPressed: () {
                               // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Point(accessToken: accessToken,)));
                             },
                             style: TextButton.styleFrom(
-                              backgroundColor: Colors.grey,
                               padding: EdgeInsets.all(16),
                             ),
                             child: const Center(
@@ -153,34 +160,38 @@ class _HomeState extends State<Home> {
                                 '적립 내역',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  fontSize: 15,
-                                  color: Color(0xFFCCCCCC),
-                                  decoration: TextDecoration.underline,
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
                           ),
                         ),
-                        SizedBox(height: 10),
+                        SizedBox(width: 10),
                         Container(
-                          width: double.infinity,
+                          width: MediaQuery.of(context).size.width/2.3,
+                          height: MediaQuery.of(context).size.height/13,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12.0),
+                            color: Color(0xFF00BEFF),
+                          ),
                           child: TextButton(
                             onPressed: () {
                               context.read<footerStore>().tab = 2;
                               Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Point(accessToken: context.read<AuthStore>().accessToken,)));
                             },
                             style: TextButton.styleFrom(
-                              backgroundColor: Colors.grey,
                               padding: EdgeInsets.all(16),
                             ),
                             child: const Center(
                               child: Text(
-                                '포인트 사용하러 가기',
+                                '포인트 전환',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  fontSize: 15,
-                                  color: Color(0xFFCCCCCC),
-                                  decoration: TextDecoration.underline,
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
@@ -190,8 +201,14 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                   Container(
-                      margin: EdgeInsets.only(left: 15),
-                      child: Text('즐겨찾는 디고')),
+                      margin: EdgeInsets.only(left: 25),
+                      child: Text('즐겨찾는 디고',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 20
+                        ),
+                      )),
                   Align(
                     alignment: Alignment.center,
                     child: Container(

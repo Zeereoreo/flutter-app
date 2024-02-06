@@ -18,7 +18,7 @@ class _BottomMenuState extends State<BottomMenu> {
     void _onItemTapped(int index) {
       if(context.read<footerStore>().tab == index){
         print("${context.read<footerStore>().tab}이랑 ${index}");
-        return ;
+        return;
       }
 
       setState(() {
@@ -36,9 +36,9 @@ class _BottomMenuState extends State<BottomMenu> {
           type: BottomNavigationBarType.fixed,
           showUnselectedLabels: true,
           selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.grey,
+          unselectedItemColor: Colors.black,
           currentIndex: context.read<footerStore>().tab,
-          backgroundColor: Colors.blue,
+          backgroundColor: Color(0xFF00BEFF),
           onTap: (i) {
             _onItemTapped(i);
             switch (i) {
