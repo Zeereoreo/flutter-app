@@ -57,8 +57,7 @@ class _PointState extends State<Point> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Header(),
-              Container(
-                // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -68,16 +67,17 @@ class _PointState extends State<Point> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                        Container(
-                              // decoration: BoxDecoration(
-                              //     border: Border.all(color: Colors.black)
-                              // ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                color: Color(0xFF00BEFF),
+                              ),
                               child: Row(
                                 children: [
                                   Container(
-                                    width: MediaQuery.of(context).size.width/2,
-                                    color: Color(0x5000BEFF),
+                                    width: MediaQuery.of(context).size.width/1.15,
                                     height: MediaQuery.of(context).size.height/6,
-                                    margin: EdgeInsets.all(10),
+
+                                    // margin: EdgeInsets.all(10),
                                     child: Column(
                                       children: [
                                         Container(
@@ -86,19 +86,13 @@ class _PointState extends State<Point> {
                                           child: Text('현재 포인트',style: TextStyle(color: Colors.white,),),
                                         ),
                                         Container(
-                                          // margin: EdgeInsets.all(10),
+                                          // margin: EdgeInsets.all(10),재
                                           height: MediaQuery.of(context).size.height/18,
-                                          child: Text('$currentPoint P', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
+                                          child: Text('$currentPoint P', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30,color: Colors.white),),
                                         )
                                       ],
                                     ),
                                   ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width/3,
-                                    height: MediaQuery.of(context).size.height/6,
-                                    // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
-                                    child: Text("비었음")
-                                  )
                                 ],
                               ),
                             ),
@@ -106,30 +100,12 @@ class _PointState extends State<Point> {
                         ],
                       ),
                     ),
-                    Container(
-
-                    ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                          Container(
-                            // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
-                            child:
-                             Column(
-                              children: [
-                                Text('총 적립 포인트 : 0',
-                                  style: TextStyle(
-                                  fontSize: 10,
-                                  color: Color(0xFFDFDFDF),),),
-                                Text('사용 완료 포인트 : 0',
-                                  style: TextStyle(
-                                  fontSize: 10,
-                                  color: Color(0xFFDFDFDF),)
-                                ),
-                              ],
-                            ),
-                          ),
                         Container(
+                          // decoration: BoxDecoration(border: Border.all(color: Colors.white, width: 1)),
+
                           margin: EdgeInsets.all(10),
                           // decoration: BoxDecoration(
                           //     border: Border.all(color: Colors.black)
@@ -140,12 +116,17 @@ class _PointState extends State<Point> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Container(
-                                width: MediaQuery.of(context).size.width/3,
+                                // decoration: BoxDecoration(border: Border.all(color: Colors.white, width: 1)),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  color: Colors.white38,
+                                ),
+                                width: MediaQuery.of(context).size.width/2.5,
                                 height: MediaQuery.of(context).size.height/15,
                                 child: TextButton(
                                   onPressed: () {},
                                   style: TextButton.styleFrom(
-                                    backgroundColor: Colors.grey,
+
                                     padding: EdgeInsets.all(16),
                                   ),
                                   child: const Center(
@@ -153,21 +134,24 @@ class _PointState extends State<Point> {
                                       '적립 내역',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        fontSize: 15,
-                                        color: Color(0xFFCCCCCC),
-                                        decoration: TextDecoration.underline,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
                               Container(
-                                width: MediaQuery.of(context).size.width/3,
+                                width: MediaQuery.of(context).size.width/2.5,
                                 height: MediaQuery.of(context).size.height/15,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  color: Color(0xFF00BEFF),
+                                ),
                                 child: TextButton(
                                   onPressed: () {},
                                   style: TextButton.styleFrom(
-                                    backgroundColor: Colors.grey,
                                     padding: EdgeInsets.all(16),
                                   ),
                                   child: const Center(
@@ -175,9 +159,9 @@ class _PointState extends State<Point> {
                                       '구매 내역',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        fontSize: 15,
-                                        color: Color(0xFFCCCCCC),
-                                        decoration: TextDecoration.underline,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
                                       ),
                                     ),
                                   ),
@@ -193,7 +177,7 @@ class _PointState extends State<Point> {
               ),
               Expanded(
                   child: Container(
-                      // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+                      decoration: BoxDecoration(border: Border.all(color: Colors.white, width: 1)),
                       child: ListView.builder(
                         shrinkWrap: true,
                         // itemExtent: MediaQuery.of(context).size.height / 10,
@@ -202,7 +186,7 @@ class _PointState extends State<Point> {
                           var item = shopList[i];
                           return Container(
                               padding: EdgeInsets.all(10),
-                              // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+                              decoration: BoxDecoration(border: Border.all(color: Colors.white, width: 1)),
                               child: ListTile(
                                 leading: Container(
                                   // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
