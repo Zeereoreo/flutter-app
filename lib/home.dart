@@ -110,7 +110,7 @@ class _HomeState extends State<Home> {
                                         .size
                                         .height / 18,
                                     child: Text('현재 포인트',
-                                      style: TextStyle(color: Colors.white,),),
+                                      style: TextStyle(color: Colors.white,fontSize: 20),),
                                   ),
                                   Container(
                                     // margin: EdgeInsets.all(10),

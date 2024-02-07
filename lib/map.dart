@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:deego_client/location.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:geolocator/geolocator.dart';
@@ -15,8 +16,9 @@ class NaverMapApp extends StatefulWidget {
 }
 
 class _NaverMapAppState extends State<NaverMapApp> {
-  late double initialLat;
-  late double initialLng;
+  double? initialLat;
+  double? initialLng;
+
 
   @override
   void initState() {
@@ -30,11 +32,21 @@ class _NaverMapAppState extends State<NaverMapApp> {
 
 
   void getInitialLocation() async {
-    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+
+    Location location = Location();
+    await location.getCurrentLocation();
+    // print(location.latitude);
+    // print(location.longitude);
     setState(() {
-      initialLat = position.latitude;
-      initialLng = position.longitude;
+      initialLat = location.latitude;
+      initialLng = location.longitude;
     });
+    // Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    // setState(() {
+    //   initialLat = position.latitude;
+    //   initialLng = position.longitude;
+    //
+    // });
   }
 
 
@@ -47,15 +59,16 @@ class _NaverMapAppState extends State<NaverMapApp> {
 
     return
        Scaffold(
-        body: NaverMap(
-          options: const NaverMapViewOptions(
-            initialCameraPosition: NCameraPosition(
-                target: NLatLng(37.568963, 126.646476),
-                zoom: 10,
-                bearing: 0,
-                tilt: 0,
-
-            ),
+         body: NaverMap(
+           options: NaverMapViewOptions(
+             initialCameraPosition: NCameraPosition(
+               target: initialLat != null && initialLng != null
+                   ? NLatLng(initialLat!, initialLng!) // 널 값이 아닐 때
+                   : const NLatLng(37.568963, 126.646476), // 널 값일 때 하드코딩한 좌표
+               zoom: 30,
+               bearing: 0,
+               tilt: 0,
+             ),
             mapType: NMapType.basic,   // 맵 스타일
             liteModeEnable: true,   // 경량모드
             indoorEnable: true,             // 실내 맵 사용 가능 여부
@@ -101,4 +114,3 @@ class _NaverMapAppState extends State<NaverMapApp> {
       );
   }
 }
-

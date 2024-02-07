@@ -177,8 +177,9 @@ class _PointState extends State<Point> {
               ),
               Expanded(
                   child: Container(
-                      decoration: BoxDecoration(border: Border.all(color: Colors.white, width: 1)),
+                      // decoration: BoxDecoration(border: Border.all(color: Colors.white, width: 1)),
                       child: ListView.builder(
+                        padding: EdgeInsets.zero,
                         shrinkWrap: true,
                         // itemExtent: MediaQuery.of(context).size.height / 10,
                         itemCount: shopList.length,
@@ -200,7 +201,9 @@ class _PointState extends State<Point> {
                                     child:  Container(
                                         child: Column(
                                           children: [
-                                            Text("${item["name"]}"),
+                                            Text("${item["name"]}", style: TextStyle(color: Colors.white,fontSize: 20, fontWeight: FontWeight.bold,),
+                                              textAlign: TextAlign.center,
+                                            ),
                                             ElevatedButton(
                                                 onPressed: (){
                                                   showDialog(context: context, builder: (context){
