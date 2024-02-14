@@ -164,7 +164,7 @@ class _NaverMapAppState extends State<NaverMapApp> {
 
       setState(() {
         deegoList = beenList["deegoPage"]["items"];
-        print(deegoList.length);
+
       });
     }
 

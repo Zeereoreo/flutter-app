@@ -23,12 +23,12 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   String id = "";
+  var favoriteList;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
+    getDeegoFavorite();
   }
 
   @override
@@ -226,7 +226,28 @@ class _HomeState extends State<Home> {
                         // decoration: BoxDecoration(
                         //     border: Border.all(color: Colors.black)
                         // ),
-                        child: Text('즐겨찾는 디고가 없습니다.'),
+                        child: favoriteList != null && favoriteList.isNotEmpty
+                            ? ListView.builder(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          itemCount: favoriteList.length,
+                          itemBuilder: (context, index) {
+                            var item = favoriteList[index];
+                            return Container(
+                              child: Text(item["name"]),
+                            );
+                          },
+                        )
+                            : Center(
+                              child: Text(
+                                "즐겨찾는 디고가 없습니다.",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                ),
+                          ),
+                        ),
                       ),
                     ),
 
@@ -239,5 +260,18 @@ class _HomeState extends State<Home> {
         );
       }
 
+      getDeegoFavorite()async{
+        var res = await http.get(Uri.parse("https://test.deegolabs.kr/mobile/deego/favorite"),
+          headers: {"Authorization": "Bearer ${context.read<AuthStore>().accessToken}"}
+        );
+
+        if(res.statusCode == 200){
+          var list = jsonDecode(res.body);
+          setState(() {
+            favoriteList = list["favoriteDeegoPage"]["items"];
+            print(favoriteList);
+          });
+        }
+      }
 
 }
