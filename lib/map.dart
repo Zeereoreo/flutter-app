@@ -1,12 +1,15 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 import 'package:deego_client/location.dart';
+import 'package:deego_client/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:geolocator/geolocator.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'bottom_menu.dart';
-
+import 'main.dart';
 
 class NaverMapApp extends StatefulWidget {
   const NaverMapApp({Key? key}) : super(key: key);
@@ -18,12 +21,13 @@ class NaverMapApp extends StatefulWidget {
 class _NaverMapAppState extends State<NaverMapApp> {
   double? initialLat;
   double? initialLng;
-
+  var deegoList;
 
   @override
   void initState() {
     super.initState();
     getInitialLocation();
+    getDeego();
   }
 
   void getInitialLocation() async {
@@ -46,7 +50,6 @@ class _NaverMapAppState extends State<NaverMapApp> {
     //
     // });
   }
-
 
 
 
@@ -110,24 +113,37 @@ class _NaverMapAppState extends State<NaverMapApp> {
                       final onMarkerInfoWindow =
                       NInfoWindow.onMarker(id: marker.info.id, text: "디고 빈");
                       marker.openInfoWindow(onMarkerInfoWindow);
-
                       },              // 지도 준비 완료 시 호출되는 콜백 함수
-
           ),
              ),
              Container(
                width: double.infinity,
                height: MediaQuery.of(context).size.height/3,
                color: Colors.white,
-               child: Column(
-                 children: [
-                   Text("검색"),
-                   Text("data"),
-                   Text("data"),
-                   Text("data"),
+               child: Container(
+                 child: SingleChildScrollView(
+                   child: Column(
+                     children: [
+                       Container(
+                         child: deegoList != null ? ListView.builder(
+                           padding: EdgeInsets.zero,
+                           shrinkWrap: true,
+                           itemCount: deegoList.length,
+                           itemBuilder: (c, i) {
+                             var item = deegoList[i];
+                             return ListTile(
+                               title: Text(item["name"]),
+                               subtitle: Text('Battery: ${item['battery']}%, Progress: ${item['progress']}%'), // 배터리 및 진행도 표시
+                               trailing: Text('Order: ${item['order']}'), // 대비 order 표시
+                             );
+                           },
+                         ) : CircularProgressIndicator(), // deegoList가 null인 경우 로딩 인디케이터를 표시
+                       )
 
 
-                 ],
+                     ],
+                   ),
+                 ),
                ),
              )
              ]
@@ -136,5 +152,37 @@ class _NaverMapAppState extends State<NaverMapApp> {
           bottomNavigationBar: const BottomMenu(),
       ),
        );
+  }
+  getDeego()async{
+    var res = await http.get(Uri.parse("https://backend.deegolabs.com/mobile/deego/location"),
+        headers:{
+          "Authorization": "Bearer ${context.read<AuthStore>().accessToken}"
+        });
+    var beenList = jsonDecode(res.body);
+    if(res.statusCode == 200){
+      print(beenList["deegoPage"]["items"]);
+
+      setState(() {
+        deegoList = beenList["deegoPage"]["items"];
+        print(deegoList.length);
+      });
+    }
+
+  }
+}
+
+
+
+class Been extends StatefulWidget {
+  const Been({super.key});
+
+  @override
+  State<Been> createState() => _BeenState();
+}
+
+class _BeenState extends State<Been> {
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }
