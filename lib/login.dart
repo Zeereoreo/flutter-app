@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:deego_client/find_password.dart';
 import 'package:deego_client/phone_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:deego_client/home.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:provider/provider.dart';
+import 'find_id.dart';
 import 'login_platform.dart';
 import 'main.dart';
 
@@ -135,8 +137,7 @@ class _LogState extends State<Log> {
                             child: Text('로그인'),
                             style:
                             ElevatedButton.styleFrom(
-                              primary:
-                                  !_idError && !_passwordError ?
+                              backgroundColor: !_idError && !_passwordError ?
                                   Color(0xFF00BEFF)
                                   :
                                   Color(0xFFB2EBFC)
@@ -187,8 +188,7 @@ class _LogState extends State<Log> {
 
     }
     else{
-      // print("${response.statusCode}");
-      // print("${response.statusCode}");
+      print("${response.statusCode}");
 
     }
 
@@ -229,12 +229,16 @@ class TextBtn extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           TextButton(
-              onPressed: (){},
+              onPressed: (){
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => FindId()));
+              },
               child: Text('아이디 찾기', style: TextStyle(color: Colors.white),),
           ),
 
           TextButton(
-              onPressed: (){},
+              onPressed: (){
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => FindPassword()));
+              },
               child: Text('비밀번호 찾기', style: TextStyle(color: Colors.white),),
 
           ),
