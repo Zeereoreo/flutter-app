@@ -22,6 +22,7 @@ class _NaverMapAppState extends State<NaverMapApp> {
   double? initialLat;
   double? initialLng;
   var deegoList;
+  var isFavorite = false;
 
   @override
   void initState() {
@@ -121,29 +122,34 @@ class _NaverMapAppState extends State<NaverMapApp> {
                height: MediaQuery.of(context).size.height/3,
                color: Colors.white,
                child: Container(
-                 child: SingleChildScrollView(
-                   child: Column(
-                     children: [
-                       Container(
-                         child: deegoList != null ? ListView.builder(
-                           padding: EdgeInsets.zero,
-                           shrinkWrap: true,
-                           itemCount: deegoList.length,
-                           itemBuilder: (c, i) {
-                             var item = deegoList[i];
-                             return ListTile(
-                               title: Text(item["name"]),
-                               subtitle: Text('Battery: ${item['battery']}%, Progress: ${item['progress']}%'), // 배터리 및 진행도 표시
-                               trailing: Text('Order: ${item['order']}'), // 대비 order 표시
-                             );
-                           },
-                         ) : CircularProgressIndicator(), // deegoList가 null인 경우 로딩 인디케이터를 표시
-                       )
-
-
-                     ],
-                   ),
-                 ),
+                 child: deegoList != null ? ListView.builder(
+                   padding: EdgeInsets.zero,
+                   shrinkWrap: true,
+                   itemCount: deegoList.length,
+                   itemBuilder: (c, i) {
+                     var item = deegoList[i];
+                     var serieal = item["serialNumber"];
+                     return Container(
+                       child: ListTile(
+                         title: Text(item["name"]),
+                         subtitle: Text('Battery: ${item['battery']}%, Progress: ${item['progress']}%'), // 배터리 및 진행도 표시
+                         trailing: ElevatedButton(
+                             onPressed: () {
+                              patchFavorite(serieal);
+                             },
+                             style: ElevatedButton.styleFrom(
+                             backgroundColor: isFavorite ? Colors.black : Colors.yellow, // isFavorite 값에 따라 색상 변경
+                             shape: const CircleBorder(), // 원형 모양으로 버튼 모양을 변경
+                             ),
+                             child: Icon(
+                             Icons.star,
+                             color: Colors.white, // 별 모양 아이콘의 색상은 항상 흰색,
+                             )
+                         )
+                       ),
+                     );
+                   },
+                 ) : CircularProgressIndicator(), // deegoList가 null인 경우 로딩 인디케이터를 표시
                ),
              )
              ]
@@ -164,10 +170,32 @@ class _NaverMapAppState extends State<NaverMapApp> {
 
       setState(() {
         deegoList = beenList["deegoPage"]["items"];
-
       });
     }
 
+  }
+  
+  patchFavorite(String serieal)async{
+    print(serieal);
+    var res = await http.patch(Uri.parse("https://backend.deegolabs.com/mobile/deego/favorite"),
+        headers:{
+      "Authorization": "Bearer ${context.read<AuthStore>().accessToken}"
+    },
+        body: {
+          "deegoSerialNumber": serieal
+        }
+    );
+    var favorite = jsonDecode(res.body);
+
+        if(res.statusCode == 200){
+          print(favorite);
+          setState(() {
+            isFavorite = favorite;
+          });
+        }
+        else{
+          print(res.body);
+        }
   }
 }
 
