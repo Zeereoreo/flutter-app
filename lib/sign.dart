@@ -124,8 +124,11 @@ class _SignState extends State<Sign> {
                   TextField(
                     onChanged: (text) {
                       setState(() {
+                        RegExp PasswordRegex = RegExp(r'/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[\`\~\!\@\#\$\%\^\&\*\(\)\-\_\+\=])[a-zA-Z\d\`\~\!\@\#\$\%\^\&\*\(\)\-\_\+\=]{8,}$/');
+                        bool isValid = PasswordRegex.hasMatch(text);
                         passwordText = text;
-                        _passwordError = text.length < 8 || text.length > 16;
+                        _passwordError = text.length < 8 || text.length > 16 || !isValid;
+                        //특수문자와 영어포함한 8글자자 이상 16글자 이하
                       });
                     },
                     decoration: InputDecoration(

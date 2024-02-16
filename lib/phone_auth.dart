@@ -85,7 +85,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
                             }
                                 : null,
                             style: ElevatedButton.styleFrom(
-                              primary: blueBtn ? Colors.blue : Colors.grey,
+                              backgroundColor: blueBtn ? Colors.blue : Colors.grey,
                             ),
                             child: Text("인증하기"),
                           ),
@@ -195,7 +195,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
         print("리스폰스 값 : ${response.body}");
         final Map<String, dynamic> responseData = json.decode(response.body);
         setState(() {
-          userId = responseData['id']; // userId를 클래스 변수에 할당합니다.
+          userId = responseData['id'];
         });
       } else {
         // 서버로의 요청이 실패한 경우

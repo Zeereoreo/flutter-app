@@ -41,7 +41,6 @@ class _NaverMapAppState extends State<NaverMapApp> {
       initialLat = location.latitude;
       initialLng = location.longitude;
     });
-
     print(initialLat);
     print(initialLng);
     // Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);

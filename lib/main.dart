@@ -25,8 +25,11 @@ class MyHttpOverrides extends HttpOverrides{
 void main () async {
   KakaoSdk.init(nativeAppKey: '413db6c1481faf48ecd19af7a9b474e4');
   WidgetsFlutterBinding.ensureInitialized();
-  await NaverMapSdk.instance.initialize(clientId: '02pij2jc6t');
+  await NaverMapSdk.instance.initialize(clientId: '02pij2jc6t',onAuthFailed: (ex) {
+    print("********* 네이버맵 인증오류 : $ex *********");
+  });
   HttpOverrides.global = MyHttpOverrides();
+
   runApp(const MyApp());
 }
 
