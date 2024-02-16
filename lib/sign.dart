@@ -124,16 +124,16 @@ class _SignState extends State<Sign> {
                   TextField(
                     onChanged: (text) {
                       setState(() {
-                        RegExp PasswordRegex = RegExp(r'/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[\`\~\!\@\#\$\%\^\&\*\(\)\-\_\+\=])[a-zA-Z\d\`\~\!\@\#\$\%\^\&\*\(\)\-\_\+\=]{8,}$/');
+                        RegExp PasswordRegex = RegExp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?~^<>,.&+=])[A-Za-z\d$@$!%*#?~^<>,.&+=]{8,16}$');
                         bool isValid = PasswordRegex.hasMatch(text);
                         passwordText = text;
                         _passwordError = text.length < 8 || text.length > 16 || !isValid;
-                        //특수문자와 영어포함한 8글자자 이상 16글자 이하
+
                       });
                     },
                     decoration: InputDecoration(
                       labelText: "비밀번호",
-                      hintText: "8글자 이상 16글자 이하로 입력해주세요",
+                      hintText: "특수문자와 영어포함한 8글자 이상 16글자 이하로 입력해주세요",
                       errorText: _passwordError ? '올바른 비밀번호를 입력하세요.' : null,
                     ),
                     keyboardType: TextInputType.text,

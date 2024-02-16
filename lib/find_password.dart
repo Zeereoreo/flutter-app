@@ -83,14 +83,16 @@ class _FindPasswordState extends State<FindPassword> {
                     TextField(
                       onChanged: (text){
                         setState(() {
-                          _passwordError = text.length < 2 || text.length > 10 ;
+                          RegExp PasswordRegex = RegExp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?~^<>,.&+=])[A-Za-z\d$@$!%*#?~^<>,.&+=]{8,16}$');
+                          bool isValid = PasswordRegex.hasMatch(text);
+                          _passwordError = text.length < 8 || text.length > 16 || !isValid;
                           newPassword = text;
                         });
                       },
                       decoration: InputDecoration(
                         labelText: '새로운 비밀번호',
-                        hintText: "새로운 비밀번호를 입력해 주세요.",
-                        errorText: _passwordError ? "2글자 이상 작성해 주세요." : null,
+                        hintText: "특수문자와 영어포함한 8글자 이상 16글자 이하로 입력해주세요",
+                        errorText: _passwordError ? "올바른 비밀번호를 입력하세요." : null,
                         filled: true,
                         fillColor: const Color(0xFFF5F7FB),
                         focusedBorder: const OutlineInputBorder(
@@ -105,8 +107,9 @@ class _FindPasswordState extends State<FindPassword> {
                           borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         ),
                       ),
-                      keyboardType: TextInputType.name,
+                      keyboardType: TextInputType.text,
                       textInputAction: TextInputAction.next,
+                      obscureText: true,
                     ),
                     SizedBox(height: 10),
                     Row(
@@ -209,7 +212,7 @@ class _FindPasswordState extends State<FindPassword> {
                       ),
                     SizedBox(height: 10,),
                     ElevatedButton(onPressed: (){
-                      findId();
+                      chanePassword();
                     }, child: Text("비밀번호 재설정"),
                       style: ElevatedButton.styleFrom(
                           backgroundColor: !_nameError && !_phoneError ?
@@ -236,10 +239,10 @@ class _FindPasswordState extends State<FindPassword> {
     );
   }
 
-  findId()async{
-    var res = await http.post(Uri.parse("https://test.deegolabs.kr/mobile/auth/id"),
+  chanePassword()async{
+    var res = await http.put(Uri.parse("https://test.deegolabs.kr/mobile/auth/password"),
         body: {
-          "name" : name,
+          "userId" : name,
           "phoneId" : phoneUUID,
           "password" : newPassword,
         }
