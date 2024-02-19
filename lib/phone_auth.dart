@@ -145,15 +145,17 @@ class _PhoneAuthState extends State<PhoneAuth> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => Log()));
-                          },
-                          style: ElevatedButton.styleFrom(
-                            primary: Color(0xFF00BEFF),
-                            minimumSize: Size(150, 50), // 크기 조절
-                          ),
-                          child: Text("뒤로가기")
+                      Expanded(
+                        child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => Log()));
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xFF00BEFF),
+                              minimumSize: Size(150, 50), // 크기 조절
+                            ),
+                            child: Text("뒤로가기")
+                        ),
                       ),
                       ElevatedButton(
                           onPressed: completeAuth ?
