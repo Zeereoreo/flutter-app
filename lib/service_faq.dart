@@ -32,7 +32,7 @@ class _ServiceFAQState extends State<ServiceFAQ> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    getFAQ("서비스이용");
+    getFAQ("서비스 이용");
     super.initState();
   }
   @override
@@ -71,10 +71,10 @@ class _ServiceFAQState extends State<ServiceFAQ> with TickerProviderStateMixin {
                   onTap: (i){
                     switch(i){
                       case 0:
-                        getFAQ("서비스");
+                        getFAQ("서비스 이용");
                         break;
                       case 1:
-                        getFAQ("회원정보");
+                        getFAQ("회원 정보");
                         break;
                       case 2:
                         getFAQ("포인트");
@@ -90,15 +90,28 @@ class _ServiceFAQState extends State<ServiceFAQ> with TickerProviderStateMixin {
               ),
               Expanded(
                   child:ListView.builder(
-                      itemCount: faqList.length,
+                      itemCount: faqList == null ? 0 : faqList["items"].length,
                       itemBuilder: (c, i) {
                         var faq = faqList["items"][i];
                         print("아이템빌더 : ${faq}");
-                        return ExpansionTile(
-                          title: Text(faq["title"]),
-                          children: [
-
-                          ],
+                        return Card(
+                          color: Colors.white38,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)
+                          ),
+                          child: ExpansionTile(
+                            title: Text(faq["title"],
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white
+                              ),),
+                            children: [
+                              Container(
+                                child: Text("${faq["content"]}"),
+                              )
+                              ],
+                          ),
                         );
                       })
               ),
@@ -109,7 +122,7 @@ class _ServiceFAQState extends State<ServiceFAQ> with TickerProviderStateMixin {
     );
   }
  getFAQ(String category)async{
-    var res = await http.get(Uri.parse("https://test.deegolabs.kr/mobile/faq?=1?=10?=${category}"),
+    var res = await http.get(Uri.parse("https://test.deegolabs.kr/mobile/faq?page=1&itemLength=10&category=${category}"),
       headers: {
         "Authorization" : "Bearer ${context.read<AuthStore>().accessToken}"
       }
