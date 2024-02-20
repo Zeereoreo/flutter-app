@@ -143,10 +143,8 @@ class _MyQuestionWidgetState extends State<MyQuestionWidget> {
   var _list = ["서비스 이용", "회원 정보", "포인트", "기타"];
   var _qnaTitleController = TextEditingController();
   var _qnaEmailController = TextEditingController();
-  var qnaContent;
-  var _titleError;
-  var _emailError;
-  var _contentError;
+  var _qnaContentController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -163,11 +161,7 @@ class _MyQuestionWidgetState extends State<MyQuestionWidget> {
           qnaName("문의 내용"),
           Expanded(
             child: TextField(
-              onChanged: (text) {
-                setState(() {
-                  qnaContent = text;
-                });
-              },
+              controller: _qnaContentController,
               decoration: InputDecoration(
                 hintText: "문의 내용을 입력해 주세요.",
                 filled: true,
@@ -328,7 +322,7 @@ class _MyQuestionWidgetState extends State<MyQuestionWidget> {
         body: {
           "category": _selectedItem,
           "title": _qnaTitleController.text,
-          "content": qnaContent,
+          "content": _qnaContentController.text,
           "email": _qnaEmailController.text,
         }
     );
@@ -339,7 +333,7 @@ class _MyQuestionWidgetState extends State<MyQuestionWidget> {
         _selectedItem = "서비스 이용";
         _qnaEmailController.clear();
         _qnaTitleController.clear();
-        qnaContent = "";
+        _qnaContentController.clear();
       });
       checkDialog("문의하기 성공", "문의하신 내용은 2~3일 뒤에 작성하신 이메일로 답변 받아보실 수 있습니다.");
     }else {
