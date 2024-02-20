@@ -141,8 +141,8 @@ class MyQuestionWidget extends StatefulWidget {
 class _MyQuestionWidgetState extends State<MyQuestionWidget> {
   String _selectedItem = "서비스 이용";
   var _list = ["서비스 이용", "회원 정보", "포인트", "기타"];
-  var qnaTitle;
-  var qnaEmail;
+  var _qnaTitleController = TextEditingController();
+  var _qnaEmailController = TextEditingController();
   var qnaContent;
   var _titleError;
   var _emailError;
@@ -157,9 +157,9 @@ class _MyQuestionWidgetState extends State<MyQuestionWidget> {
           qnaName("문의 카테고리 선택"),
           dropList(),
           qnaName("제목"),
-          qnacontent("제목을 입력해 주세요.", qnaTitle, TextInputType.text),
+          qnacontent("제목을 입력해 주세요.", _qnaTitleController, TextInputType.text),
           qnaName("답변 받을 이메일"),
-          qnacontent("이메일을 입력해 주세요.", qnaEmail, TextInputType.emailAddress),
+          qnacontent("이메일을 입력해 주세요.", _qnaEmailController, TextInputType.emailAddress),
           qnaName("문의 내용"),
           Expanded(
             child: TextField(
@@ -194,8 +194,8 @@ class _MyQuestionWidgetState extends State<MyQuestionWidget> {
           SizedBox(height: 20,),
           Row(
             children: [
-              qnaBtn("취소", Colors.grey ),
-              qnaBtn("문의", Color(0xFF00BEFF)),
+              qnaBtn("취소", Colors.grey ,backNavigator),
+              qnaBtn("문의", Color(0xFF00BEFF), postQna),
             ],
           )
         ],
@@ -247,15 +247,11 @@ class _MyQuestionWidgetState extends State<MyQuestionWidget> {
     );
   }
 
-  Widget qnacontent(String hint, params, keyboardType) {
+  Widget qnacontent(String hint, TextEditingController controller, keyboardType) {
     return Container(
       width: double.infinity,
       child: TextField(
-        onChanged: (text) {
-          setState(() {
-            params = text;
-          });
-        },
+        controller: controller,
         decoration: InputDecoration(
           hintText: "$hint",
           filled: true,
@@ -293,8 +289,7 @@ class _MyQuestionWidgetState extends State<MyQuestionWidget> {
     );
   }
 
-  Widget qnaBtn (String btnText, color,){
-
+  Widget qnaBtn (String btnText, color, btnAction){
 
     return Container(
       margin: EdgeInsets.all(3),
@@ -305,9 +300,9 @@ class _MyQuestionWidgetState extends State<MyQuestionWidget> {
         color: color,
       ),
       child: TextButton(
-        onPressed: () {
-
-        },
+        onPressed:
+          btnAction
+        ,
         style: TextButton.styleFrom(
           padding: EdgeInsets.all(16),
         ),
@@ -324,6 +319,56 @@ class _MyQuestionWidgetState extends State<MyQuestionWidget> {
         ),
       ),
     );
+  }
+
+  postQna()async{
+
+    var res = await http.post(Uri.parse("https://test.deegolabs.kr/mobile/qna"),
+        headers: {"Authorization": "Bearer ${context.read<AuthStore>().accessToken}"},
+        body: {
+          "category": _selectedItem,
+          "title": _qnaTitleController.text,
+          "content": qnaContent,
+          "email": _qnaEmailController.text,
+        }
+    );
+
+    if(res.statusCode == 201){
+      print("${res.body}");
+      setState(() {
+        _selectedItem = "서비스 이용";
+        _qnaEmailController.clear();
+        _qnaTitleController.clear();
+        qnaContent = "";
+      });
+      checkDialog("문의하기 성공", "문의하신 내용은 2~3일 뒤에 작성하신 이메일로 답변 받아보실 수 있습니다.");
+    }else {
+      print("${res.body}");
+      checkDialog("문의하기 실패", "빈 곳이 있는지 확인해주세요.");
+    }
+  }
+  
+  backNavigator(){
+    Navigator.pop(context);
+  }
+
+  void checkDialog(String title, String content){
+    showDialog(context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context){
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            title: Text(title),
+            content: Text(content),
+            actions: [
+              TextButton(onPressed: (){
+                Navigator.pop(context);
+              }, child: Text("확인"))
+            ],
+          );
+        });
   }
 }
 
