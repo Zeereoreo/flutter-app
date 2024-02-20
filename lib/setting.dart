@@ -1,3 +1,4 @@
+import 'package:deego_client/question_list.dart';
 import 'package:deego_client/service_faq.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -59,6 +60,7 @@ class Setting extends StatelessWidget {
                             children: [
                               Set(btnText: '디고 가이드',),
                               SetBtn(buttonText: 'FAQ',onPressed: (c) => ServiceFAQ(),),
+                              SetBtn(buttonText: '문의하기',onPressed: (c) => QuestionList(),),
                               // setBtn(buttonText: '정보 관리',),
                               // setBtn(buttonText: '고객 센터',),
                               // setBtn(buttonText: '공지 사항',),
@@ -148,7 +150,7 @@ class _SetState extends State<Set> {
           ),
         ),
         children: [
-          ServiceFAQ()
+          // ServiceFAQ()
         ],
       ),
     );

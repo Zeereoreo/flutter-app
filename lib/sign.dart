@@ -128,7 +128,7 @@ class _SignState extends State<Sign> {
                         bool isValid = PasswordRegex.hasMatch(text);
                         passwordText = text;
                         _passwordError = text.length < 8 || text.length > 16 || !isValid;
-
+                        //특수문자와 영어포함한 8글자자 이상 16글자 이하
                       });
                     },
                     decoration: InputDecoration(

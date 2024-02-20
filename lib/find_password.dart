@@ -212,7 +212,7 @@ class _FindPasswordState extends State<FindPassword> {
                       ),
                     SizedBox(height: 10,),
                     ElevatedButton(onPressed: (){
-                      chanePassword();
+                      changePassword();
                     }, child: Text("비밀번호 재설정"),
                       style: ElevatedButton.styleFrom(
                           backgroundColor: !_nameError && !_phoneError ?
@@ -239,7 +239,7 @@ class _FindPasswordState extends State<FindPassword> {
     );
   }
 
-  chanePassword()async{
+  changePassword()async{
     var res = await http.put(Uri.parse("https://test.deegolabs.kr/mobile/auth/password"),
         body: {
           "userId" : name,
