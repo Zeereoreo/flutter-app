@@ -1,4 +1,5 @@
 import 'package:deego_client/header.dart';
+import 'package:deego_client/password_change.dart';
 import 'package:deego_client/user_info.dart';
 import 'package:flutter/material.dart';
 
@@ -30,7 +31,7 @@ class _MyPageState extends State<MyPage> {
               child: Column(
                 children: [
                   MyPageBtn("사용자 정보 수정", UserInfo()),
-                  MyPageBtn("비밀번호 재설정", null),
+                  MyPageBtn("비밀번호 재설정", PasswordChange()),
                   MyPageBtn("SNS 연동하기", null),
                   MyPageBtn("로그 아웃", null),
                   MyPageBtn("회원 탈퇴", null),
