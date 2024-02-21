@@ -174,6 +174,9 @@ class _LogState extends State<Log> {
 
 
       context.read<userStore>().name = responseData['user']["name"];
+      context.read<userStore>().id = responseData['user']["id"];
+      context.read<userStore>().email = responseData['user']["email"];
+      context.read<userStore>().phone = responseData['user']["phone"];
 
       context.read<AuthStore>().accessToken = responseData['accessToken'];
 

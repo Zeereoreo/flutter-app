@@ -1,4 +1,5 @@
 import 'package:deego_client/header.dart';
+import 'package:deego_client/user_info.dart';
 import 'package:flutter/material.dart';
 
 class MyPage extends StatefulWidget {
@@ -28,11 +29,11 @@ class _MyPageState extends State<MyPage> {
               margin: EdgeInsets.only(top: 50),
               child: Column(
                 children: [
-                  MyPageBtn("사용자 정보 수정"),
-                  MyPageBtn("비밀번호 재설정"),
-                  MyPageBtn("SNS 연동하기"),
-                  MyPageBtn("로그 아웃"),
-                  MyPageBtn("회원 탈퇴"),
+                  MyPageBtn("사용자 정보 수정", UserInfo()),
+                  MyPageBtn("비밀번호 재설정", null),
+                  MyPageBtn("SNS 연동하기", null),
+                  MyPageBtn("로그 아웃", null),
+                  MyPageBtn("회원 탈퇴", null),
                   ],
               ),
             )
@@ -43,9 +44,9 @@ class _MyPageState extends State<MyPage> {
     );
   }
 
-  Widget MyPageBtn (String buttonText){
+  Widget MyPageBtn (String buttonText, onPage){
     return TextButton(onPressed: (){
-
+      Navigator.push(context, MaterialPageRoute(builder: (context) => onPage));
     }, child: Container(
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(

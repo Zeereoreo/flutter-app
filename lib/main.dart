@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:deego_client/Wiget/phoneWidget.dart';
 import 'package:deego_client/bottom_menu.dart';
 import 'package:deego_client/header.dart';
 import 'package:deego_client/home.dart';
@@ -54,6 +55,8 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (context) => pointStore()),
         ChangeNotifierProvider(create: (context) => userStore()),
         ChangeNotifierProvider(create: (context) => footerStore()),
+        ChangeNotifierProvider(create: (context) => phoneUUIDStroe()),
+
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -97,6 +100,13 @@ class userStore extends ChangeNotifier{
   var name = "";
   var phone = "";
   var email = "";
+
+  notifyListeners();
+
+}
+
+class phoneUUIDStroe extends ChangeNotifier{
+  var phoneUUID = "";
 
   notifyListeners();
 
