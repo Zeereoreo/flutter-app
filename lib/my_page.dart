@@ -1,7 +1,13 @@
 import 'package:deego_client/header.dart';
+import 'package:deego_client/login.dart';
 import 'package:deego_client/password_change.dart';
 import 'package:deego_client/user_info.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+
+import 'main.dart';
 
 class MyPage extends StatefulWidget {
   const MyPage({super.key});
@@ -30,11 +36,20 @@ class _MyPageState extends State<MyPage> {
               margin: EdgeInsets.only(top: 50),
               child: Column(
                 children: [
-                  MyPageBtn("사용자 정보 수정", UserInfo()),
-                  MyPageBtn("비밀번호 재설정", PasswordChange()),
-                  MyPageBtn("SNS 연동하기", null),
+                  MyPageBtn("사용자 정보 수정", () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => UserInfo()),
+                    );
+                  }),
+                  MyPageBtn("비밀번호 재설정", () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => PasswordChange()),
+                    );
+                  }),
                   MyPageBtn("로그 아웃", null),
-                  MyPageBtn("회원 탈퇴", null),
+                  MyPageBtn("회원 탈퇴", deleteUser),
                   ],
               ),
             )
@@ -45,10 +60,9 @@ class _MyPageState extends State<MyPage> {
     );
   }
 
-  Widget MyPageBtn (String buttonText, onPage){
-    return TextButton(onPressed: (){
-      Navigator.push(context, MaterialPageRoute(builder: (context) => onPage));
-    }, child: Container(
+  Widget MyPageBtn (String buttonText,VoidCallback? onfunction){
+    return TextButton(onPressed: onfunction,
+      child: Container(
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -69,5 +83,16 @@ class _MyPageState extends State<MyPage> {
         ],
       ),
     ),);
+  }
+
+  deleteUser()async{
+    var res = await http.delete(Uri.parse("https://test.deegolabs.kr/mobile/user/resign"),
+      headers: {"Authorization": "Bearer ${context.read<AuthStore>().accessToken}"},
+    );
+    if(res.statusCode == 200){
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => Log()));
+    } else{
+      print("${res.body}");
+    }
   }
 }

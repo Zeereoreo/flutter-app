@@ -22,6 +22,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
   bool showAuthBtn = false;
   bool completeAuth = false;
   bool authenticationCompleted = false;
+  bool isExist = false;
 
 
   @override
@@ -79,7 +80,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
                                 ? () async {
                               sendPhoneNumberToServer(num);
                               setState(() {
-                                showAdditionalInput = true;
+                                isExist ? showAdditionalInput = true : showAdditionalInput = false;
                                 blueBtn = false;
                               });
                             }
@@ -198,7 +199,27 @@ class _PhoneAuthState extends State<PhoneAuth> {
         final Map<String, dynamic> responseData = json.decode(response.body);
         setState(() {
           userId = responseData['id'];
+          isExist = responseData["isExistUser"];
         });
+        if(responseData["isExistUser"] = true){
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("존재하는 회원입니다."),
+                content: Text("존재하는 회원이므로 다른 핸드폰 번호를 사용해주세요."),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // 다이얼로그 닫기
+                    },
+                    child: Text("확인"),
+                  ),
+                ],
+              );
+            },
+          );
+        }
       } else {
         // 서버로의 요청이 실패한 경우
         print('핸드폰 번호 전송 실패');

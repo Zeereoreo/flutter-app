@@ -25,6 +25,8 @@ class _HeaderState extends State<Header> {
 
     @override
   Widget build(BuildContext context) {
+      var tab = context.read<footerStore>().tab;
+
       String accessToken = Provider.of<AuthStore>(context).accessToken;
       void signOut() async {
         switch (_loginPlatform) {
@@ -58,7 +60,9 @@ class _HeaderState extends State<Header> {
         children: [
           GestureDetector(
             onTap: () {
+                context.read<footerStore>().tab == 0;
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => Home(accessToken:accessToken)));
+
             },
             child: const Image(image: AssetImage('assets/images/deego_logo.png')),
           ),
