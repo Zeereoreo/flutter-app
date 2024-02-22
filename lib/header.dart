@@ -68,7 +68,7 @@ class _HeaderState extends State<Header> {
           ),
           GestureDetector(
             onTap: signOut,
-            child: Icon(Icons.logout_rounded, size: 40),
+            child: const Icon(Icons.logout_rounded, size: 40),
           ),
         ],
       ),

@@ -272,6 +272,9 @@ class _OuthBtnState extends State<OuthBtn> {
 
   getNaver()async{
 
+    // final NaverLoginResult result = await FlutterNaverLogin.logIn();
+    // NaverAccessToken res = await FlutterNaverLogin.currentAccessToken;
+    NaverLoginResult loginResult = await FlutterNaverLogin.logIn();
     final NaverLoginResult result = await FlutterNaverLogin.logIn();
     NaverAccessToken res = await FlutterNaverLogin.currentAccessToken;
     print("토큰:${res.accessToken}");
@@ -281,15 +284,16 @@ class _OuthBtnState extends State<OuthBtn> {
       print('id = ${result.account.id}');
       print('email = ${result.account.email}');
       print('name = ${result.account.name}');
+      print(res);
       await SnsApiService().sendTokenToServer(context, 'Naver', res.accessToken);
-      // await getUserPoint(context);
+      await getUserPoint(context);
       setState(() {
         _loginPlatform = LoginPlatform.naver;
-        // context.read<AuthStore>().accessToken = result.accessToken as String;
+        // context.read<AuthStore>().accessToken = result.accessToken.accessToken;
 
       });
 
-      // Navigator.of(context).push(MaterialPageRoute(builder: (context) => Home(accessToken : res.accessToken)));
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => Home(accessToken : res.accessToken)));
 
     }
 

@@ -20,7 +20,7 @@ class SnsApiService {
         },
       );
       print("유알엘 : ${Uri.parse(url)}");
-      print("리스폰스 $response");
+      print("리스폰스 ${response.body}");
       if (response.statusCode == 200) {
         // Successful request
         print('Token sent successfully');
