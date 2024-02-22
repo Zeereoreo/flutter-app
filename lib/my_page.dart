@@ -86,13 +86,55 @@ class _MyPageState extends State<MyPage> {
   }
 
   deleteUser()async{
-    var res = await http.delete(Uri.parse("https://test.deegolabs.kr/mobile/user/resign"),
-      headers: {"Authorization": "Bearer ${context.read<AuthStore>().accessToken}"},
-    );
-    if(res.statusCode == 200){
+    bool? confirm = await _showConfirmationDialog();
+    if (confirm != null && confirm){
+      var res = await http.delete(Uri.parse("https://test.deegolabs.kr/mobile/user/resign"),
+      headers: {"Authorization": "Bearer ${context.read<AuthStore>().accessToken}"},);
+    if(res.statusCode == 204){
+      print("${res.body}");
+      SignCompletedSnackBar.show(context);
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => Log()));
     } else{
+      print("${res.statusCode}");
       print("${res.body}");
     }
+  }
+
+  }
+  Future<bool?> _showConfirmationDialog() async {
+    return showDialog<bool?>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('회원 탈퇴'),
+          content: Text('정말로 회원 탈퇴하시겠습니까?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('아니오'),
+              onPressed: () {
+                Navigator.of(context).pop(false); // 취소
+              },
+            ),
+            TextButton(
+              child: Text('예'),
+              onPressed: () {
+                Navigator.of(context).pop(true); // 확인
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+}
+class SignCompletedSnackBar {
+  static void show(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('회원탈퇴가 완료되었습니다.'),
+        duration: Duration(seconds: 2), // 스낵바 표시 시간 설정
+      ),
+    );
   }
 }

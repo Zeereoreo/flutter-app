@@ -252,6 +252,10 @@ class _SignState extends State<Sign> {
   Future<void> _sendDataToServer() async {
     // 여기에 실제 서버로 데이터를 전송하는 로직을 작성합니다.
     final Uri uri = Uri.parse('https://test.deegolabs.kr/mobile/auth/user');
+    DateTime birthDateTime = DateTime.parse(birthText);
+
+    // 생년월일을 타임스탬프로 변환
+    String birthDateFormat = birthDateTime.toIso8601String();
 
 
     final Map<String, dynamic> data = {
@@ -259,10 +263,9 @@ class _SignState extends State<Sign> {
       'name': nameText,
       'email': emailText,
       'password': passwordText,
-      'gender': (value == 1) ? '남' : '여',
       'phoneId' : widget.userId,
-      "birthDateFormat" : birthText
-      // 여기에 필요한 다른 데이터도 추가할 수 있습니다.
+      'gender': (value == 1) ? '남' : '여',
+      "birthDateFormat" : birthDateFormat
     };
 
     final http.Response response = await http.post(uri, body: data);
@@ -273,6 +276,7 @@ class _SignState extends State<Sign> {
       print('Data sent successfully');
       print("${response.body}");
       print(data);
+      SignCompletedSnackBar.show(context);
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => Log()));
 
     } else {
@@ -283,5 +287,15 @@ class _SignState extends State<Sign> {
       print('Failed to send data. Status code: ${response.body}');
 
     }
+  }
+}
+class SignCompletedSnackBar {
+  static void show(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('회원가입이 완료되었습니다.'),
+        duration: Duration(seconds: 2), // 스낵바 표시 시간 설정
+      ),
+    );
   }
 }

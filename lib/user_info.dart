@@ -126,11 +126,6 @@ class _UserInfoState extends State<UserInfo> {
         }
     );
     var result = jsonDecode(res.body);
-    print("${context
-        .read<phoneUUIDStroe>()
-        .phoneUUID}");
-    print("${_nameInfo.text}");
-    print("${_emailInfo.text}");
 
     if(res.statusCode == 200){
       print("${res.body}");

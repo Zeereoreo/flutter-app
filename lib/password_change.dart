@@ -106,7 +106,9 @@ class _PasswordChangeState extends State<PasswordChange> {
       ),
       keyboardType: keyboardType,
       textInputAction: TextInputAction.next,
-      maxLines: null,
+      obscureText: true,
+
+
     );
   }
 

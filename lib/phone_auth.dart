@@ -80,7 +80,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
                                 ? () async {
                               sendPhoneNumberToServer(num);
                               setState(() {
-                                isExist ? showAdditionalInput = true : showAdditionalInput = false;
+                                isExist ? showAdditionalInput == true : showAdditionalInput == false;
                                 blueBtn = false;
                               });
                             }
@@ -201,7 +201,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
           userId = responseData['id'];
           isExist = responseData["isExistUser"];
         });
-        if(responseData["isExistUser"] = true){
+        if(responseData["isExistUser"] == true){
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -219,6 +219,10 @@ class _PhoneAuthState extends State<PhoneAuth> {
               );
             },
           );
+        }else {
+          setState(() {
+            showAdditionalInput = true;
+          });
         }
       } else {
         // 서버로의 요청이 실패한 경우
