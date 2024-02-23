@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:deego_client/header.dart';
+import 'package:deego_client/point_save.dart';
+import 'package:deego_client/point_used.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:http/http.dart' as http;
@@ -128,7 +130,9 @@ class _PointState extends State<Point> {
                                   width: MediaQuery.of(context).size.width/2.5,
                                   height: MediaQuery.of(context).size.height/15,
                                   child: TextButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => PointSave()));
+                                    },
                                     style: TextButton.styleFrom(
 
                                       padding: EdgeInsets.all(16),
@@ -154,7 +158,10 @@ class _PointState extends State<Point> {
                                     color: Color(0xFF00BEFF),
                                   ),
                                   child: TextButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => PointUsed()));
+
+                                    },
                                     style: TextButton.styleFrom(
                                       padding: EdgeInsets.all(16),
                                     ),
@@ -364,6 +371,7 @@ class _PurchaseState extends State<Purchase> {
                                           Navigator.pop(context);
                                         }, child: Text("확인")),
                                         TextButton(onPressed: (){
+                                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => PointUsed()));
 
                                         }, child: Text("구매 내역"))
                                       ],

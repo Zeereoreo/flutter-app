@@ -1,3 +1,4 @@
+import 'package:deego_client/announcements.dart';
 import 'package:deego_client/my_page.dart';
 import 'package:deego_client/question_list.dart';
 import 'package:deego_client/service_faq.dart';
@@ -63,6 +64,7 @@ class Setting extends StatelessWidget {
                               SetBtn(buttonText: 'FAQ',onPressed: (c) => ServiceFAQ(),),
                               SetBtn(buttonText: '문의하기',onPressed: (c) => QuestionList(),),
                               SetBtn(buttonText: '정보 관리',onPressed: (c) => MyPage()),
+                              SetBtn(buttonText: "공지사항",onPressed: (c) => Announcements()),
                               // setBtn(buttonText: '고객 센터',),
                               // setBtn(buttonText: '공지 사항',),
                               // setBtn(buttonText: '서비스 이용 약관',),

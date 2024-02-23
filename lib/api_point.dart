@@ -25,4 +25,20 @@ class ApiPoint{
       print("${e}");
     }
   }
+
+  getPointUsedList(BuildContext context)async{
+    var url = "$baseUrl/list?page=1&itemLength=10&searchMode=사용내역";
+
+    try{
+      var res = await http.get(Uri.parse(url),
+        headers: {"Authorization": "Bearer ${context.read<AuthStore>().accessToken}"},
+      );
+
+      var result = json.decode(res.body);
+      print("${result}");
+      return result;
+    }catch(e){
+      print("${e}");
+    }
+  }
 }
