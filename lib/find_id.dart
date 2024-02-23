@@ -1,8 +1,12 @@
 import 'dart:convert';
 
+import 'package:deego_client/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+
+import 'Wiget/pop_up.dart';
 
 class FindId extends StatefulWidget {
   const FindId({super.key});
@@ -27,6 +31,7 @@ class _FindIdState extends State<FindId> {
 
   @override
   Widget build(BuildContext context) {
+    print("$name");
     return Container(
         decoration: BoxDecoration(
         image: DecorationImage(
@@ -186,15 +191,14 @@ class _FindIdState extends State<FindId> {
                         Color(0xFFB2EBFC)
                       ),
                     ),
-                    Visibility(
-                      visible: id.isNotEmpty,
-                      child: Text(id,style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-
-                      ),),
-                    )
+                    // Visibility(
+                    //   visible: id.isNotEmpty,
+                    //   child: Text(id,style: TextStyle(
+                    //     color: Colors.white,
+                    //     fontWeight: FontWeight.bold,
+                    //     fontSize: 20,
+                    //   ),),
+                    // )
                   ],
                 ),
               )
@@ -212,10 +216,19 @@ class _FindIdState extends State<FindId> {
         "phoneId" : phoneUUID,
       }
     );
+    print("name : $name");
     var userId = jsonDecode(res.body);
     if(res.statusCode == 200) {
+      print("$userId");
       setState(() {
-        id = userId;
+        id = userId["userId"];
+      });
+      showDialog(context: context, builder: (BuildContext context){
+        return CustomPopup(title: "찾으시는 아이디는", content: "${id}",
+          onConfirm: (){
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => Log()));
+          },
+        );
       });
     }else{
       print(res.body);

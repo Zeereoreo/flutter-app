@@ -19,23 +19,16 @@ class CustomPopup extends StatelessWidget {
       title: Text(title),
       content: Text(content),
       actions: <Widget>[
-        TextButton(
-          onPressed: () {
-            if (onCancel != null) {
+        if (onCancel != null) // onCancel 콜백이 제공된 경우에만 취소 버튼을 표시
+          TextButton(
+            onPressed: () {
               onCancel!();
-            } else {
-              Navigator.of(context).pop();
-            }
-          },
-          child: Text('Cancel'),
-        ),
+            },
+            child: Text('Cancel'),
+          ),
         TextButton(
           onPressed: () {
-            if (onConfirm != null) {
-              onConfirm!();
-            } else {
-              Navigator.of(context).pop();
-            }
+            onConfirm!();
           },
           child: Text('Confirm'),
         ),
