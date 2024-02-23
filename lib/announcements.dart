@@ -23,6 +23,10 @@ class _AnnouncementsState extends State<Announcements> {
   }
   @override
   Widget build(BuildContext context) {
+    if(annList == null){
+      return CircularProgressIndicator();
+    }
+
     return Container(
         decoration: BoxDecoration(
         image: DecorationImage(
@@ -35,9 +39,30 @@ class _AnnouncementsState extends State<Announcements> {
               child: Column(
                 children: [
                  const Header(),
-                  Container(
-                    child: ListView.builder(itemBuilder: itemBuilder),
-                  )
+                  Expanded(
+                    child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      itemCount: annList.length,
+                      itemBuilder: (context, index) {
+                        var item = annList[index];
+                        return Card(
+                          color: Colors.white38,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)
+                          ),
+                          child: ExpansionTile(
+                            title: onText(item["title"]),
+                            children: [
+                              Container(
+                                child: onText(item["content"]),
+                              )
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                ]
           ),
         ),
@@ -64,5 +89,15 @@ class _AnnouncementsState extends State<Announcements> {
     }else {
       print("${res.body}");
     }
+  }
+
+  Widget onText(String text){
+    return Text(text,
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      ),
+    );
   }
 }
