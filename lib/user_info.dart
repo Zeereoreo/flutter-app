@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:deego_client/Wiget/phoneWidget.dart';
+import 'package:deego_client/Wiget/pop_up.dart';
 import 'package:deego_client/Wiget/postBtn.dart';
 import 'package:deego_client/header.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
+import 'home.dart';
 import 'main.dart';
 
 class UserInfo extends StatefulWidget {
@@ -125,18 +127,20 @@ class _UserInfoState extends State<UserInfo> {
           "phoneId" : context.read<phoneUUIDStroe>().phoneUUID,
         }
     );
-    var result = jsonDecode(res.body);
 
-    if(res.statusCode == 200){
-      print("${res.body}");
       setState(() {
-        context.read<userStore>().id = result["id"];
-        context.read<userStore>().email = result["email"];
-        context.read<userStore>().phone = result["phone"];
+        context.read<userStore>().name = _nameInfo.text;
+        context.read<userStore>().email = _emailInfo.text;
+        context.read<footerStore>().tab = 0;
       });
-    }else {
-      print("${res.body}");
-    }
+
+      showDialog(context: context, builder: (BuildContext context){
+        return CustomPopup(title: "사용자 정보 변경", content: "변경이 완료되었습니다.",
+          onConfirm: (){
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => Home(accessToken:context.read<AuthStore>().accessToken)));
+          },
+        );
+      });
   }
 
 }

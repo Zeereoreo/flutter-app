@@ -15,30 +15,34 @@ class Announcements extends StatefulWidget {
 
 class _AnnouncementsState extends State<Announcements> {
   var annList;
+  bool isLoading = true; // 데이터 로딩 중 여부를 나타내는 변수
 
   @override
   void initState() {
     getAnn();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    if(annList == null){
-      return CircularProgressIndicator();
-    }
-
-    return Container(
-        decoration: BoxDecoration(
-        image: DecorationImage(
-        fit: BoxFit.cover,
-        image: AssetImage('assets/images/bgimage.png'),
-    ),
-    ),
-        child: Scaffold(
+    if (isLoading) {
+      return Center(child: CircularProgressIndicator());
+    } else {
+      if (annList == null || annList.isEmpty) {
+        return nullList(); // 데이터가 없을 때 nullList 위젯을 반환
+      } else {
+        return Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage('assets/images/bgimage.png'),
+            ),
+          ),
+          child: Scaffold(
             body: Container(
               child: Column(
                 children: [
-                 const Header(),
+                  const Header(),
                   Expanded(
                     child: ListView.builder(
                       padding: EdgeInsets.zero,
@@ -49,8 +53,7 @@ class _AnnouncementsState extends State<Announcements> {
                         return Card(
                           color: Colors.white38,
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)
-                          ),
+                              borderRadius: BorderRadius.circular(10)),
                           child: ExpansionTile(
                             title: onText(item["title"]),
                             children: [
@@ -63,36 +66,44 @@ class _AnnouncementsState extends State<Announcements> {
                       },
                     ),
                   ),
-               ]
+                ],
+              ),
+            ),
           ),
-        ),
+        );
+      }
+    }
+  }
+
+  Widget nullList() {
+    return Center(
+      child: Container(
+        width: double.infinity,
+        child: onText(
+            "디고의 기본 이용 안내는 고객센터 또는 서비스 이용 약관, 개인정보 처리방침 메뉴를 참고해주세요."),
       ),
     );
   }
 
-  Widget nullList(){
-    return Container(
-      width: double.infinity,
-
-    );
-  }
-
-  getAnn()async{
-    var res = await http.get(Uri.parse("https://test.deegolabs.kr/mobile/notice"),
+  Future<void> getAnn() async {
+    var res = await http.get(
+      Uri.parse("https://test.deegolabs.kr/mobile/notice"),
       headers: {"Authorization": "Bearer ${context.read<AuthStore>().accessToken}"},
     );
     var result = json.decode(res.body);
-    if(res.statusCode == 200){
+    if (res.statusCode == 200) {
       setState(() {
         annList = result["noticePage"]["items"];
+        isLoading = false; // 데이터 로딩이 완료되었음을 나타내는 변수를 false로 설정
       });
-    }else {
+    } else {
       print("${res.body}");
     }
   }
 
-  Widget onText(String text){
-    return Text(text,
+  Widget onText(String text) {
+    return Text(
+      text,
       style: TextStyle(
         color: Colors.white,
         fontSize: 20,
