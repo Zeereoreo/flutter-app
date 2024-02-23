@@ -153,14 +153,18 @@ class _FindPasswordState extends State<FindPassword> {
           "password" : newPassword,
         }
     );
-    var userId = jsonDecode(res.body);
-    if(res.statusCode == 200) {
-      setState(() {
-        id = userId;
-      });
-    }else{
-      print(res.body);
-    }
+    print(res.body);
+    //팝업창 + 로그인화면으로
+
+    // var userId = jsonDecode(res.body);
+    // if(res.statusCode == 200) {
+    //   print(userId);
+    //   setState(() {
+    //     id = userId;
+    //   });
+    // }else{
+    //   print(res.body);
+    // }
   }
 
 

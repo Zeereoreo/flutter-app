@@ -1,6 +1,8 @@
 
 import 'dart:convert';
 
+import 'package:deego_client/point_save.dart';
+import 'package:deego_client/point_used.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:deego_client/bottom_menu.dart';
@@ -154,7 +156,7 @@ class _HomeState extends State<Home> {
                             ),
                             child: TextButton(
                               onPressed: () {
-                                // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Point(accessToken: accessToken,)));
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => PointSave()));
                               },
                               style: TextButton.styleFrom(
                                 padding: EdgeInsets.all(16),

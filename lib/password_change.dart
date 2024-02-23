@@ -124,7 +124,7 @@ class _PasswordChangeState extends State<PasswordChange> {
 
 
     if(res.statusCode == 200){
-      print("${res.body}");
+      print("${result}");
       setState(() {
 
       });
