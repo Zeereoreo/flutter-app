@@ -2,9 +2,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:deego_client/Wiget/phoneWidget.dart';
-import 'package:deego_client/bottom_menu.dart';
-import 'package:deego_client/header.dart';
 import 'package:deego_client/home.dart';
 import 'package:deego_client/login.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +9,7 @@ import 'package:deego_client/point.dart';
 import 'package:deego_client/map.dart';
 import 'package:deego_client/setting.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -30,6 +28,7 @@ void main () async {
     print("********* 네이버맵 인증오류 : $ex *********");
   });
   HttpOverrides.global = MyHttpOverrides();
+  WidgetsFlutterBinding.ensureInitialized();
 
   runApp(const MyApp());
 }

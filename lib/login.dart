@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:deego_client/find_password.dart';
 import 'package:deego_client/phone_auth.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:deego_client/home.dart';
 import 'package:deego_client/sns_api_sevice.dart';
@@ -30,12 +31,37 @@ class _LogState extends State<Log> {
   String password = "";
   bool _idError = false;
   bool _passwordError = false;
+  final storage = FlutterSecureStorage();
+  dynamic userInfo = '';
 
+  @override
+  void initState() {
 
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _asyncMethod();
+    });
+  }
+  _asyncMethod() async {
+    // read 함수로 key값에 맞는 정보를 불러오고 데이터타입은 String 타입
+    // 데이터가 없을때는 null을 반환
+    userInfo = await storage.read(key:'login');
+
+    // user의 정보가 있다면 로그인 후 들어가는 첫 페이지로 넘어가게 합니다.
+    if (userInfo != null) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => Home(accessToken: userInfo),
+        ),
+      );
+    } else {
+      print('로그인이 필요합니다');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-
+  print("${context.read<AuthStore>().accessToken}");
 
     return Container(
       decoration: BoxDecoration(
@@ -182,13 +208,15 @@ class _LogState extends State<Log> {
 
 
       await getUserPoint(context);
-
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => Home(accessToken: responseData['accessToken']),
         ),
       );
-
+      await storage.write(
+        key: 'login',
+        value: responseData['accessToken'],
+      );
     }
     else{
       print("${response.statusCode}");
@@ -274,7 +302,7 @@ class _OuthBtnState extends State<OuthBtn> {
 
     // final NaverLoginResult result = await FlutterNaverLogin.logIn();
     // NaverAccessToken res = await FlutterNaverLogin.currentAccessToken;
-    NaverLoginResult loginResult = await FlutterNaverLogin.logIn();
+    // NaverLoginResult loginResult = await FlutterNaverLogin.logIn();
     final NaverLoginResult result = await FlutterNaverLogin.logIn();
     NaverAccessToken res = await FlutterNaverLogin.currentAccessToken;
     print("토큰:${res.accessToken}");
@@ -287,6 +315,7 @@ class _OuthBtnState extends State<OuthBtn> {
       print(res);
       await SnsApiService().sendTokenToServer(context, 'Naver', res.accessToken);
       await getUserPoint(context);
+
       setState(() {
         _loginPlatform = LoginPlatform.naver;
         // context.read<AuthStore>().accessToken = result.accessToken.accessToken;
