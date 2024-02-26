@@ -297,6 +297,7 @@ LoginPlatform _loginPlatform = LoginPlatform.none;
 
 
 class _OuthBtnState extends State<OuthBtn> {
+  final storage = FlutterSecureStorage();
 
   getNaver()async{
 
@@ -313,7 +314,7 @@ class _OuthBtnState extends State<OuthBtn> {
       print('email = ${result.account.email}');
       print('name = ${result.account.name}');
       print(res);
-      await SnsApiService().sendTokenToServer(context, 'Naver', res.accessToken);
+      await SnsApiService().sendTokenToServer(context, 'Naver', res.accessToken, res.refreshToken);
       await getUserPoint(context);
 
       setState(() {
@@ -348,7 +349,7 @@ class _OuthBtnState extends State<OuthBtn> {
       print("토큰:$token");
       print("토큰:${token.accessToken}");
       context.read<AuthStore>().accessToken = token.accessToken;
-      await SnsApiService().sendTokenToServer(context, 'Kakao', token.accessToken);
+      // await SnsApiService().sendTokenToServer(context, 'Kakao', token.accessToken, token.refreshToken);
       await getUserPoint(context);
       // final profileInfo = json.decode(response.body);
       // print(profileInfo.toString());

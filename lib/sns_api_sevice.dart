@@ -11,12 +11,13 @@ class SnsApiService {
   final storage = FlutterSecureStorage();
 
 
-  Future<void> sendTokenToServer(BuildContext context, String snsType, String snsToken) async {
-    final String url = '$baseUrl/$snsType/$snsToken';
+  Future<void> sendTokenToServer(BuildContext context, String snsType, String snsToken, String refresh) async {
+    // final String url = '$baseUrl/$snsType/$snsToken';
+    final String url = '$baseUrl/$snsType';
     print("url: $url");
     try {
       final http.Response response = await http.post(
-        Uri.parse(url),
+        Uri.parse("${url}/${snsToken}"),
         // headers: <String, String>{
         //   'Content-Type': 'application/json',
         // },
@@ -34,8 +35,15 @@ class SnsApiService {
         await storage.write(key: 'login', value: result["userSNS"]["accessToken"]);
       } else {
         // Request failed
-        print('Failed to send token. Status code: ${response.statusCode}');
-        print('Response: ${response.body}');
+        print("refreshToken ${refresh}");
+        final http.Response response = await http.post(
+          Uri.parse("${url}/${refresh}"),
+        );
+        var result = json.decode(response.body);
+        context.read<AuthStore>().accessToken = result["userSNS"]["accessToken"];
+        context.read<userStore>().name = result["userSNS"]["user"]["name"];
+        await storage.write(key: 'login', value: result["userSNS"]["accessToken"]);
+        print(result.body);
       }
     } catch (error) {
       // Exception during the request

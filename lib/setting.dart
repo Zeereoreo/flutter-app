@@ -1,7 +1,9 @@
 import 'package:deego_client/announcements.dart';
 import 'package:deego_client/my_page.dart';
+import 'package:deego_client/privacy_policy.dart';
 import 'package:deego_client/question_list.dart';
 import 'package:deego_client/service_faq.dart';
+import 'package:deego_client/terms_of_use.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -67,8 +69,8 @@ class Setting extends StatelessWidget {
                               SetBtn(buttonText: "공지사항",onPressed: (c) => Announcements()),
                               // setBtn(buttonText: '고객 센터',),
                               // setBtn(buttonText: '공지 사항',),
-                              // setBtn(buttonText: '서비스 이용 약관',),
-                              // setBtn(buttonText: '개인정보 처리 방침',),
+                              SetBtn(buttonText: '서비스 이용 약관', onPressed: (c) => TermsOfUse() , ),
+                              SetBtn(buttonText: '개인정보 처리 방침', onPressed: (c) => PrivacyPolicy() , ),
                               // setBtn(buttonText: '버전 정보',),
                             ],
                           ),
