@@ -22,68 +22,58 @@ class Setting extends StatelessWidget {
       onWillPop: (){
         return Future(() => false);
       },
-      child: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: AssetImage('assets/images/bgimage.png'),
-          ),
-        ),
-        child: Scaffold(
-          body: Container(
-            margin: EdgeInsets.all(10),
-            child: Column(
-              children: [
-                const Header(),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Container(
-                      margin: EdgeInsets.all(10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: double.infinity,
-                            height: MediaQuery.of(context).size.height/6,
-                            padding: EdgeInsets.all(20),
-                            child: Text.rich(
-                              TextSpan(
-                                text: name,
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30,color: Colors.white),
-                                children: const <TextSpan>[
-                                  TextSpan(
-                                    text: '님, 디고와 함께 \n 지구의 온도를 낮춰보세요!',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20, color: Colors.white),
-                                  )
-                                ],
-                              ),
+      child: Scaffold(
+        body: Container(
+          margin: EdgeInsets.all(10),
+          child: Column(
+            children: [
+              const Header(),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Container(
+                    margin: EdgeInsets.all(10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          height: MediaQuery.of(context).size.height/6,
+                          padding: EdgeInsets.all(20),
+                          child: Text.rich(
+                            TextSpan(
+                              text: name,
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30,color: Colors.white),
+                              children: const <TextSpan>[
+                                TextSpan(
+                                  text: '님, 디고와 함께 \n 지구의 온도를 낮춰보세요!',
+                                  style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20, color: Colors.white),
+                                )
+                              ],
                             ),
                           ),
-                          Column(
-                            children: [
-                              Set(btnText: '디고 가이드',),
-                              SetBtn(buttonText: 'FAQ',onPressed: (c) => ServiceFAQ(),),
-                              SetBtn(buttonText: '문의하기',onPressed: (c) => QuestionList(),),
-                              SetBtn(buttonText: '정보 관리',onPressed: (c) => MyPage()),
-                              SetBtn(buttonText: "공지사항",onPressed: (c) => Announcements()),
-                              // setBtn(buttonText: '고객 센터',),
-                              // setBtn(buttonText: '공지 사항',),
-                              SetBtn(buttonText: '서비스 이용 약관', onPressed: (c) => TermsOfUse() , ),
-                              SetBtn(buttonText: '개인정보 처리 방침', onPressed: (c) => PrivacyPolicy() , ),
-                              // setBtn(buttonText: '버전 정보',),
-                            ],
-                          ),
-                        ],
-                      ),
+                        ),
+                        Column(
+                          children: [
+                            Set(btnText: '디고 가이드',),
+                            SetBtn(buttonText: 'FAQ',onPressed: (c) => ServiceFAQ(),),
+                            SetBtn(buttonText: '문의하기',onPressed: (c) => QuestionList(),),
+                            SetBtn(buttonText: '정보 관리',onPressed: (c) => MyPage()),
+                            SetBtn(buttonText: "공지사항",onPressed: (c) => Announcements()),
+                            SetBtn(buttonText: '서비스 이용 약관', onPressed: (c) => TermsOfUse() , ),
+                            SetBtn(buttonText: '개인정보 처리 방침', onPressed: (c) => PrivacyPolicy() , ),
+                            // setBtn(buttonText: '버전 정보',),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          bottomNavigationBar: BottomMenu(),
         ),
+        bottomNavigationBar: BottomMenu(),
       ),
     );
   }

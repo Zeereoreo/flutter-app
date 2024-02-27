@@ -37,86 +37,78 @@ class _ServiceFAQState extends State<ServiceFAQ> with TickerProviderStateMixin {
   }
   @override
   Widget build(BuildContext context) {
-    return Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage('assets/images/bgimage.png'),
-            ),
-          ),
-      child: Scaffold(
-        body: Container(
-          child: Column(
-            children: [
-              const Header(),
-              Container(
-                child: TabBar(
-                  controller: tabController,
-                  labelColor: Colors.white,
-                  labelStyle: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold
-                  ),
-                  unselectedLabelColor: Colors.white38,
-                  unselectedLabelStyle: const TextStyle(
-                    fontSize: 16
-                  ),
-                  indicatorWeight: 3,
-                  tabs: [
-                    Tab(text: "서비스"),
-                    Tab(text: "회원 정보"),
-                    Tab(text: "포인트"),
-                    Tab(text: "기타"),
-                  ],
-                  onTap: (i){
-                    switch(i){
-                      case 0:
-                        getFAQ("서비스 이용");
-                        break;
-                      case 1:
-                        getFAQ("회원 정보");
-                        break;
-                      case 2:
-                        getFAQ("포인트");
-                        break;
-                      case 3:
-                        getFAQ("기타");
-                        break;
-                      default:
-                        break;
-                    }
-                  },
+    return Scaffold(
+      body: Container(
+        child: Column(
+          children: [
+            const Header(),
+            Container(
+              child: TabBar(
+                controller: tabController,
+                labelColor: Colors.white,
+                labelStyle: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold
                 ),
+                unselectedLabelColor: Colors.white38,
+                unselectedLabelStyle: const TextStyle(
+                  fontSize: 16
+                ),
+                indicatorWeight: 3,
+                tabs: [
+                  Tab(text: "서비스"),
+                  Tab(text: "회원 정보"),
+                  Tab(text: "포인트"),
+                  Tab(text: "기타"),
+                ],
+                onTap: (i){
+                  switch(i){
+                    case 0:
+                      getFAQ("서비스 이용");
+                      break;
+                    case 1:
+                      getFAQ("회원 정보");
+                      break;
+                    case 2:
+                      getFAQ("포인트");
+                      break;
+                    case 3:
+                      getFAQ("기타");
+                      break;
+                    default:
+                      break;
+                  }
+                },
               ),
-              Expanded(
-                  child:ListView.builder(
-                      itemCount: faqList == null ? 0 : faqList["items"].length,
-                      itemBuilder: (c, i) {
-                        var faq = faqList["items"][i];
-                        print("아이템빌더 : ${faq}");
-                        return Card(
-                          color: Colors.white38,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)
-                          ),
-                          child: ExpansionTile(
-                            title: Text(faq["title"],
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white
-                              ),),
-                            children: [
-                              Container(
-                                child: Text("${faq["content"]}"),
-                              )
-                              ],
-                          ),
-                        );
-                      })
-              ),
-            ],
-          ),
+            ),
+            Expanded(
+                child:ListView.builder(
+                    itemCount: faqList == null ? 0 : faqList["items"].length,
+                    itemBuilder: (c, i) {
+                      var faq = faqList["items"][i];
+                      print("아이템빌더 : ${faq}");
+                      return Card(
+                        color: Colors.white38,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)
+                        ),
+                        child: ExpansionTile(
+                          title: Text(faq["title"],
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white
+                            ),),
+                          children: [
+                            Container(
+                              child: Text("${faq["content"]}"),
+                            )
+                            ],
+                        ),
+                      );
+                    })
+            ),
+          ],
         ),
       ),
     );

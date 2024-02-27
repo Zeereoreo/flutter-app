@@ -30,45 +30,37 @@ class _PasswordChangeState extends State<PasswordChange> {
   @override
   Widget build(BuildContext context) {
 
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: AssetImage('assets/images/bgimage.png'), // 배경 이미지
-        ),
-      ),
-      child: Scaffold(
-        body: Container(
-          margin: EdgeInsets.all(10),
-          child: Column(
-            children: [
-              const Header(),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        child: Column(
-                          children: [
-                            infoName("아이디"),
-                            userInput("아이디를 입력해주세요.", _idInfo, TextInputType.text),
-                            infoName("핸드폰번호"),
-                            PhoneWidet(),
-                            infoName("새로운 비밀번호"),
-                            userInput("새로운 비밀번호를 입력해주세요.", _newPassword, TextInputType.text),
-                            infoName("새로운 비밀번호 확인"),
-                            userInput("새로운 비밀번호를 다시 입력해주세요.", _checkPassword, TextInputType.text),
-                          ],
-                        ),
+    return Scaffold(
+      body: Container(
+        margin: EdgeInsets.all(10),
+        child: Column(
+          children: [
+            const Header(),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      child: Column(
+                        children: [
+                          infoName("아이디"),
+                          userInput("아이디를 입력해주세요.", _idInfo, TextInputType.text),
+                          infoName("핸드폰번호"),
+                          PhoneWidet(),
+                          infoName("새로운 비밀번호"),
+                          userInput("새로운 비밀번호를 입력해주세요.", _newPassword, TextInputType.text),
+                          infoName("새로운 비밀번호 확인"),
+                          userInput("새로운 비밀번호를 다시 입력해주세요.", _checkPassword, TextInputType.text),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-              PostBtn(btnName: "변경", btnFunction: postChange),
-            ],
-          ),
+            ),
+            PostBtn(btnName: "변경", btnFunction: postChange),
+          ],
         ),
       ),
     );

@@ -19,14 +19,7 @@ class MyPage extends StatefulWidget {
 class _MyPageState extends State<MyPage> {
   @override
   Widget build(BuildContext context) {
-    return  Container(
-        decoration: BoxDecoration(
-        image: DecorationImage(
-        fit: BoxFit.cover,
-        image: AssetImage('assets/images/bgimage.png'), // 배경 이미지
-    ),
-    ),
-    child: Scaffold(
+    return  Scaffold(
       body: Container(
         margin: EdgeInsets.all(10),
         child: Column(
@@ -56,7 +49,6 @@ class _MyPageState extends State<MyPage> {
           ],
         ),
       ),
-    )
     );
   }
 

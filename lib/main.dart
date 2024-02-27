@@ -21,6 +21,32 @@ class MyHttpOverrides extends HttpOverrides{
   }
 }
 
+ThemeData initThemeData(){
+  return ThemeData(
+
+  );
+}
+TextTheme textTheme(Color textColor) {
+  return TextTheme(
+    displayLarge: TextStyle(color: textColor, fontWeight: FontWeight.bold,fontSize: 24),
+    displayMedium: TextStyle(color: textColor, fontWeight: FontWeight.bold,fontSize: 20),
+    displaySmall: TextStyle(color: textColor, fontWeight: FontWeight.bold,fontSize: 16),
+  );
+}
+
+AppBarTheme appBarTheme() {
+  return AppBarTheme(
+    centerTitle: false,
+    color: Colors.black,
+    elevation: 0.0,
+    titleTextStyle: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+    ),
+  );
+}
+
 void main () async {
   KakaoSdk.init(nativeAppKey: '413db6c1481faf48ecd19af7a9b474e4');
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,7 +73,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-
+    Color textColor = Colors.black; // 예시로 텍스트 색상을 검정색으로 설정
+    TextTheme customTextTheme = textTheme(textColor); // 텍스트 테마 초기화
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthStore(accessToken)),
@@ -61,7 +88,9 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         initialRoute: "/login",
         theme: ThemeData(
-          scaffoldBackgroundColor: Colors.transparent,
+          scaffoldBackgroundColor: Colors.white,
+          textTheme: customTextTheme, // 커스텀 텍스트 테마 적용
+          appBarTheme: appBarTheme(), // 앱 바 테마 적용
         ),
         routes: {
           "/" : (context) => Home(accessToken: accessToken),
@@ -82,6 +111,7 @@ class _MyAppState extends State<MyApp> {
 
 class AuthStore extends ChangeNotifier{
   String _accessToken;
+  var refreshToken;
 
   AuthStore(this._accessToken);
 
@@ -92,6 +122,8 @@ class AuthStore extends ChangeNotifier{
     notifyListeners();
     print("엑세스토큰 $accessToken");
   }
+
+  notifyListeners();
 }
 
 class userStore extends ChangeNotifier{

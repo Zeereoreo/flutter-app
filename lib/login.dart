@@ -32,7 +32,8 @@ class _LogState extends State<Log> {
   bool _idError = false;
   bool _passwordError = false;
   final storage = FlutterSecureStorage();
-  dynamic userInfo = '';
+  dynamic userInfoAccessToken = '';
+  dynamic userInfoRefreshToken = '';
 
   @override
   void initState() {
@@ -45,13 +46,14 @@ class _LogState extends State<Log> {
   _asyncMethod() async {
     // read 함수로 key값에 맞는 정보를 불러오고 데이터타입은 String 타입
     // 데이터가 없을때는 null을 반환
-    userInfo = await storage.read(key:'login');
+    userInfoAccessToken = await storage.read(key:'accessToken');
+    userInfoRefreshToken = await storage.read(key:'refreshToken');
 
     // user의 정보가 있다면 로그인 후 들어가는 첫 페이지로 넘어가게 합니다.
-    if (userInfo != null) {
+    if (userInfoRefreshToken != null) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => Home(accessToken: userInfo),
+          builder: (context) => Home(accessToken: userInfoAccessToken),
         ),
       );
     } else {
@@ -62,121 +64,163 @@ class _LogState extends State<Log> {
   @override
   Widget build(BuildContext context) {
   print("${context.read<AuthStore>().accessToken}");
+  print("${context.read<AuthStore>().refreshToken}");
 
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: AssetImage('assets/images/bgimage.png'), // 배경 이미지
-        ),
-      ),
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: Container(
-            // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
-            width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              // crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height/5,
-                  margin: EdgeInsets.only(top: 150,right: 20,left: 20,bottom: 20),
-                  // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
-                  child: const Image(image: AssetImage('assets/images/deego_logo.png')),
-                ),
-                Container(
-                  margin: EdgeInsets.all(10),
-                  // decoration: BoxDecoration(border: Border.all(color: Colors.black)),
-                  width: double.infinity,
-                  child: Column(
-                    children: [
-                       TextField(
-                        onChanged: (text){
-                          setState(() {
-                            _idError = text.length < 2 || text.length > 16 ;
-
-                            id = text;
-                          });
-                        },
-                        decoration: InputDecoration(
-                          labelText: '아이디',
-                          hintText: 'Enter your id',
-                          errorText: _idError ? '영어와 숫자로만 입력해주세요.' : null,
-                          filled: true,
-                          fillColor: Color(0xFFF5F7FB),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(width: 1, color: Colors.white),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(width: 1, color: Color(0xFFF5F7FB)),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          ),
-                        ),
-                        keyboardType: TextInputType.text,
-                        textInputAction: TextInputAction.next,
-                       ),
-                      SizedBox(height: 10),
-                      TextField(
-                         onChanged: (text){
-                           setState(() {
-                             _passwordError = text.length < 8 || text.length > 16;
-                             password = text;
-                           });
-                         },
-                        decoration: InputDecoration(
-                          labelText: '비밀번호',
-                          hintText: 'Enter your password',
-                          errorText: _passwordError ? '올바른 비밀번호를 입력하세요.' : null,
-                          labelStyle: TextStyle(color: Colors.grey),
-                          filled: true,
-                          fillColor: Color(0xFFF5F7FB),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(width: 1, color: Colors.white),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(width: 1, color: Color(0xFFF5F7FB)),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          ),
-                        ),
-                        keyboardType: TextInputType.visiblePassword,
-                        textInputAction: TextInputAction.done,
-                        obscureText: true,
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Container(
+          // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+          width: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            // crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height*0.15,
+                margin: EdgeInsets.only(top: 100,right: 20,left: 20,bottom: 10),
+                // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+                child: const Image(image: AssetImage('assets/images/deego_logo.png')),
+              ),
+              Container(
+                margin: EdgeInsets.all(10),
+                // decoration: BoxDecoration(border: Border.all(color: Colors.black)),
+                width: double.infinity,
+                child: Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(10),
+                      child: Text(
+                        "아이디",
+                        textAlign: TextAlign.start,
+                        style: TextStyle(fontSize: 16),
                       ),
-                      SizedBox(height: 10),
-                      SizedBox(
-                        width: 400,
-                        height: 40,
-                        child: ElevatedButton(
-                            onPressed: (){
-                              _loginToServer();
-                            },
-                            child: Text('로그인'),
-                            style:
-                            ElevatedButton.styleFrom(
-                              backgroundColor: !_idError && !_passwordError ?
-                                  Color(0xFF00BEFF)
-                                  :
-                                  Color(0xFFB2EBFC)
+                    ),
+                     TextField(
+                      onChanged: (text){
+                        setState(() {
+                          _idError = text.length < 2 || text.length > 16 ;
+
+                          id = text;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        hintText: '아이디를 입력해 주세요.',
+                        errorText: _idError ? '영어와 숫자로만 입력해주세요.' : null,
+                        filled: true,
+                        fillColor: Color(0xFFF5F7FB),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          borderSide: BorderSide(width: 1, color: Colors.white),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          borderSide: BorderSide(width: 1, color: Color(0xFFF5F7FB)),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                      ),
+                      keyboardType: TextInputType.text,
+                      textInputAction: TextInputAction.next,
+                     ),
+                    SizedBox(height: 10),
+                    Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(10),
+                      child: Text(
+                        "비밀번호",
+                        textAlign: TextAlign.start,
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                    TextField(
+                       onChanged: (text){
+                         setState(() {
+                           _passwordError = text.length < 8 || text.length > 16;
+                           password = text;
+                         });
+                       },
+                      decoration: InputDecoration(
+                        hintText: '비밀번호를 입력해 주세요.',
+                        errorText: _passwordError ? '올바른 비밀번호를 입력하세요.' : null,
+                        labelStyle: TextStyle(color: Colors.grey),
+                        filled: true,
+                        fillColor: Color(0xFFF5F7FB),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          borderSide: BorderSide(width: 1, color: Colors.white),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          borderSide: BorderSide(width: 1, color: Color(0xFFF5F7FB)),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                      ),
+                      keyboardType: TextInputType.visiblePassword,
+                      textInputAction: TextInputAction.done,
+                      obscureText: true,
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.85,
+                      height: 50,
+                      child: ElevatedButton(
+                          onPressed: (){
+                            _loginToServer();
+                          },
+                          child: Text('로그인',),
+                          style:
+                          ElevatedButton.styleFrom(
+
+                            backgroundColor: !_idError && !_passwordError ?
+                                Color(0xFF0099FF)
+                                :
+                                Color(0xFFB2EBFC),
+
+                          ),
+                      ),
+                    ),
+                    TextBtn(),
+                    SizedBox(height: 100,),
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Divider(
+                              height: 20,
+                              thickness: 2,
+                              color: Color(0xFFA3A3A3),
                             ),
-                        ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Text(
+                              "SNS 계정으로 로그인",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Color(0xFFA3A3A3)),
+                            ),
+                          ),
+                          Expanded(
+                            child: Divider(
+                              height: 20,
+                              thickness: 2,
+                              color: Color(0xFFA3A3A3),
+                            ),
+                          ),
+                        ],
                       ),
-                      TextBtn(),
-                      OuthBtn(),
-                    ],
-                  ),
-                )
-              ],
-            ),
+                    ),
+                    OuthBtn(),
+                  ],
+                ),
+              )
+            ],
           ),
         ),
       ),
@@ -224,6 +268,28 @@ class _LogState extends State<Log> {
     }
 
   }
+
+// getAutoToken()async{
+//   try{
+//     var res = await http.get(Uri.parse("https://test.deegolabs.kr/mobile/auth/auto"),
+//         headers: {
+//           "X-ACCESS-TOKEN" : userInfoAccessToken
+//         }
+//     );
+//     var result = json.decode(res.body);
+//     print("refreshToken  =  ${result}");
+//     setState(() {
+//       userInfoAccessToken = result["accessToken"];
+//       context.read<AuthStore>().refreshToken = result["accessToken"];
+//     });
+//     await storage.write(
+//       key: 'refreshToken',
+//       value: result['accessToken'],
+//     );
+//   }catch(e){
+//     print(e);
+//   }
+// }
 }
 Future<void> getUserPoint(BuildContext context) async {
   print("context : ${context}");
@@ -256,6 +322,7 @@ class TextBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.all(10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -263,21 +330,33 @@ class TextBtn extends StatelessWidget {
               onPressed: (){
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => FindId()));
               },
-              child: Text('아이디 찾기', style: TextStyle(color: Colors.white),),
-          ),
+              child: Text('아이디 찾기',
+                style: TextStyle(color: Colors.black),
+              ),
 
+          ),
+          Text(
+            '|',
+            style: TextStyle(fontSize: 16),
+          ),
           TextButton(
               onPressed: (){
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => FindPassword()));
               },
-              child: Text('비밀번호 찾기', style: TextStyle(color: Colors.white),),
+              child: Text('비밀번호 찾기',
+                style: TextStyle(color: Colors.black),),
 
+          ),
+          Text(
+            '|',
+            style: TextStyle(fontSize: 16),
           ),
            TextButton(
               onPressed: (){
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => PhoneAuth()));
               },
-              child: Text('회원가입', style: TextStyle(color: Colors.white),),
+              child: Text('회원가입',
+                style: TextStyle(color: Colors.black),),
           )
         ],
       ),

@@ -31,43 +31,35 @@ class _AnnouncementsState extends State<Announcements> {
       if (annList == null || annList.isEmpty) {
         return nullList(); // 데이터가 없을 때 nullList 위젯을 반환
       } else {
-        return Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage('assets/images/bgimage.png'),
-            ),
-          ),
-          child: Scaffold(
-            body: Container(
-              child: Column(
-                children: [
-                  const Header(),
-                  Expanded(
-                    child: ListView.builder(
-                      padding: EdgeInsets.zero,
-                      shrinkWrap: true,
-                      itemCount: annList.length,
-                      itemBuilder: (context, index) {
-                        var item = annList[index];
-                        return Card(
-                          color: Colors.white38,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: ExpansionTile(
-                            title: onText(item["title"]),
-                            children: [
-                              Container(
-                                child: onText(item["content"]),
-                              )
-                            ],
-                          ),
-                        );
-                      },
-                    ),
+        return Scaffold(
+          body: Container(
+            child: Column(
+              children: [
+                const Header(),
+                Expanded(
+                  child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    itemCount: annList.length,
+                    itemBuilder: (context, index) {
+                      var item = annList[index];
+                      return Card(
+                        color: Colors.white38,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        child: ExpansionTile(
+                          title: onText(item["title"]),
+                          children: [
+                            Container(
+                              child: onText(item["content"]),
+                            )
+                          ],
+                        ),
+                      );
+                    },
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         );

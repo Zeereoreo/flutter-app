@@ -32,178 +32,171 @@ class _FindIdState extends State<FindId> {
   @override
   Widget build(BuildContext context) {
     print("$name");
-    return Container(
-        decoration: BoxDecoration(
-        image: DecorationImage(
-        fit: BoxFit.cover,
-        image: AssetImage('assets/images/bgimage.png'), // 배경 이미지
-      ),),
-      child: Scaffold(
-        body: Container(
-          child: Column(
-            children: [
-              Container(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height/5,
-                margin: EdgeInsets.only(top: 150,right: 20,left: 20,bottom: 20),
-                // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
-                child: const Image(image: AssetImage('assets/images/deego_logo.png')),
-              ),
-              Container(
-                margin: EdgeInsets.all(10),
-                width: double.infinity,
-                child: Column(
-                  children: [
-                    TextField(
-                      onChanged: (text){
-                        setState(() {
-                          _nameError = text.length < 2 || text.length > 10 ;
-                          name = text;
-                        });
-                      },
-                      decoration: InputDecoration(
-                        labelText: '이름',
-                        hintText: "이름을 입력해 주세요.",
-                        errorText: _nameError ? "2글자 이상 작성해 주세요." : null,
-                        filled: true,
-                        fillColor: const Color(0xFFF5F7FB),
-                        focusedBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          borderSide: BorderSide(width: 1, color: Colors.white),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          borderSide: BorderSide(width: 1, color: Color(0xFFF5F7FB)),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        ),
+    return Scaffold(
+      body: Container(
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height/5,
+              margin: EdgeInsets.only(top: 150,right: 20,left: 20,bottom: 20),
+              // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+              child: const Image(image: AssetImage('assets/images/deego_logo.png')),
+            ),
+            Container(
+              margin: EdgeInsets.all(10),
+              width: double.infinity,
+              child: Column(
+                children: [
+                  TextField(
+                    onChanged: (text){
+                      setState(() {
+                        _nameError = text.length < 2 || text.length > 10 ;
+                        name = text;
+                      });
+                    },
+                    decoration: InputDecoration(
+                      labelText: '이름',
+                      hintText: "이름을 입력해 주세요.",
+                      errorText: _nameError ? "2글자 이상 작성해 주세요." : null,
+                      filled: true,
+                      fillColor: const Color(0xFFF5F7FB),
+                      focusedBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(width: 1, color: Colors.white),
                       ),
-                        keyboardType: TextInputType.name,
-                        textInputAction: TextInputAction.next,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(width: 1, color: Color(0xFFF5F7FB)),
                       ),
-                    SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            onChanged: (text){
-                              setState(() {
-                                _phoneError = text.length < 10 || text.length > 12 ;
-                                phone = text;
-                                blueBtn = text.length == 11;
-                              });
-                            },
-                            decoration: InputDecoration(
-                              labelText: '핸드폰 번호',
-                              hintText: "-를 제외한 핸드폰번호를 입력해주세요.",
-                              errorText: _phoneError ? "제대로 된 핸드폰 번호를 입력해주세요." : null,
-                              filled: true,
-                              fillColor: const Color(0xFFF5F7FB),
-                              focusedBorder: const OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                                borderSide: BorderSide(width: 1, color: Colors.white),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                                borderSide: BorderSide(width: 1, color: Color(0xFFF5F7FB)),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                              ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      ),
+                    ),
+                      keyboardType: TextInputType.name,
+                      textInputAction: TextInputAction.next,
+                    ),
+                  SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          onChanged: (text){
+                            setState(() {
+                              _phoneError = text.length < 10 || text.length > 12 ;
+                              phone = text;
+                              blueBtn = text.length == 11;
+                            });
+                          },
+                          decoration: InputDecoration(
+                            labelText: '핸드폰 번호',
+                            hintText: "-를 제외한 핸드폰번호를 입력해주세요.",
+                            errorText: _phoneError ? "제대로 된 핸드폰 번호를 입력해주세요." : null,
+                            filled: true,
+                            fillColor: const Color(0xFFF5F7FB),
+                            focusedBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                              borderSide: BorderSide(width: 1, color: Colors.white),
                             ),
-                            keyboardType: TextInputType.number,
-                            textInputAction: TextInputAction.done,
-                            enabled: !showAdditionalInput,
-                            maxLength: 11,
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                              borderSide: BorderSide(width: 1, color: Color(0xFFF5F7FB)),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            ),
                           ),
+                          keyboardType: TextInputType.number,
+                          textInputAction: TextInputAction.done,
+                          enabled: !showAdditionalInput,
+                          maxLength: 11,
                         ),
-                        SizedBox(width: 10,),
-                        ElevatedButton(onPressed: blueBtn
-                            ? () async {
-                          sendPhoneNumberToServer(phone);
-                          setState(() {
-                            showAdditionalInput = true;
-                            blueBtn = false;
-                          });
-                        }
-                            : null,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: blueBtn ? Colors.blue : Colors.grey,
+                      ),
+                      SizedBox(width: 10,),
+                      ElevatedButton(onPressed: blueBtn
+                          ? () async {
+                        sendPhoneNumberToServer(phone);
+                        setState(() {
+                          showAdditionalInput = true;
+                          blueBtn = false;
+                        });
+                      }
+                          : null,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: blueBtn ? Colors.blue : Colors.grey,
+                          ),
+                          child: Text("인증하기"))
+                    ],
+                  ),
+                  SizedBox(height: 10,),
+                  if (showAdditionalInput)
+                    Container(
+                      padding: EdgeInsets.all(15),
+                      child: Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                  onChanged: (text) {
+                                    setState(() {
+                                      authNum = text;
+                                      showAuthBtn = text.length == 4;
+                                    });
+                                  },
+                                  decoration: InputDecoration(
+                                    labelText: "인증 번호",
+                                    hintText: "받으신 인증번호를 입력해 주세요",
+                                  ),
+                                  keyboardType: TextInputType.number,
+                                  textInputAction: TextInputAction.done,
+                                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                  maxLength: 4,
+                                  enabled: !authenticationCompleted
+                              ),
                             ),
-                            child: Text("인증하기"))
-                      ],
+                            SizedBox(width: 16.0),
+                            Container(
+                              margin: EdgeInsets.only(top: 10),
+                              padding: EdgeInsets.all(10),
+                              child: ElevatedButton(
+                                onPressed: showAuthBtn
+                                    ? () async {
+                                  await sendAuthCodeToServer(authNum, phoneUUID);
+                                  setState(() {
+
+                                  });
+                                }
+                                    : null,
+                                style: ElevatedButton.styleFrom(
+                                  primary: showAuthBtn ? Colors.blue : Colors.grey,
+                                ),
+                                child: Text("인증완료"),
+                              ),
+                            ),
+                          ]
+                      ),
                     ),
                     SizedBox(height: 10,),
-                    if (showAdditionalInput)
-                      Container(
-                        padding: EdgeInsets.all(15),
-                        child: Row(
-                            children: [
-                              Expanded(
-                                child: TextField(
-                                    onChanged: (text) {
-                                      setState(() {
-                                        authNum = text;
-                                        showAuthBtn = text.length == 4;
-                                      });
-                                    },
-                                    decoration: InputDecoration(
-                                      labelText: "인증 번호",
-                                      hintText: "받으신 인증번호를 입력해 주세요",
-                                    ),
-                                    keyboardType: TextInputType.number,
-                                    textInputAction: TextInputAction.done,
-                                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                                    maxLength: 4,
-                                    enabled: !authenticationCompleted
-                                ),
-                              ),
-                              SizedBox(width: 16.0),
-                              Container(
-                                margin: EdgeInsets.only(top: 10),
-                                padding: EdgeInsets.all(10),
-                                child: ElevatedButton(
-                                  onPressed: showAuthBtn
-                                      ? () async {
-                                    await sendAuthCodeToServer(authNum, phoneUUID);
-                                    setState(() {
-
-                                    });
-                                  }
-                                      : null,
-                                  style: ElevatedButton.styleFrom(
-                                    primary: showAuthBtn ? Colors.blue : Colors.grey,
-                                  ),
-                                  child: Text("인증완료"),
-                                ),
-                              ),
-                            ]
-                        ),
-                      ),
-                      SizedBox(height: 10,),
-                    ElevatedButton(onPressed: (){
-                      findId();
-                    }, child: Text("아이디 찾기"),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: !_nameError && !_phoneError ?
-                        Color(0xFF00BEFF) :
-                        Color(0xFFB2EBFC)
-                      ),
+                  ElevatedButton(onPressed: (){
+                    findId();
+                  }, child: Text("아이디 찾기"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: !_nameError && !_phoneError ?
+                      Color(0xFF00BEFF) :
+                      Color(0xFFB2EBFC)
                     ),
-                    // Visibility(
-                    //   visible: id.isNotEmpty,
-                    //   child: Text(id,style: TextStyle(
-                    //     color: Colors.white,
-                    //     fontWeight: FontWeight.bold,
-                    //     fontSize: 20,
-                    //   ),),
-                    // )
-                  ],
-                ),
-              )
-            ],
-          ),
+                  ),
+                  // Visibility(
+                  //   visible: id.isNotEmpty,
+                  //   child: Text(id,style: TextStyle(
+                  //     color: Colors.white,
+                  //     fontWeight: FontWeight.bold,
+                  //     fontSize: 20,
+                  //   ),),
+                  // )
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );

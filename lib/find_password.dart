@@ -32,114 +32,107 @@ class _FindPasswordState extends State<FindPassword> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: AssetImage('assets/images/bgimage.png'), // 배경 이미지
-        ),),
-      child: Scaffold(
-        body: Container(
-          child: Column(
-            children: [
-              Container(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height/5,
-                margin: EdgeInsets.only(top: 150,right: 20,left: 20,bottom: 20),
-                // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
-                child: const Image(image: AssetImage('assets/images/deego_logo.png')),
-              ),
-              Container(
-                margin: EdgeInsets.all(10),
-                width: double.infinity,
-                child: Column(
-                  children: [
-                    TextField(
-                      onChanged: (text){
-                        setState(() {
-                          _nameError = text.length < 2 || text.length > 10 ;
-                          name = text;
-                        });
-                      },
-                      decoration: InputDecoration(
-                        labelText: '아이디',
-                        hintText: "아이디를 입력해 주세요.",
-                        errorText: _nameError ? "2글자 이상 작성해 주세요." : null,
-                        filled: true,
-                        fillColor: const Color(0xFFF5F7FB),
-                        focusedBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          borderSide: BorderSide(width: 1, color: Colors.white),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          borderSide: BorderSide(width: 1, color: Color(0xFFF5F7FB)),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        ),
+    return Scaffold(
+      body: Container(
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height/5,
+              margin: EdgeInsets.only(top: 150,right: 20,left: 20,bottom: 20),
+              // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+              child: const Image(image: AssetImage('assets/images/deego_logo.png')),
+            ),
+            Container(
+              margin: EdgeInsets.all(10),
+              width: double.infinity,
+              child: Column(
+                children: [
+                  TextField(
+                    onChanged: (text){
+                      setState(() {
+                        _nameError = text.length < 2 || text.length > 10 ;
+                        name = text;
+                      });
+                    },
+                    decoration: InputDecoration(
+                      labelText: '아이디',
+                      hintText: "아이디를 입력해 주세요.",
+                      errorText: _nameError ? "2글자 이상 작성해 주세요." : null,
+                      filled: true,
+                      fillColor: const Color(0xFFF5F7FB),
+                      focusedBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(width: 1, color: Colors.white),
                       ),
-                      keyboardType: TextInputType.name,
-                      textInputAction: TextInputAction.next,
-                    ),
-                    SizedBox(height: 10),
-                    TextField(
-                      onChanged: (text){
-                        setState(() {
-                          RegExp PasswordRegex = RegExp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?~^<>,.&+=])[A-Za-z\d$@$!%*#?~^<>,.&+=]{8,16}$');
-                          bool isValid = PasswordRegex.hasMatch(text);
-                          _passwordError = text.length < 8 || text.length > 16 || !isValid;
-                          newPassword = text;
-                        });
-                      },
-                      decoration: InputDecoration(
-                        labelText: '새로운 비밀번호',
-                        hintText: "특수문자와 영어포함한 8글자 이상 16글자 이하로 입력해주세요",
-                        errorText: _passwordError ? "올바른 비밀번호를 입력하세요." : null,
-                        filled: true,
-                        fillColor: const Color(0xFFF5F7FB),
-                        focusedBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          borderSide: BorderSide(width: 1, color: Colors.white),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          borderSide: BorderSide(width: 1, color: Color(0xFFF5F7FB)),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(width: 1, color: Color(0xFFF5F7FB)),
                       ),
-                      keyboardType: TextInputType.text,
-                      textInputAction: TextInputAction.next,
-                      obscureText: true,
-                    ),
-                    SizedBox(height: 10),
-                    PhoneWidet(),
-                    SizedBox(height: 10,),
-                    ElevatedButton(onPressed: (){
-                      changePassword();
-                    }, child: Text("비밀번호 재설정"),
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: !_nameError && !_phoneError ?
-                          Color(0xFF00BEFF) :
-                          Color(0xFFB2EBFC)
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
                       ),
                     ),
-                    Visibility(
-                      visible: id.isNotEmpty,
-                      child: Text(id,style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
+                    keyboardType: TextInputType.name,
+                    textInputAction: TextInputAction.next,
+                  ),
+                  SizedBox(height: 10),
+                  TextField(
+                    onChanged: (text){
+                      setState(() {
+                        RegExp PasswordRegex = RegExp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?~^<>,.&+=])[A-Za-z\d$@$!%*#?~^<>,.&+=]{8,16}$');
+                        bool isValid = PasswordRegex.hasMatch(text);
+                        _passwordError = text.length < 8 || text.length > 16 || !isValid;
+                        newPassword = text;
+                      });
+                    },
+                    decoration: InputDecoration(
+                      labelText: '새로운 비밀번호',
+                      hintText: "특수문자와 영어포함한 8글자 이상 16글자 이하로 입력해주세요",
+                      errorText: _passwordError ? "올바른 비밀번호를 입력하세요." : null,
+                      filled: true,
+                      fillColor: const Color(0xFFF5F7FB),
+                      focusedBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(width: 1, color: Colors.white),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(width: 1, color: Color(0xFFF5F7FB)),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      ),
+                    ),
+                    keyboardType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    obscureText: true,
+                  ),
+                  SizedBox(height: 10),
+                  PhoneWidet(),
+                  SizedBox(height: 10,),
+                  ElevatedButton(onPressed: (){
+                    changePassword();
+                  }, child: Text("비밀번호 재설정"),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: !_nameError && !_phoneError ?
+                        Color(0xFF00BEFF) :
+                        Color(0xFFB2EBFC)
+                    ),
+                  ),
+                  Visibility(
+                    visible: id.isNotEmpty,
+                    child: Text(id,style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
 
-                      ),),
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
+                    ),),
+                  )
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );

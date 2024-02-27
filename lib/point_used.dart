@@ -42,42 +42,34 @@ class _PointUsedState extends State<PointUsed> {
     }
 
     // 데이터가 있을 때 UI 렌더링
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: AssetImage('assets/images/bgimage.png'),
-        ),
-      ),
-      child: Scaffold(
-        body: Container(
-          child: Column(
-            children: [
-              const Header(),
-              Expanded(
-                child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  itemCount: usedList['page']['items'].length,
-                  itemBuilder: (context, index) {
-                    var item = usedList['page']['items'][index];
-                    return Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.white, width: 1),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(child: onText(item['used'] ?? "")),
-                          onText((item["point"] != null && item["point"] > 0) ? "+${item["point"]}" : (item["point"] ?? "").toString()),
-                        ],
-                      ),
-                    );
-                  },
-                ),
+    return Scaffold(
+      body: Container(
+        child: Column(
+          children: [
+            const Header(),
+            Expanded(
+              child: ListView.builder(
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                itemCount: usedList['page']['items'].length,
+                itemBuilder: (context, index) {
+                  var item = usedList['page']['items'][index];
+                  return Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white, width: 1),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(child: onText(item['used'] ?? "")),
+                        onText((item["point"] != null && item["point"] > 0) ? "+${item["point"]}" : (item["point"] ?? "").toString()),
+                      ],
+                    ),
+                  );
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

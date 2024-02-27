@@ -37,80 +37,72 @@ class _QuestionListState extends State<QuestionList> with TickerProviderStateMix
   }
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: AssetImage('assets/images/bgimage.png'),
-        ),
-      ),
-      child: Scaffold(
-        body: Container(
-          child: Column(
-            children: [
-              const Header(),
-              Container(
-                child: TabBar(
-                  controller: tabController,
-                  labelColor: Colors.white,
-                  labelStyle: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold
-                  ),
-                  unselectedLabelColor: Colors.white38,
-                  unselectedLabelStyle: const TextStyle(
-                      fontSize: 16
-                  ),
-                  indicatorWeight: 3,
-                  tabs: [
-                    Tab(text: "문의하기"),
-                    Tab(text: "내 문의 내역"),
-                  ],
-                  onTap: (i){
-                        if (i == 0) {
-                        setState(() {
-                        _selectedTabIndex = i;
-                        });
-                        } else if (i == 1) {
-                        setState(() {
-                        _selectedTabIndex = i;
-                        });
-                        getQuestion();
-                        }
-                  },
+    return Scaffold(
+      body: Container(
+        child: Column(
+          children: [
+            const Header(),
+            Container(
+              child: TabBar(
+                controller: tabController,
+                labelColor: Colors.white,
+                labelStyle: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold
                 ),
+                unselectedLabelColor: Colors.white38,
+                unselectedLabelStyle: const TextStyle(
+                    fontSize: 16
+                ),
+                indicatorWeight: 3,
+                tabs: [
+                  Tab(text: "문의하기"),
+                  Tab(text: "내 문의 내역"),
+                ],
+                onTap: (i){
+                      if (i == 0) {
+                      setState(() {
+                      _selectedTabIndex = i;
+                      });
+                      } else if (i == 1) {
+                      setState(() {
+                      _selectedTabIndex = i;
+                      });
+                      getQuestion();
+                      }
+                },
               ),
-              Expanded(
-                  child:
-                  _selectedTabIndex == 0 ? MyQuestionWidget()
-                  : ListView.builder(
-                      itemCount: qnaList == null ? 0 : qnaList["items"].length,
-                      itemBuilder: (c, i) {
-                        var qna = qnaList["items"][i];
-                        print("아이템빌더 : ${qna["questionDTO"]["title"]}");
-                        return Card(
-                          color: Colors.white38,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)
-                          ),
-                          child: ExpansionTile(
-                            title: Text(qna["questionDTO"]["title"],
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white
-                              ),),
-                            children: [
-                              Container(
-                                child: Text("${qna["questionDTO"]["content"]}"),
-                              )
-                            ],
-                          ),
-                        );
-                      })
-              ),
-            ],
-          ),
+            ),
+            Expanded(
+                child:
+                _selectedTabIndex == 0 ? MyQuestionWidget()
+                : ListView.builder(
+                    itemCount: qnaList == null ? 0 : qnaList["items"].length,
+                    itemBuilder: (c, i) {
+                      var qna = qnaList["items"][i];
+                      print("아이템빌더 : ${qna["questionDTO"]["title"]}");
+                      return Card(
+                        color: Colors.white38,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)
+                        ),
+                        child: ExpansionTile(
+                          title: Text(qna["questionDTO"]["title"],
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white
+                            ),),
+                          children: [
+                            Container(
+                              child: Text("${qna["questionDTO"]["content"]}"),
+                            )
+                          ],
+                        ),
+                      );
+                    })
+            ),
+          ],
         ),
       ),
     );

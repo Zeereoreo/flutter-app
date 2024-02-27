@@ -38,45 +38,37 @@ class _UserInfoState extends State<UserInfo> {
   Widget build(BuildContext context) {
 
 
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: AssetImage('assets/images/bgimage.png'), // 배경 이미지
-        ),
-      ),
-      child: Scaffold(
-        body: Container(
-          margin: EdgeInsets.all(10),
-          child: Column(
-            children: [
-              const Header(),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        child: Column(
-                          children: [
-                            infoName("아이디"),
-                            userInput("변경할 아이디를 입력하세요", _idInfo, TextInputType.text),
-                            infoName("이름"),
-                            userInput("변경할 이름을 입력하세요", _nameInfo, TextInputType.name),
-                            infoName("이메일"),
-                            userInput("변경할 이메일을 입력하세요", _emailInfo, TextInputType.emailAddress),
-                            infoName("휴대전화 번호"),
-                            PhoneWidet(),
-                          ],
-                        ),
+    return Scaffold(
+      body: Container(
+        margin: EdgeInsets.all(10),
+        child: Column(
+          children: [
+            const Header(),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      child: Column(
+                        children: [
+                          infoName("아이디"),
+                          userInput("변경할 아이디를 입력하세요", _idInfo, TextInputType.text),
+                          infoName("이름"),
+                          userInput("변경할 이름을 입력하세요", _nameInfo, TextInputType.name),
+                          infoName("이메일"),
+                          userInput("변경할 이메일을 입력하세요", _emailInfo, TextInputType.emailAddress),
+                          infoName("휴대전화 번호"),
+                          PhoneWidet(),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-              PostBtn(btnName: "변경", btnFunction: postChange),
-            ],
-          ),
+            ),
+            PostBtn(btnName: "변경", btnFunction: postChange),
+          ],
         ),
       ),
     );
