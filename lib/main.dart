@@ -34,18 +34,29 @@ TextTheme textTheme(Color textColor) {
   );
 }
 
-AppBarTheme appBarTheme() {
-  return AppBarTheme(
-    centerTitle: false,
-    color: Colors.black,
-    elevation: 0.0,
-    titleTextStyle: TextStyle(
-      fontSize: 20,
-      fontWeight: FontWeight.bold,
-      color: Colors.black,
+AppBar appBarTheme(BuildContext context, String title, bool backButton) {
+  return AppBar(
+    title: Text(
+      title,
+      style: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
+      ),
     ),
+    centerTitle: true,
+    backgroundColor: Colors.white,
+    elevation: 0.0,
+    leading: backButton ? IconButton(
+      icon: Icon(Icons.arrow_back),
+      color: Colors.black,
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    ) : null,
   );
 }
+
 
 void main () async {
   KakaoSdk.init(nativeAppKey: '413db6c1481faf48ecd19af7a9b474e4');
@@ -90,7 +101,6 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
           textTheme: customTextTheme, // 커스텀 텍스트 테마 적용
-          appBarTheme: appBarTheme(), // 앱 바 테마 적용
         ),
         routes: {
           "/" : (context) => Home(accessToken: accessToken),

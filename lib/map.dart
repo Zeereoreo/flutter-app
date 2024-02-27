@@ -64,6 +64,7 @@ class _NaverMapAppState extends State<NaverMapApp> {
            return Future(() => false);
          },
          child: Scaffold(
+           appBar: appBarTheme(context, "지도", true),
            body: Column(
              children: [Expanded(
                child: NaverMap(
