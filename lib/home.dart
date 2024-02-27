@@ -176,25 +176,21 @@ class _HomeState extends State<Home> {
                                 children: [
                                   Container(
                                     alignment: Alignment.topLeft,
-                                    child: Expanded(
-                                      child: Text(
-                                        '적립 내역',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        textAlign: TextAlign.start,
+                                    child: Text(
+                                      '적립 내역',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
                                       ),
+                                      textAlign: TextAlign.start,
                                     ),
                                   ),
-                                  Expanded(
-                                    child: Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: Image.asset(
-                                        'assets/images/used_image.png',
-                                        fit: BoxFit.fill,
-                                      ),
+                                  Container(
+                                    alignment: Alignment.bottomRight,
+                                    child: Image.asset(
+                                      'assets/images/used_image.png',
+                                      fit: BoxFit.fill,
                                     ),
                                   ),
                                 ],
@@ -227,25 +223,21 @@ class _HomeState extends State<Home> {
                                 children: [
                                   Container(
                                     alignment: Alignment.topLeft,
-                                    child: Expanded(
-                                      child: Text(
-                                        '포인트 전환내역',
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                    child: Text(
+                                      '포인트 전환내역',
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ),
-                                  Expanded(
-                                    child: Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: Image.asset(
-                                        'assets/images/point_image.png',
-                                        fit: BoxFit.fill,
-                                      ),
+                                  Container(
+                                    alignment: Alignment.bottomRight,
+                                    child: Image.asset(
+                                      'assets/images/point_image.png',
+                                      fit: BoxFit.fill,
                                     ),
                                   ),
                                 ],

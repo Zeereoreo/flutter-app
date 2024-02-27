@@ -308,6 +308,8 @@ Future<void> getUserPoint(BuildContext context) async {
     print("포인트불러오기성공");
     final Map<String, dynamic> responseData = json.decode(response.body);
     context.read<pointStore>().current = responseData["current"];
+    context.read<pointStore>().spents = responseData["spents"];
+
     print("point :${context.read<pointStore>().current}");
 
   } else{

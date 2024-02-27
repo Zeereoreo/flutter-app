@@ -41,6 +41,8 @@ class _PointState extends State<Point> {
     }
 
     var currentPoint = '${context.read<pointStore>().current}';
+    var spentsPoint = '${context.read<pointStore>().spents}';
+    var name = '${context.read<userStore>().name}';
 
 
     return WillPopScope(
@@ -48,183 +50,324 @@ class _PointState extends State<Point> {
         return Future(() => false);
       },
       child: Scaffold(
+        appBar: AppBar(
+          elevation: 1,
+          backgroundColor: Colors.white,
+          leading: SizedBox(), // 뒤로가기 버튼 제거
+          centerTitle: true, // 제목 가운데 정렬
+          title: Text("포인트 전환",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 22),)
+        ),
         body: Container(
           // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
-          margin: EdgeInsets.all(10),
+          // margin: EdgeInsets.all(10),
+          color: Color(0xFFF8F8F8),
+
           child: Column(
             // mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Header(),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              // const Header(),
+              Container(
+                padding: EdgeInsets.all(20),
+                // decoration: BoxDecoration(
+                //   border: Border.all(color: Colors.black, width: 1),
+                // ),
+                alignment: Alignment.centerLeft,
+                child: Text.rich(
+                  TextSpan(
+                      text: name,
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25,color: Color(0xFF0066FF)),
+                      children: const <TextSpan>[
+                        TextSpan(text: '님, 디고와 함께 \n 지구의 온도를 낮춰보세요!',
+                            style: TextStyle(
+                                fontWeight: FontWeight.normal, fontSize: 20,color: Colors.black)
+                        )
+                      ]
+                  ),
+
+                ),
+              ),
+              Container(
+                padding : EdgeInsets.all(20),
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children:  [
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                       Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: Color(0xFF00BEFF),
+                  children: [
+                    Flexible(
+                      flex: 1,
+                      child: Container(
+                        child: Container(
+                          padding: EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: Color(0xFF0066FF),
+                          ),
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width,
+                          height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * 0.09,
+                          // margin: EdgeInsets.all(10),
+                          // alignment: Alignment.center,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  margin: EdgeInsets.only(top: 10),
+                                  // alignment: Alignment.topLeft,
+                                  height: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height / 18,
+                                  child: Text('잔여 포인트',
+                                    style: TextStyle(color: Colors.white,fontSize: 20),),
+                                ),
                               ),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: MediaQuery.of(context).size.width/1.15,
-                                    height: MediaQuery.of(context).size.height/6,
-
-                                    // margin: EdgeInsets.all(10),
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          margin: EdgeInsets.only(top: 10),
-                                          height: MediaQuery.of(context).size.height/18,
-                                          child: Text('현재 포인트',style: TextStyle(color: Colors.white,),),
-                                        ),
-                                        Container(
-                                          // margin: EdgeInsets.all(10),재
-                                          height: MediaQuery.of(context).size.height/18,
-                                          child: Text('$currentPoint P', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30,color: Colors.white),),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-
-                        ],
+                              Container(
+                                // margin: EdgeInsets.all(10),
+                                height: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .height / 18,
+                                child: Text('$currentPoint P', style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 30,color: Colors.white),),
+                              )
+                            ],
+                          ),
+                        ),
                       ),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          // decoration: BoxDecoration(border: Border.all(color: Colors.white, width: 1)),
-
-                          margin: EdgeInsets.all(10),
-                          // decoration: BoxDecoration(
-                          //     border: Border.all(color: Colors.black)
-                          // ),
-                          width: double.infinity,
-                          height: MediaQuery.of(context).size.height/10,
-                          child: Row(
+                  ],
+                ),
+              ),
+              Container(
+                padding : EdgeInsets.all(20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      flex: 1,
+                      child: Container(
+                        padding: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: Colors.black,
+                        ),
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width,
+                        height: MediaQuery
+                            .of(context)
+                            .size
+                            .height * 0.09,
+                        // margin: EdgeInsets.all(10),
+                        // alignment: Alignment.center,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                margin: EdgeInsets.only(top: 10),
+                                // alignment: Alignment.topLeft,
+                                height: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .height / 18,
+                                child: Text('사용 포인트',
+                                  style: TextStyle(color: Colors.white,fontSize: 20),),
+                              ),
+                            ),
+                            Container(
+                              // margin: EdgeInsets.all(10),
+                              height: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .height / 18,
+                              child: Text('$spentsPoint P', style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 30,color: Colors.white),),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.all(20),
+                // decoration: BoxDecoration(
+                //   border: Border.all(color: Colors.black, width: 1),
+                // ),
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * 0.17,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      flex: 1,
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.2,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12.0),
+                          // border: Border.all(color: Colors.black, width: 1),
+                          color: Colors.white,
+                        ),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => PointSave()));
+                          },
+                          style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.all(16),
+                              backgroundColor: Colors.white,
+                              elevation: 2
+                          ),
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Container(
-                                // decoration: BoxDecoration(border: Border.all(color: Colors.white, width: 1)),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  color: Colors.white38,
-                                ),
-                                width: MediaQuery.of(context).size.width/2.5,
-                                height: MediaQuery.of(context).size.height/15,
-                                child: TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => PointSave()));
-                                  },
-                                  style: TextButton.styleFrom(
-
-                                    padding: EdgeInsets.all(16),
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  '적립 내역',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                  child: const Center(
-                                    child: Text(
-                                      '적립 내역',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
+                                  textAlign: TextAlign.start,
                                 ),
                               ),
                               Container(
-                                width: MediaQuery.of(context).size.width/2.5,
-                                height: MediaQuery.of(context).size.height/15,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  color: Color(0xFF00BEFF),
-                                ),
-                                child: TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => PointUsed()));
-
-                                  },
-                                  style: TextButton.styleFrom(
-                                    padding: EdgeInsets.all(16),
-                                  ),
-                                  child: const Center(
-                                    child: Text(
-                                      '구매 내역',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
+                                alignment: Alignment.bottomRight,
+                                child: Image.asset(
+                                  'assets/images/used_image.png',
+                                  fit: BoxFit.fill,
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        ],
-                    )
+                      ),
+                    ),
+                    SizedBox(width: 10), // 각 버튼 사이에 간격 추가
+                    Flexible(
+                      flex: 1,
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.2,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12.0),
+                          // border: Border.all(color: Colors.black, width: 1),
+                          color: Colors.white,
+                        ),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            context.read<footerStore>().tab = 2;
+                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Point(accessToken: context.read<AuthStore>().accessToken,)));
+                          },
+                          style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.all(16),
+                              backgroundColor: Colors.white,
+                              elevation: 2
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Container(
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  '포인트 전환내역',
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                alignment: Alignment.bottomRight,
+                                child: Image.asset(
+                                  'assets/images/point_image.png',
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
               Expanded(
-                  child: Container(
-                      // decoration: BoxDecoration(border: Border.all(color: Colors.white, width: 1)),
-                      child: ListView.builder(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        // itemExtent: MediaQuery.of(context).size.height / 10,
-                        itemCount: shopList.length,
-                        itemBuilder: (c, i){
-                          var item = shopList[i];
-                          return Container(
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(border: Border.all(color: Colors.white, width: 1)),
-                              child: ListTile(
-                                leading: Container(
-                                  // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
-                                  width: MediaQuery.of(context).size.width/4,
-                                  height: MediaQuery.of(context).size.height/2,
-                                  child: Image.network("${item["image"]}",fit: BoxFit.cover,)
-                                  ,
+                child: Container(
+                  // height: MediaQuery.of(context).size.height * 0.2,
+                  color: Colors.white,
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(20),
+                        child: Row(
+                          children: [
+                            Image.asset("assets/images/naver_Icon.png",width: MediaQuery.of(context).size.width * 0.06, fit: BoxFit.cover,),
+                            SizedBox(width: 10,),
+                            Text("네이버 포인트로 전환하기",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),)
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            // itemExtent: MediaQuery.of(context).size.height / 10,
+                            itemCount: shopList.length,
+                            itemBuilder: (c, i){
+                              var item = shopList[i];
+                              print("$item");
+                              return Container(
+                                margin: EdgeInsets.only(top: 10,left: 20,right: 20),
+                                padding: EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: Color(0xFFE0E0E0), width: 1.5),
+                                    borderRadius: BorderRadius.circular(6)
                                 ),
-                                title: Container(
-                                    // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
-                                    child:  Container(
-                                        child: Column(
-                                          children: [
-                                            Text("${item["name"]}", style: TextStyle(color: Colors.white,fontSize: 20, fontWeight: FontWeight.bold,),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            ElevatedButton(
-                                                onPressed: (){
-                                                  showDialog(context: context, builder: (context){
-                                                    return Dialog(
-                                                      child: Purchase(item: item,),
-                                                    );
-                                                  });
-                                            }, child: Text("구매하기"))
-                                          ],
+                                child: Container(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "${item["name"]}",
+                                        style: TextStyle(
+                                          color: item["name"] == "네이버페이" ? Colors.green : Colors.black, // "네이버페이"일 때만 초록색, 그 외에는 검정색
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
                                         ),
+                                        textAlign: TextAlign.center,
                                       ),
+                                      ElevatedButton(
+                                        onPressed: (){
+                                          showDialog(context: context, builder: (context){
+                                            return Dialog(
+                                              child: Purchase(item: item,),
+                                            );
+                                          });
+                                        }, child: Image.asset("assets/images/point_arrow.png", fit: BoxFit.cover, width: 30,),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.white,
+                                          elevation: 0,
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                          );
-                        })
-                    ),
+                              );
+                            }),
+                      ),
+                    ],
+                  ),
                 ),
+              ),
             ],
           ),
         ),
