@@ -127,7 +127,7 @@ class _UserInfoState extends State<UserInfo> {
       });
 
       showDialog(context: context, builder: (BuildContext context){
-        return CustomPopup(title: "사용자 정보 변경", content: "변경이 완료되었습니다.",
+        return CustomPopup(title: "사용자 정보 변경", content: "변경이 완료되었습니다.", confirmText: "확인",
           onConfirm: (){
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => Home(accessToken:context.read<AuthStore>().accessToken)));
           },

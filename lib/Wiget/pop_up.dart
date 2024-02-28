@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 
 class CustomPopup extends StatelessWidget {
-  final String title;
+  final String? title;
   final String content;
+  final String confirmText;
   final Function()? onConfirm;
   final Function()? onCancel;
 
   CustomPopup({
-    required this.title,
+    this.title,
     required this.content,
+    required this.confirmText,
     this.onConfirm,
     this.onCancel,
   });
@@ -16,23 +18,50 @@ class CustomPopup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(title),
-      content: Text(content),
-      actions: <Widget>[
-        if (onCancel != null) // onCancel 콜백이 제공된 경우에만 취소 버튼을 표시
-          TextButton(
-            onPressed: () {
-              onCancel!();
-            },
-            child: Text('Cancel'),
+      contentPadding: EdgeInsets.zero,
+      content: SingleChildScrollView( // Added SingleChildScrollView to make content scrollable
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minWidth: 334, // Minimum width
+            minHeight: 203, // Minimum height
           ),
-        TextButton(
-          onPressed: () {
-            onConfirm!();
-          },
-          child: Text('Confirm'),
+          child: Container(
+            padding: EdgeInsets.all(16),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10)
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min, // To allow vertical size to be as small as possible
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    if (onCancel != null)
+                      IconButton(
+                        icon: Icon(Icons.close,size: 28,),
+                        onPressed: onCancel,
+                      ),
+                  ],
+                ),
+                if (title != null) // Title이 존재할 경우에만 표시
+                  Text(title!, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+                SizedBox(height: 12), // 추가한 공간
+                Text(content, style: TextStyle(fontSize: 16,),textAlign: TextAlign.center,),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: onConfirm,
+                  child: Text(confirmText, style: TextStyle(fontSize: 16)),
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 16), // Added padding for better touch area
+                    backgroundColor: Color(0xFF0066FF),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
-      ],
+      ),
     );
   }
 }

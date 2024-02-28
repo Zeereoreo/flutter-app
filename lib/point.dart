@@ -2,10 +2,12 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:deego_client/Wiget/pop_up.dart';
 import 'package:deego_client/header.dart';
 import 'package:deego_client/point_save.dart';
 import 'package:deego_client/point_used.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -24,6 +26,8 @@ class Point extends StatefulWidget {
 class _PointState extends State<Point> {
    var shopList ;
   // late List<Map<String, dynamic>> shopList;
+   dynamic pin = ''; // PIN을 저장하는 변수
+   CustomPopup? currentPopup;
 
   @override
   void initState() {
@@ -333,7 +337,7 @@ class _PointState extends State<Point> {
                             itemCount: shopList.length,
                             itemBuilder: (c, i){
                               var item = shopList[i];
-                              print("$item");
+                              // print("$item");
                               return Container(
                                 margin: EdgeInsets.only(top: 10,left: 20,right: 20),
                                 padding: EdgeInsets.only(left: 10),
@@ -356,11 +360,13 @@ class _PointState extends State<Point> {
                                       ),
                                       ElevatedButton(
                                         onPressed: (){
-                                          showDialog(context: context, builder: (context){
-                                            return Dialog(
-                                              child: Purchase(item: item,),
-                                            );
-                                          });
+                                          showConfirm(item);
+                                          // CustomPopup(title: "title", content: "${item["name"]}", confirmText: "전환하기", onConfirm: ()=>showConfirm(item),);
+                                          // showDialog(context: context, builder: (context){
+                                          //   return Dialog(
+                                          //     child: Purchase(item: item,),
+                                          //   );
+                                          // });
                                         }, child: Image.asset("assets/images/point_arrow.png", fit: BoxFit.cover, width: 20,),
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.white,
@@ -383,7 +389,95 @@ class _PointState extends State<Point> {
         bottomNavigationBar: BottomMenu(),
       ),
     );
+
+
   }
+
+   void showConfirm(item) {
+
+     showDialog(
+       context: context,
+       builder: (BuildContext context) {
+         return CustomPopup(
+           title: "",
+           content: "${item["name"]} \n 으로 전환하시겠습니까?",
+           confirmText: "전환하기",
+           onConfirm: () => {
+             showPurchaseDialog(item),
+             // Navigator.pop(context)
+           },
+           onCancel: () => Navigator.pop(context),
+         );
+       },
+     );
+   }
+
+   void showPurchaseDialog(item) {
+
+     showDialog(
+       context: context,
+       builder: (BuildContext context) {
+         return CustomPopup(
+           title: "포인트 전환 방법 및 사용안내",
+           content: "${item["description"]}",
+           confirmText: "다음으로",
+           onCancel: () => Navigator.pop(context),
+           onConfirm: () => showMonthCheck(item),
+         );
+       },
+     );
+   }
+
+   void showMonthCheck(item){
+
+     showDialog(
+         context: context,
+         builder: (BuildContext context){
+           return CustomPopup(
+             title: "title",
+             content: "30일 이내에 네이버 포인트 등록을 \n 하지 않으시면 적립된 포인트가 소멸됩니다. \n 동의하십니까?",
+             confirmText: "동의하기",
+             onConfirm: () => getPoint(item),
+             onCancel: () => Navigator.pop(context),
+           );
+         }
+     );
+   }
+
+   void showPin(pin){
+
+     showDialog(
+         context: context,
+         builder: (BuildContext context){
+           return CustomPopup(
+             title: "핀 번호",
+             content: "$pin",
+             confirmText: "확인",
+             onConfirm: () => Navigator.pop(context),
+             onCancel: () => Navigator.pop(context),
+           );
+         }
+     );
+   }
+
+
+   getPoint(item)async{
+     var response =  await http.post(Uri.parse("https://test.deegolabs.kr/mobile/shop/item/${item["id"]}/purchase"),
+         headers:
+         {
+           "Authorization": "Bearer ${context.read<AuthStore>().accessToken}"
+         });
+     if(response.statusCode == 200) {
+       var result = jsonDecode(response.body);
+       setState(() {
+         pin = result; // 응답에서 PIN 값을 추출하여 저장
+       });
+       showPin(pin);
+     }
+     else {
+       print("실패");
+     };
+   }
 
   getShop()async{
     var response = await http.get(Uri.parse("https://test.deegolabs.kr/mobile/shop/item/list"),
@@ -392,8 +486,9 @@ class _PointState extends State<Point> {
           "Authorization": "Bearer ${context.read<AuthStore>().accessToken}"
         });
     var itemList = jsonDecode(response.body);
-    if(response.statusCode == 200) print("성공");
-    else {
+    if(response.statusCode == 200) {
+      print("성공");
+    } else {
       print(response.statusCode);
       print("실패");
     };
@@ -422,11 +517,8 @@ class _PurchaseState extends State<Purchase> {
   @override
   Widget build(BuildContext context) {
     print("${widget.item["id"]}");
-    print("${context.read<AuthStore>().accessToken}");
     getPoint()async{
-
       var response =  await http.post(Uri.parse("https://test.deegolabs.kr/mobile/shop/item/${widget.item["id"]}/purchase"),
-
           headers:
           {
             "Authorization": "Bearer ${context.read<AuthStore>().accessToken}"
@@ -451,105 +543,107 @@ class _PurchaseState extends State<Purchase> {
       });
     }
 
-    return Container(
-      padding: EdgeInsets.all(20),
-      width: MediaQuery.of(context).size.width / 2,
-      height: MediaQuery.of(context).size.height / 2,
-      child: Center(
-        child: Column(
-          children: [
-            Expanded(
-              child: Container(
-                width: MediaQuery.of(context).size.width / 2,
-                height: MediaQuery.of(context).size.height / 2,
-                decoration: BoxDecoration(
-                  color: Colors.grey,
-                ),
-                child: Center(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Text("${widget.item["name"]}\n 구매하시겠습니까??",
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                        Text("${widget.item["description"]}")
-                      ]
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.all(10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextButton(
-                    onPressed: () async {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text("포인트 구매"),
-                            content: Text(
-                                "구매하신 포인트는 한달 안에 등록해주셔야 사용 가능합니다 \n 동의하시고 진행하시겠습니까??"),
-                            actions: [
-                              TextButton(
-                                onPressed: () async {
-                                  await getPoint();
-                                  // 구매 성공 시 PIN을 받아옴
-                                  getUserPoint(context);
-                                  Navigator.pop(context);
-                                  showDialog(context: context, builder: (context){
-                                    return AlertDialog(
-                                      title: Text("네이버포인트 쿠폰번호"),
-                                      content: Text(
-                                        "$pin"
-                                      ),
-                                      actions: [
-                                        TextButton(onPressed: (){
-                                          Navigator.pop(context);
-                                        }, child: Text("확인")),
-                                        TextButton(onPressed: (){
-                                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => PointUsed()));
+    return CustomPopup(title: "", content: "이렇게", confirmText: "다음으로");
 
-                                        }, child: Text("구매 내역"))
-                                      ],
-                                    );
-                                  });
-                                },
-                                child: Text("동의"),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text("닫기"),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                    child: Text("다음으로"),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text("취소하기"),
-                  )
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    // return Container(
+    //   padding: EdgeInsets.all(20),
+    //   width: MediaQuery.of(context).size.width / 2,
+    //   height: MediaQuery.of(context).size.height / 2,
+    //   child: Center(
+    //     child: Column(
+    //       children: [
+    //         Expanded(
+    //           child: Container(
+    //             width: MediaQuery.of(context).size.width / 2,
+    //             height: MediaQuery.of(context).size.height / 2,
+    //             decoration: BoxDecoration(
+    //               color: Colors.grey,
+    //             ),
+    //             child: Center(
+    //               child: SingleChildScrollView(
+    //                 child: Column(
+    //                   children: [
+    //                     Text("${widget.item["name"]}\n 구매하시겠습니까??",
+    //                     style: TextStyle(
+    //                       fontSize: 16,
+    //                       color: Colors.white,
+    //                       fontWeight: FontWeight.bold,
+    //                     ),
+    //                   ),
+    //                     Text("${widget.item["description"]}")
+    //                   ]
+    //                 ),
+    //               ),
+    //             ),
+    //           ),
+    //         ),
+    //         Container(
+    //           margin: EdgeInsets.all(10),
+    //           child: Row(
+    //             mainAxisAlignment: MainAxisAlignment.center,
+    //             children: [
+    //               TextButton(
+    //                 onPressed: () async {
+    //                   showDialog(
+    //                     context: context,
+    //                     builder: (context) {
+    //                       return AlertDialog(
+    //                         title: Text("포인트 구매"),
+    //                         content: Text(
+    //                             "구매하신 포인트는 한달 안에 등록해주셔야 사용 가능합니다 \n 동의하시고 진행하시겠습니까??"),
+    //                         actions: [
+    //                           TextButton(
+    //                             onPressed: () async {
+    //                               await getPoint();
+    //                               // 구매 성공 시 PIN을 받아옴
+    //                               getUserPoint(context);
+    //                               Navigator.pop(context);
+    //                               showDialog(context: context, builder: (context){
+    //                                 return AlertDialog(
+    //                                   title: Text("네이버포인트 쿠폰번호"),
+    //                                   content: Text(
+    //                                     "$pin"
+    //                                   ),
+    //                                   actions: [
+    //                                     TextButton(onPressed: (){
+    //                                       Navigator.pop(context);
+    //                                     }, child: Text("확인")),
+    //                                     TextButton(onPressed: (){
+    //                                       Navigator.of(context).push(MaterialPageRoute(builder: (context) => PointUsed()));
+    //
+    //                                     }, child: Text("구매 내역"))
+    //                                   ],
+    //                                 );
+    //                               });
+    //                             },
+    //                             child: Text("동의"),
+    //                           ),
+    //                           TextButton(
+    //                             onPressed: () {
+    //                               Navigator.pop(context);
+    //                             },
+    //                             child: Text("닫기"),
+    //                           ),
+    //                         ],
+    //                       );
+    //                     },
+    //                   );
+    //                 },
+    //                 child: Text("다음으로"),
+    //               ),
+    //               TextButton(
+    //                 onPressed: () {
+    //                   Navigator.pop(context);
+    //                 },
+    //                 child: Text("취소하기"),
+    //               )
+    //             ],
+    //           ),
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 }
 

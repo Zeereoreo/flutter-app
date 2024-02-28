@@ -217,7 +217,7 @@ class _FindIdState extends State<FindId> {
         id = userId["userId"];
       });
       showDialog(context: context, builder: (BuildContext context){
-        return CustomPopup(title: "찾으시는 아이디는", content: "${id}",
+        return CustomPopup(title: "찾으시는 아이디는", content: "${id}",confirmText: "확인",
           onConfirm: (){
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => Log()));
           },
