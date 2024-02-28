@@ -68,74 +68,83 @@ class _PointState extends State<Point> {
             children: [
               // const Header(),
               Container(
-                padding: EdgeInsets.all(20),
+                // decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 1)),
+
+                width: double.infinity,
                 // decoration: BoxDecoration(
                 //   border: Border.all(color: Colors.black, width: 1),
                 // ),
-                alignment: Alignment.centerLeft,
-                child: Text.rich(
-                  TextSpan(
-                      text: name,
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25,color: Color(0xFF0066FF)),
-                      children: const <TextSpan>[
-                        TextSpan(text: '님, 디고와 함께 \n 지구의 온도를 낮춰보세요!',
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal, fontSize: 20,color: Colors.black)
-                        )
-                      ]
-                  ),
+                // height: MediaQuery.of(context).size.height/6,
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text.rich(
+                      TextSpan(
+                        text: name,
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18,color: Color(0xFF0066FF)),
+                        children: const <TextSpan>[
+                          TextSpan(
+                            text: '님',
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.black),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Text("디고와 함께 지구의 온도를 낮춰보세요!",
+                      style: TextStyle( fontSize: 16, color: Colors.black),
 
+                    )
+                  ],
                 ),
               ),
               Container(
-                padding : EdgeInsets.all(20),
+                padding : EdgeInsets.only(left: 20,right: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Flexible(
                       flex: 1,
                       child: Container(
-                        child: Container(
-                          padding: EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            color: Color(0xFF0066FF),
-                          ),
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width,
-                          height: MediaQuery
-                              .of(context)
-                              .size
-                              .height * 0.09,
-                          // margin: EdgeInsets.all(10),
-                          // alignment: Alignment.center,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  margin: EdgeInsets.only(top: 10),
-                                  // alignment: Alignment.topLeft,
-                                  height: MediaQuery
-                                      .of(context)
-                                      .size
-                                      .height / 18,
-                                  child: Text('잔여 포인트',
-                                    style: TextStyle(color: Colors.white,fontSize: 20),),
-                                ),
-                              ),
-                              Container(
-                                // margin: EdgeInsets.all(10),
+                        padding: EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: Color(0xFF0066FF),
+                        ),
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width,
+                        height: MediaQuery
+                            .of(context)
+                            .size
+                            .height * 0.06,
+                        // margin: EdgeInsets.all(10),
+                        // alignment: Alignment.center,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                // margin: EdgeInsets.only(top: 10),
+                                // alignment: Alignment.topLeft,
                                 height: MediaQuery
                                     .of(context)
                                     .size
                                     .height / 18,
-                                child: Text('$currentPoint P', style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 30,color: Colors.white),),
-                              )
-                            ],
-                          ),
+                                child: Text('잔여포인트',
+                                  style: TextStyle(color: Colors.white,fontSize: 16),),
+                              ),
+                            ),
+                            Container(
+                              // margin: EdgeInsets.all(10),
+                              height: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .height / 18,
+                              child: Text('$currentPoint P', style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18,color: Colors.white),),
+                            )
+                          ],
                         ),
                       ),
                     ),
@@ -143,14 +152,14 @@ class _PointState extends State<Point> {
                 ),
               ),
               Container(
-                padding : EdgeInsets.all(20),
+                padding : EdgeInsets.only(left: 20,right: 20,top: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Flexible(
                       flex: 1,
                       child: Container(
-                        padding: EdgeInsets.all(20),
+                        padding: EdgeInsets.all(15),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10.0),
                           color: Colors.black,
@@ -162,21 +171,21 @@ class _PointState extends State<Point> {
                         height: MediaQuery
                             .of(context)
                             .size
-                            .height * 0.09,
+                            .height * 0.06,
                         // margin: EdgeInsets.all(10),
                         // alignment: Alignment.center,
                         child: Row(
                           children: [
                             Expanded(
                               child: Container(
-                                margin: EdgeInsets.only(top: 10),
+                                // margin: EdgeInsets.only(top: 10),
                                 // alignment: Alignment.topLeft,
                                 height: MediaQuery
                                     .of(context)
                                     .size
                                     .height / 18,
                                 child: Text('사용 포인트',
-                                  style: TextStyle(color: Colors.white,fontSize: 20),),
+                                  style: TextStyle(color: Colors.white,fontSize: 16),),
                               ),
                             ),
                             Container(
@@ -186,7 +195,7 @@ class _PointState extends State<Point> {
                                   .size
                                   .height / 18,
                               child: Text('$spentsPoint P', style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 30,color: Colors.white),),
+                                  fontWeight: FontWeight.bold, fontSize: 18,color: Colors.white),),
                             )
                           ],
                         ),
@@ -203,7 +212,7 @@ class _PointState extends State<Point> {
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 0.17,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  // mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Flexible(
                       flex: 1,
@@ -231,7 +240,7 @@ class _PointState extends State<Point> {
                                 child: Text(
                                   '적립 내역',
                                   style: TextStyle(
-                                    fontSize: 20,
+                                    fontSize: 14,
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -279,7 +288,7 @@ class _PointState extends State<Point> {
                                   '포인트 전환내역',
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
-                                    fontSize: 20,
+                                    fontSize: 14,
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -310,9 +319,9 @@ class _PointState extends State<Point> {
                         padding: EdgeInsets.all(20),
                         child: Row(
                           children: [
-                            Image.asset("assets/images/naver_Icon.png",width: MediaQuery.of(context).size.width * 0.06, fit: BoxFit.cover,),
+                            Image.asset("assets/images/naver_Icon.png",width: MediaQuery.of(context).size.width * 0.05, fit: BoxFit.cover,),
                             SizedBox(width: 10,),
-                            Text("네이버 포인트로 전환하기",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),)
+                            Text("네이버 포인트로 전환하기",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),)
                           ],
                         ),
                       ),
@@ -327,7 +336,7 @@ class _PointState extends State<Point> {
                               print("$item");
                               return Container(
                                 margin: EdgeInsets.only(top: 10,left: 20,right: 20),
-                                padding: EdgeInsets.all(5),
+                                padding: EdgeInsets.only(left: 10),
                                 decoration: BoxDecoration(
                                     border: Border.all(color: Color(0xFFE0E0E0), width: 1.5),
                                     borderRadius: BorderRadius.circular(6)
@@ -340,7 +349,7 @@ class _PointState extends State<Point> {
                                         "${item["name"]}",
                                         style: TextStyle(
                                           color: item["name"] == "네이버페이" ? Colors.green : Colors.black, // "네이버페이"일 때만 초록색, 그 외에는 검정색
-                                          fontSize: 20,
+                                          fontSize: 14,
                                           fontWeight: FontWeight.bold,
                                         ),
                                         textAlign: TextAlign.center,
@@ -352,7 +361,7 @@ class _PointState extends State<Point> {
                                               child: Purchase(item: item,),
                                             );
                                           });
-                                        }, child: Image.asset("assets/images/point_arrow.png", fit: BoxFit.cover, width: 30,),
+                                        }, child: Image.asset("assets/images/point_arrow.png", fit: BoxFit.cover, width: 20,),
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.white,
                                           elevation: 0,

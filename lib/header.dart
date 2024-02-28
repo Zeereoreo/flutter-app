@@ -57,16 +57,20 @@ class _HeaderState extends State<Header> {
         switch (_loginPlatform) {
           case LoginPlatform.kakao:
             await UserApi.instance.logout();
+            tab == 0;
             logout();
             break;
           case LoginPlatform.naver:
             await FlutterNaverLogin.logOut();
+            tab == 0;
             logout();
             break;
           case LoginPlatform.none:
+            tab == 0;
             logout();
             break;
           case LoginPlatform.logout:
+            tab == 0;
             break;
         }
         setState(() {

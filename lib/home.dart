@@ -62,27 +62,36 @@ class _HomeState extends State<Home> {
               color: Color(0xFFF8F8F8),
               // padding: EdgeInsets.all(20),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.start,
+                
                 children: [
                   Container(
-                    padding: EdgeInsets.all(20),
+                    width: double.infinity,
                     // decoration: BoxDecoration(
                     //   border: Border.all(color: Colors.black, width: 1),
                     // ),
-                    alignment: Alignment.centerLeft,
-                    child: Text.rich(
-                      TextSpan(
-                          text: name,
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25,color: Color(0xFF0066FF)),
-                          children: const <TextSpan>[
-                            TextSpan(text: '님, 디고와 함께 \n 지구의 온도를 낮춰보세요!',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.normal, fontSize: 20,color: Colors.black)
-                            )
-                          ]
-                      ),
+                    // height: MediaQuery.of(context).size.height/6,
+                    padding: EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text.rich(
+                          TextSpan(
+                            text: name,
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18,color: Color(0xFF0066FF)),
+                            children: const <TextSpan>[
+                              TextSpan(
+                                text: '님',
+                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.black),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Text("디고와 함께 지구의 온도를 낮춰보세요!",
+                          style: TextStyle( fontSize: 16, color: Colors.black),
 
+                        )
+                      ],
                     ),
                   ),
                   Container(
@@ -96,47 +105,45 @@ class _HomeState extends State<Home> {
                         Flexible(
                           flex: 1,
                           child: Container(
-                            child: Container(
-                              padding: EdgeInsets.all(20),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: Color(0xFF0066FF),
-                              ),
-                              width: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width,
-                              height: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .height * 0.09,
-                              // margin: EdgeInsets.all(10),
-                              // alignment: Alignment.center,
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      margin: EdgeInsets.only(top: 10),
-                                      // alignment: Alignment.topLeft,
-                                      height: MediaQuery
-                                          .of(context)
-                                          .size
-                                          .height / 18,
-                                      child: Text('잔여 포인트',
-                                        style: TextStyle(color: Colors.white,fontSize: 20),),
-                                    ),
-                                  ),
-                                  Container(
-                                    // margin: EdgeInsets.all(10),
+                            padding: EdgeInsets.all(15),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              color: Color(0xFF0066FF),
+                            ),
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width,
+                            height: MediaQuery
+                                .of(context)
+                                .size
+                                .height * 0.06,
+                            // margin: EdgeInsets.all(10),
+                            // alignment: Alignment.center,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    // margin: EdgeInsets.only(top: 10),
+                                    // alignment: Alignment.topLeft,
                                     height: MediaQuery
                                         .of(context)
                                         .size
                                         .height / 18,
-                                    child: Text('$currentPoint P', style: TextStyle(
-                                        fontWeight: FontWeight.bold, fontSize: 30,color: Colors.white),),
-                                  )
-                                ],
-                              ),
+                                    child: Text('잔여포인트',
+                                      style: TextStyle(color: Colors.white,fontSize: 16),),
+                                  ),
+                                ),
+                                Container(
+                                  // margin: EdgeInsets.all(10),
+                                  height: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height / 18,
+                                  child: Text('$currentPoint P', style: TextStyle(
+                                      fontWeight: FontWeight.bold, fontSize: 18,color: Colors.white),),
+                                )
+                              ],
                             ),
                           ),
                         ),
@@ -151,7 +158,7 @@ class _HomeState extends State<Home> {
                     width: double.infinity,
                     height: MediaQuery.of(context).size.height * 0.17,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      // mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Flexible(
                           flex: 1,
@@ -179,7 +186,7 @@ class _HomeState extends State<Home> {
                                     child: Text(
                                       '적립 내역',
                                       style: TextStyle(
-                                        fontSize: 20,
+                                        fontSize: 14,
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -227,7 +234,7 @@ class _HomeState extends State<Home> {
                                       '포인트 전환내역',
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
-                                        fontSize: 20,
+                                        fontSize: 14,
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -248,60 +255,64 @@ class _HomeState extends State<Home> {
                       ],
                     ),
                   ),
-                  Container(
-                      color: Colors.white,
-                      child: Column(
-                        children: [
-                          Container(
-                            child: Text('즐겨찾는 디고',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                fontSize: 24
+                  Expanded(
+                    child: Container(
+                        color: Colors.white,
+                        // decoration: BoxDecoration(
+                        //   border: Border.all(color: Colors.black, width: 1),
+                        // ),
+                        child: Column(
+                          children: [
+                            Container(
+                              child: Text('즐겨찾는 디고',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                  fontSize: 18
+                                ),
                               ),
-                            ),
-                            padding: EdgeInsets.all(20),
-                            alignment: Alignment.topLeft,
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Container(
-                              margin: EdgeInsets.all(10),
                               padding: EdgeInsets.all(20),
-                              width: double.infinity,
-                              height: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .height / 4,
-                              // decoration: BoxDecoration(
-                              //     border: Border.all(color: Colors.black)
-                              // ),
-                              child: favoriteList != null && favoriteList.isNotEmpty
-                                  ? ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    shrinkWrap: true,
-                                    itemCount: favoriteList.length,
-                                    itemBuilder: (context, index) {
-                                      var item = favoriteList[index];
-                                      return Container(
-                                        child: Text(item["name"]),
-                                      );
-                                },
-                              )
-                                  : const Center(
-                                    child: Text(
-                                    "즐겨찾는 디고가 없습니다.",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                      color: Colors.black,
+                              alignment: Alignment.topLeft,
+                            ),
+                            Expanded(
+                              child: Container(
+                                margin: EdgeInsets.all(10),
+                                padding: EdgeInsets.all(20),
+                                width: double.infinity,
+                                height: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .height / 4,
+                                // decoration: BoxDecoration(
+                                //     border: Border.all(color: Colors.black)
+                                // ),
+                                child: favoriteList != null && favoriteList.isNotEmpty
+                                    ? ListView.builder(
+                                      padding: EdgeInsets.zero,
+                                      shrinkWrap: true,
+                                      itemCount: favoriteList.length,
+                                      itemBuilder: (context, index) {
+                                        var item = favoriteList[index];
+                                        return Container(
+                                          child: Text(item["name"]),
+                                        );
+                                  },
+                                )
+                                    : const Center(
+                                      child: Text(
+                                      "즐겨찾는 디고가 없습니다.",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                        color: Colors.black,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      )
+                          ],
+                        )
+                    ),
                   ),
 
                 ],
