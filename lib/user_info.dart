@@ -39,11 +39,24 @@ class _UserInfoState extends State<UserInfo> {
 
 
     return Scaffold(
+      appBar: AppBar(
+        elevation: 1,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          color: Colors.black,
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        centerTitle: true, // 제목 가운데 정렬
+        title: Text("사용자 정보 변경",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 22),),
+      ),
       body: Container(
-        margin: EdgeInsets.all(10),
+        padding: EdgeInsets.all(20),
         child: Column(
           children: [
-            const Header(),
+            // const Header(),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -51,14 +64,22 @@ class _UserInfoState extends State<UserInfo> {
                     Container(
                       width: double.infinity,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           infoName("아이디"),
+                          SizedBox(height: 10,),
                           userInput("변경할 아이디를 입력하세요", _idInfo, TextInputType.text),
+                          SizedBox(height: 10,),
                           infoName("이름"),
+                          SizedBox(height: 10,),
                           userInput("변경할 이름을 입력하세요", _nameInfo, TextInputType.name),
+                          SizedBox(height: 10,),
                           infoName("이메일"),
+                          SizedBox(height: 10,),
                           userInput("변경할 이메일을 입력하세요", _emailInfo, TextInputType.emailAddress),
+                          SizedBox(height: 10,),
                           infoName("휴대전화 번호"),
+                          SizedBox(height: 10,),
                           PhoneWidet(),
                         ],
                       ),
@@ -77,10 +98,11 @@ class _UserInfoState extends State<UserInfo> {
   Widget infoName(String name){
     return Text(
         name,
+        textAlign: TextAlign.left,
         style: TextStyle(
           fontWeight: FontWeight.bold,
-          fontSize: 20,
-          color: Colors.white
+          fontSize: 16,
+          color: Colors.black
         ),
     );
   }

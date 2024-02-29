@@ -31,11 +31,24 @@ class _PasswordChangeState extends State<PasswordChange> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      appBar: AppBar(
+        elevation: 1,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          color: Colors.black,
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        centerTitle: true, // 제목 가운데 정렬
+        title: Text("비밀번호 재설정",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 22),),
+      ),
       body: Container(
         margin: EdgeInsets.all(10),
         child: Column(
           children: [
-            const Header(),
+            // const Header(),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(

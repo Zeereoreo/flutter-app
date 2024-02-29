@@ -95,9 +95,9 @@ class _PointState extends State<Point> {
                         ],
                       ),
                     ),
+                    SizedBox(height: 10,),
                     Text("디고와 함께 지구의 온도를 낮춰보세요!",
                       style: TextStyle( fontSize: 16, color: Colors.black),
-
                     )
                   ],
                 ),

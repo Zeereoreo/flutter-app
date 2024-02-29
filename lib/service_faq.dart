@@ -38,19 +38,33 @@ class _ServiceFAQState extends State<ServiceFAQ> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 1,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          color: Colors.black,
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        centerTitle: true, // 제목 가운데 정렬
+        title: Text("FAQ",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 22),),
+
+      ),
       body: Container(
         child: Column(
           children: [
-            const Header(),
+            // const Header(),
             Container(
               child: TabBar(
                 controller: tabController,
-                labelColor: Colors.white,
+                labelColor: Colors.black,
                 labelStyle: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold
                 ),
-                unselectedLabelColor: Colors.white38,
+                unselectedLabelColor: Colors.grey,
                 unselectedLabelStyle: const TextStyle(
                   fontSize: 16
                 ),

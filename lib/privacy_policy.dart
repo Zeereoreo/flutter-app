@@ -84,7 +84,19 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        elevation: 1,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          color: Colors.black,
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        centerTitle: true, // 제목 가운데 정렬
+        title: Text("개인정보 처리 방침",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 22),),
+      ),
       body: SafeArea(
         bottom: false,
         child: Container(

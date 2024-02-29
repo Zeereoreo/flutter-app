@@ -27,7 +27,7 @@ class _PostBtnState extends State<PostBtn> {
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12.0),
-          color: Color(0x0099FF),
+          color: Color(0x0066FF),
         ),
         child: TextButton(
           onPressed: (){

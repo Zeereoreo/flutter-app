@@ -130,9 +130,9 @@ class _SettingState extends State<Setting> {
                           ],
                         ),
                       ),
+                      SizedBox(height: 10,),
                       Text("디고와 함께 지구의 온도를 낮춰보세요!",
                         style: TextStyle( fontSize: 19, color: Colors.black),
-
                       )
                     ],
                   ),
@@ -169,8 +169,8 @@ class _SettingState extends State<Setting> {
                         ),
                       HorizontalDashedDivider(thickness: 1,length: 5,color: Color(0xFFDCDCDC),indent: 20,endIndent: 20,),
                       SetBtn(buttonText: '정보 관리',onPressed: (c) => MyPage()),
-                      HorizontalDashedDivider(thickness: 1,length: 5,color: Color(0xFFDCDCDC),indent: 20,endIndent: 20,),
-                      SetBtn(buttonText: '핸드폰 번호 변경',onPressed: (c) => MyPage()),
+                      // HorizontalDashedDivider(thickness: 1,length: 5,color: Color(0xFFDCDCDC),indent: 20,endIndent: 20,),
+                      // SetBtn(buttonText: '핸드폰 번호 변경',onPressed: (c) => MyPage()),
                     ],
                   ),
                 ),

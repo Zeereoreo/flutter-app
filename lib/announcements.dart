@@ -32,10 +32,23 @@ class _AnnouncementsState extends State<Announcements> {
         return nullList(); // 데이터가 없을 때 nullList 위젯을 반환
       } else {
         return Scaffold(
+          appBar: AppBar(
+            elevation: 1,
+            backgroundColor: Colors.white,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios),
+              color: Colors.black,
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            centerTitle: true, // 제목 가운데 정렬
+            title: Text("공지사항",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 22),),
+          ),
           body: Container(
             child: Column(
               children: [
-                const Header(),
+                // const Header(),
                 Expanded(
                   child: ListView.builder(
                     padding: EdgeInsets.zero,

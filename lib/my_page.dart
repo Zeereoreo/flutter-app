@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
+import 'horizontaldasheddivider.dart';
 import 'main.dart';
 
 class MyPage extends StatefulWidget {
@@ -20,11 +21,24 @@ class _MyPageState extends State<MyPage> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
+      appBar: AppBar(
+          elevation: 1,
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            color: Colors.black,
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          centerTitle: true, // 제목 가운데 정렬
+          title: Text("정보 변경",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 22),),
+      ),
       body: Container(
         margin: EdgeInsets.all(10),
         child: Column(
           children: [
-            const Header(),
+            // const Header(),
             Container(
               margin: EdgeInsets.only(top: 50),
               child: Column(
@@ -35,13 +49,14 @@ class _MyPageState extends State<MyPage> {
                       MaterialPageRoute(builder: (context) => UserInfo()),
                     );
                   }),
+                  HorizontalDashedDivider(thickness: 1,length: 5,color: Color(0xFFDCDCDC),indent: 20,endIndent: 20,),
                   MyPageBtn("비밀번호 재설정", () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => PasswordChange()),
                     );
                   }),
-                  MyPageBtn("로그 아웃", null),
+                  HorizontalDashedDivider(thickness: 1,length: 5,color: Color(0xFFDCDCDC),indent: 20,endIndent: 20,),
                   MyPageBtn("회원 탈퇴", deleteUser),
                   ],
               ),
@@ -55,26 +70,22 @@ class _MyPageState extends State<MyPage> {
   Widget MyPageBtn (String buttonText,VoidCallback? onfunction){
     return TextButton(onPressed: onfunction,
       child: Container(
-      padding: EdgeInsets.all(20),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          color: Colors.white38
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            buttonText,
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold
+        padding: EdgeInsets.all(10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              buttonText,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 16,
+              ),
             ),
-          ),
-          Icon(Icons.arrow_right_outlined),
-        ],
+            Icon(Icons.arrow_forward_ios,color: Colors.black,size: 16,),
+          ],
+        ),
       ),
-    ),);
+    );
   }
 
   deleteUser()async{

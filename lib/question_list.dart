@@ -38,40 +38,50 @@ class _QuestionListState extends State<QuestionList> with TickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 1,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          color: Colors.black,
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        centerTitle: true, // 제목 가운데 정렬
+        title: Text("문의하기",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 22),),
+      ),
       body: Container(
         child: Column(
           children: [
-            const Header(),
-            Container(
-              child: TabBar(
-                controller: tabController,
-                labelColor: Colors.white,
-                labelStyle: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold
-                ),
-                unselectedLabelColor: Colors.white38,
-                unselectedLabelStyle: const TextStyle(
-                    fontSize: 16
-                ),
-                indicatorWeight: 3,
-                tabs: [
-                  Tab(text: "문의하기"),
-                  Tab(text: "내 문의 내역"),
-                ],
-                onTap: (i){
-                      if (i == 0) {
-                      setState(() {
-                      _selectedTabIndex = i;
-                      });
-                      } else if (i == 1) {
-                      setState(() {
-                      _selectedTabIndex = i;
-                      });
-                      getQuestion();
-                      }
-                },
+            TabBar(
+              controller: tabController,
+              labelColor: Color(0xFF0066FF),
+              labelStyle: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold
               ),
+              unselectedLabelColor: Colors.grey,
+              unselectedLabelStyle: const TextStyle(
+                  fontSize: 16
+              ),
+              indicatorWeight: 3,
+              tabs: [
+                Tab(text: "1:1 문의하기"),
+                Tab(text: "내 문의 내역"),
+              ],
+              onTap: (i){
+                    if (i == 0) {
+                    setState(() {
+                    _selectedTabIndex = i;
+                    });
+                    } else if (i == 1) {
+                    setState(() {
+                    _selectedTabIndex = i;
+                    });
+                    getQuestion();
+                    }
+              },
             ),
             Expanded(
                 child:
@@ -143,6 +153,7 @@ class _MyQuestionWidgetState extends State<MyQuestionWidget> {
     return Container(
       padding: EdgeInsets.all(20),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           qnaName("문의 카테고리 선택"),
           dropList(),
@@ -267,9 +278,9 @@ class _MyQuestionWidgetState extends State<MyQuestionWidget> {
       child: Text("$title",
         textAlign: TextAlign.left,
         style: TextStyle(
-            fontSize: 20,
+            fontSize: 16,
             fontWeight: FontWeight.bold,
-            color: Colors.white
+            color: Colors.black
         ),
       ),
     );

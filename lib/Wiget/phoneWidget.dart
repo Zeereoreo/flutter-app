@@ -42,66 +42,71 @@ class _PhoneWidetState extends State<PhoneWidet> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [Container(
-        child: Row(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Expanded(
-              child: TextField(
-                onChanged: (text){
-                  setState(() {
-                    _phoneError = text.length < 10 || text.length > 12 ;
-                    phone = text;
-                    blueBtn = text.length == 11;
-                  });
-                },
-                decoration: InputDecoration(
-                  labelText: '핸드폰 번호',
-                  hintText: "-를 제외한 핸드폰번호를 입력해주세요.",
-                  errorText: _phoneError ? "제대로 된 핸드폰 번호를 입력해주세요." : null,
-                  filled: true,
-                  fillColor: const Color(0xFFF5F7FB),
-                  focusedBorder: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    borderSide: BorderSide(width: 1, color: Colors.white),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    borderSide: BorderSide(width: 1, color: Color(0xFFF5F7FB)),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  ),
+          Flexible(
+            child: TextField(
+              onChanged: (text){
+                setState(() {
+                  _phoneError = text.length < 10 || text.length > 12 ;
+                  phone = text;
+                  blueBtn = text.length == 11;
+                });
+              },
+              decoration: InputDecoration(
+                hintText: "-를 제외한 핸드폰번호를 입력해주세요.",
+                errorText: _phoneError ? "제대로 된 핸드폰 번호를 입력해주세요." : null,
+                filled: true,
+                fillColor: const Color(0xFFF5F7FB),
+                focusedBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  borderSide: BorderSide(width: 1, color: Colors.white),
                 ),
-                keyboardType: TextInputType.number,
-                textInputAction: TextInputAction.done,
-                enabled: !showAdditionalInput,
-                maxLength: 11,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  borderSide: BorderSide(width: 1, color: Color(0xFFF5F7FB)),
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                ),
               ),
+              keyboardType: TextInputType.number,
+              textInputAction: TextInputAction.done,
+              enabled: !showAdditionalInput,
+              // maxLength: 11,
             ),
-            SizedBox(width: 10,),
-            ElevatedButton(onPressed: blueBtn
-                ? () async {
-              sendPhoneNumberToServer(phone);
-              setState(() {
-                showAdditionalInput = true;
-                blueBtn = false;
-              });
-            }
-                : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: blueBtn ? Colors.blue : Colors.grey,
+          ),
+          SizedBox(width: 10,),
+          ElevatedButton(
+              onPressed: blueBtn
+              ? () async {
+            sendPhoneNumberToServer(phone);
+            setState(() {
+              showAdditionalInput = true;
+              blueBtn = false;
+            });
+          }
+              : null,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: blueBtn ? Colors.white : Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  side: blueBtn? BorderSide(color: Colors.black) : BorderSide(color: Colors.grey),
                 ),
-                child: Text("인증하기")),
-          ],
-        ),
 
-      ),
+              ),
+              child: Text("인증번호 전송", style: TextStyle(color: Colors.black),)),
+        ],
+        ),
         if (showAdditionalInput)
           Container(
-            padding: EdgeInsets.all(15),
+            margin: EdgeInsets.only(top: 20),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
+                  Flexible(
                     child: TextField(
                         onChanged: (text) {
                           setState(() {
@@ -110,13 +115,25 @@ class _PhoneWidetState extends State<PhoneWidet> {
                           });
                         },
                         decoration: InputDecoration(
-                          labelText: "인증 번호",
                           hintText: "받으신 인증번호를 입력해 주세요",
+                          filled: true,
+                          fillColor: const Color(0xFFF5F7FB),
+                          focusedBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            borderSide: BorderSide(width: 1, color: Colors.white),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            borderSide: BorderSide(width: 1, color: Color(0xFFF5F7FB)),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          ),
                         ),
                         keyboardType: TextInputType.number,
                         textInputAction: TextInputAction.done,
                         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        maxLength: 4,
+                        // maxLength: 4,
                         enabled: !authenticationCompleted
                     ),
                   ),
@@ -134,9 +151,13 @@ class _PhoneWidetState extends State<PhoneWidet> {
                       }
                           : null,
                       style: ElevatedButton.styleFrom(
-                        primary: showAuthBtn ? Colors.blue : Colors.grey,
+                        backgroundColor: showAuthBtn ? Colors.white : Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          side: showAuthBtn? BorderSide(color: Colors.black) : BorderSide(color: Colors.grey),
+                        ),
                       ),
-                      child: Text("인증완료"),
+                      child: Text("인증번호 확인",style: TextStyle(color: Colors.black)),
                     ),
                   ),
                 ]
