@@ -120,6 +120,7 @@ class _NaverMapAppState extends State<NaverMapApp> {
                width: double.infinity,
                height: MediaQuery.of(context).size.height/3,
                color: Colors.white,
+               padding: EdgeInsets.all(20),
                child: Container(
                  child: deegoList != null ? ListView.builder(
                    padding: EdgeInsets.zero,
@@ -128,24 +129,55 @@ class _NaverMapAppState extends State<NaverMapApp> {
                    itemBuilder: (c, i) {
                      var item = deegoList[i];
                      var serieal = item["serialNumber"];
+                     print("$serieal");
+                     print("$item");
                      return Container(
-                       child: ListTile(
-                         title: Text(item["name"]),
-                         subtitle: Text('Battery: ${item['battery']}%, Progress: ${item['progress']}%'), // 배터리 및 진행도 표시
-                         trailing: ElevatedButton(
-                             onPressed: () {
-                              patchFavorite(serieal);
-                             },
-                             style: ElevatedButton.styleFrom(
-                             backgroundColor: isFavorite ? Colors.black : Colors.yellow, // isFavorite 값에 따라 색상 변경
-                             shape: const CircleBorder(), // 원형 모양으로 버튼 모양을 변경
-                             ),
-                             child: Icon(
-                             Icons.star,
-                             color: Colors.white, // 별 모양 아이콘의 색상은 항상 흰색,
-                             )
-                         )
+                       decoration: BoxDecoration(
+                         border: Border.all(width: 1, color: Color(0xFFE0E0E0))
                        ),
+                       margin: EdgeInsets.all(5),
+                       padding: EdgeInsets.all(10),
+                       child: Row(
+                         children: [
+                           Image.asset("assets/images/deego_image.png",fit: BoxFit.cover,),
+                           Expanded(
+                             child: Container(
+                               padding: EdgeInsets.all(10),
+                                 // decoration: BoxDecoration(
+                                 //   border: Border.all(width: 1,)
+                                 // ),
+                                 child:
+                                 Column(
+                                   crossAxisAlignment: CrossAxisAlignment.start,
+                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                   children: [
+                                     Text("${item["name"]}", style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),),
+                                     // SizedBox(height: ,),
+                                     Text("${item["deegoLocationDTO"]["location"]}", style: TextStyle(color: Color(0xFFB3B3B3), fontSize: 14),),
+                                     Row(
+                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                       children: [
+                                         isBrokenWidget(item["isBroken"]),
+                                         TextButton(onPressed: (){
+                                           // patchFavorite()
+                                           print("클릭");
+                                         },
+                                           child: Icon(Icons.star,color: Color(0xFFEBEBEB),size: 30,),
+                                           style: ElevatedButton.styleFrom(
+                                               backgroundColor: Colors.white,
+                                               elevation: 0,
+                                             shape: CircleBorder(),
+                                             // side: BorderSide(width: 2, color: Colors.grey),
+                                           ),
+                                         )
+                                       ],
+                                     )
+                                   ],
+                                 )
+                             ),
+                           )
+                         ],
+                       )
                      );
                    },
                  ) : CircularProgressIndicator(), // deegoList가 null인 경우 로딩 인디케이터를 표시
@@ -175,7 +207,7 @@ class _NaverMapAppState extends State<NaverMapApp> {
   }
   
   patchFavorite(String serieal)async{
-    print(serieal);
+    // print(serieal);
     var res = await http.patch(Uri.parse("https://backend.deegolabs.com/mobile/deego/favorite"),
         headers:{
       "Authorization": "Bearer ${context.read<AuthStore>().accessToken}"
@@ -195,6 +227,38 @@ class _NaverMapAppState extends State<NaverMapApp> {
         else{
           print(res.body);
         }
+  }
+
+  Widget isBrokenWidget(isBroken) {
+    if (isBroken) {
+      return Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Color(0xFF727272),
+        ),
+        // padding: EdgeInsets.all(1),
+        child: Text(
+          "사용불가능",
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: 12
+          ),
+        ),
+      );
+    } else {
+      // answerDTO가 null이 아니면 "답변등록"을 표시하는 위젯을 반환
+      return Container(
+        color: Color(0xFFEAF7FF),
+        padding: EdgeInsets.all(8),
+        child: Text(
+          "사용가능",
+          style: TextStyle(
+              color: Color(0xFF0066FF),
+              fontSize: 12
+          ),
+        ),
+      );
+    }
   }
 }
 
