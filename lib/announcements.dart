@@ -46,6 +46,7 @@ class _AnnouncementsState extends State<Announcements> {
             title: Text("공지사항",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 22),),
           ),
           body: Container(
+            color: Color(0xFFF8F8F8),
             child: Column(
               children: [
                 // const Header(),
@@ -57,14 +58,24 @@ class _AnnouncementsState extends State<Announcements> {
                     itemBuilder: (context, index) {
                       var item = annList[index];
                       return Card(
-                        color: Colors.white38,
+                        color: Colors.transparent,
+                        elevation: 0,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),
                         child: ExpansionTile(
-                          title: onText(item["title"]),
+                          title: Text(item["title"],
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black
+                            ),
+                          ),
                           children: [
                             Container(
-                              child: onText(item["content"]),
+                              padding: EdgeInsets.all(20),
+                              width: double.infinity,
+                              color: Colors.white,
+                              child: Text(item["content"],style: TextStyle(fontSize: 16,color: Colors.black)),
                             )
                           ],
                         ),
@@ -84,8 +95,10 @@ class _AnnouncementsState extends State<Announcements> {
     return Center(
       child: Container(
         width: double.infinity,
-        child: onText(
-            "디고의 기본 이용 안내는 고객센터 또는 서비스 이용 약관, 개인정보 처리방침 메뉴를 참고해주세요."),
+        child: Text(
+            "디고의 기본 이용 안내는 고객센터 또는 서비스 이용 약관, 개인정보 처리방침 메뉴를 참고해주세요.",
+            style: TextStyle(fontSize: 18,color: Colors.black)
+        ),
       ),
     );
   }

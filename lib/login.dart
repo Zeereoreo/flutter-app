@@ -63,8 +63,8 @@ class _LogState extends State<Log> {
 
   @override
   Widget build(BuildContext context) {
-  print("${context.read<AuthStore>().accessToken}");
-  print("${context.read<AuthStore>().refreshToken}");
+  // print("${context.read<AuthStore>().accessToken}");
+  // print("${context.read<AuthStore>().refreshToken}");
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -239,7 +239,7 @@ class _LogState extends State<Log> {
     );
 
     if(response.statusCode == 200){
-      print("${response.body}");
+      // print("${response.body}");
       final Map<String, dynamic> responseData = json.decode(response.body);
 
 
@@ -387,14 +387,14 @@ class _OuthBtnState extends State<OuthBtn> {
     // NaverLoginResult loginResult = await FlutterNaverLogin.logIn();
     final NaverLoginResult result = await FlutterNaverLogin.logIn();
     NaverAccessToken res = await FlutterNaverLogin.currentAccessToken;
-    print("토큰:${res.accessToken}");
+    // print("토큰:${res.accessToken}");
     if (result.status == NaverLoginStatus.loggedIn) {
-      print("리스폰스 = ${result}");
-      print('액세스토큰 = ${result.accessToken.accessToken}');
-      print('id = ${result.account.id}');
-      print('email = ${result.account.email}');
-      print('name = ${result.account.name}');
-      print(res);
+      // print("리스폰스 = ${result}");
+      // print('액세스토큰 = ${result.accessToken.accessToken}');
+      // print('id = ${result.account.id}');
+      // print('email = ${result.account.email}');
+      // print('name = ${result.account.name}');
+      // print(res);
       await SnsApiService().sendTokenToServer(context, 'Naver', res.accessToken, res.refreshToken);
       await getUserPoint(context);
 
@@ -427,8 +427,8 @@ class _OuthBtnState extends State<OuthBtn> {
           HttpHeaders.authorizationHeader: 'Bearer ${token.accessToken}'
         },
       );
-      print("토큰:$token");
-      print("토큰:${token.accessToken}");
+      // print("토큰:$token");
+      // print("토큰:${token.accessToken}");
       context.read<AuthStore>().accessToken = token.accessToken;
       // await SnsApiService().sendTokenToServer(context, 'Kakao', token.accessToken, token.refreshToken);
       await getUserPoint(context);

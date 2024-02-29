@@ -38,7 +38,7 @@ class _HomeState extends State<Home> {
 
     var name = '${context.read<userStore>().name}';
     var currentPoint = '${context.read<pointStore>().current}';
-    print("access :${context.read<AuthStore>().accessToken}");
+    // print("access :${context.read<AuthStore>().accessToken}");
 
 
         return WillPopScope(

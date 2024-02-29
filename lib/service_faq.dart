@@ -103,7 +103,7 @@ class _ServiceFAQState extends State<ServiceFAQ> with TickerProviderStateMixin {
                     itemCount: faqList == null ? 0 : faqList["items"].length,
                     itemBuilder: (c, i) {
                       var faq = faqList["items"][i];
-                      print("아이템빌더 : ${faq}");
+                      // print("아이템빌더 : ${faq}");
                       return Column(
                         children: [
                           Card(

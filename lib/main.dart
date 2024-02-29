@@ -130,7 +130,7 @@ class AuthStore extends ChangeNotifier{
   set accessToken(String newToken) {
     _accessToken = newToken;
     notifyListeners();
-    print("엑세스토큰 $accessToken");
+    // print("엑세스토큰 $accessToken");
   }
 
   notifyListeners();
