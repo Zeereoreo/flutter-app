@@ -160,7 +160,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
                         }
                         : null ,
                         style: ElevatedButton.styleFrom(
-                          primary: completeAuth ? Color(0xFF00BEFF) : Colors.grey,
+                          backgroundColor: completeAuth ? Color(0xFF00BEFF) : Colors.grey,
                           minimumSize: Size(150, 50), // 크기 조절
                         ),
                         child: Text("다음으로")

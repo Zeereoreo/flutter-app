@@ -1,10 +1,14 @@
 import 'dart:convert';
 
+import 'package:deego_client/Wiget/pop_up.dart';
 import 'package:deego_client/header.dart';
 import 'package:deego_client/main.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
+import 'horizontaldasheddivider.dart';
 
 class QuestionList extends StatefulWidget {
   const QuestionList({Key? key}) : super(key: key);
@@ -32,9 +36,9 @@ class _QuestionListState extends State<QuestionList> with TickerProviderStateMix
 
   @override
   void initState() {
-
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,6 +56,7 @@ class _QuestionListState extends State<QuestionList> with TickerProviderStateMix
         title: Text("문의하기",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 22),),
       ),
       body: Container(
+        color: Color(0xFFF8F8F8),
         child: Column(
           children: [
             TabBar(
@@ -90,25 +95,88 @@ class _QuestionListState extends State<QuestionList> with TickerProviderStateMix
                     itemCount: qnaList == null ? 0 : qnaList["items"].length,
                     itemBuilder: (c, i) {
                       var qna = qnaList["items"][i];
-                      print("아이템빌더 : ${qna["questionDTO"]["title"]}");
-                      return Card(
-                        color: Colors.white38,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)
-                        ),
-                        child: ExpansionTile(
-                          title: Text(qna["questionDTO"]["title"],
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white
-                            ),),
-                          children: [
-                            Container(
-                              child: Text("${qna["questionDTO"]["content"]}"),
-                            )
-                          ],
-                        ),
+                      var createdDate = DateTime.parse(qna["questionDTO"]["createdDateFormat"]); // 문자열을 DateTime 객체로 변환
+                      var formattedDate = DateFormat('yyyy-MM-dd').format(createdDate); // 날짜를 "yyyy-MM-dd" 형식으로 포맷팅
+                      // print("아이템빌더 : $formattedDate"); // 포맷팅된 날짜 출력
+                      return Column(
+                        children: [
+                          Card(
+                            elevation: 0,
+                            color: Colors.transparent,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)
+                            ),
+                            child: ExpansionTile(
+                              title: Row(
+                                children: [
+                                  Flexible(child: answerDTOWidget(qna["ansdwerDTO"])),
+                                  SizedBox(width: 10,),
+                                  Text("Q",
+                                      style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.black
+                                  ),),
+                                  SizedBox(width: 10,),
+
+                                  Text(qna["questionDTO"]["title"],
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black
+                                    ),),
+                                ],
+                              ),
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(20),
+                                  width: double.infinity,
+                                  color: Colors.white,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Align(
+                                        alignment: Alignment.bottomLeft,
+                                        child: Text(
+                                          "${qna["questionDTO"]["content"]}",
+                                          style: TextStyle(fontSize: 16, color: Colors.black),
+                                        ),
+                                      ),
+                                      SizedBox(height: 10), // 여백 추가
+                                      HorizontalDashedDivider(thickness: 1,length: 3,color: Color(0xFFDCDCDC),indent: 20,endIndent: 20,),
+                                      SizedBox(height: 10), // 여백 추가
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              "${formattedDate}",
+                                              style: TextStyle(fontSize: 14, color: Color(0xFFB3B3B3)),
+                                            ),
+                                          ),
+                                          ElevatedButton(
+                                              onPressed: (){
+                                                deleteQuestion(qna["id"]);
+                                            },
+                                              style: ElevatedButton.styleFrom(
+
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(20),
+                                                    side: BorderSide(color: Colors.grey),
+                                                  ),
+                                                backgroundColor: Colors.white,
+                                                elevation: 1
+                                              ),
+                                              child: Text("문의삭제",style: TextStyle(color: Colors.grey),)),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                )
+
+                              ],
+                            ),
+                          ),
+                          HorizontalDashedDivider(thickness: 1,length: 3,color: Color(0xFFDCDCDC),indent: 20,endIndent: 20,),
+                        ],
                       );
                     })
             ),
@@ -125,12 +193,78 @@ class _QuestionListState extends State<QuestionList> with TickerProviderStateMix
     );
     var result = jsonDecode(res.body);
     if(res.statusCode == 200){
-      print(result);
+      // print(result);
       setState(() {
         qnaList = result["qnaPage"];
       });
     } else {
       print(res.body);
+    }
+  }
+
+  deleteQuestion(id)async{
+    var res = await http.delete(Uri.parse("https://test.deegolabs.kr/mobile/qna/$id"),
+        headers: {
+          "Authorization" : "Bearer ${context.read<AuthStore>().accessToken}"
+        }
+    );
+
+    if(res.statusCode == 204){
+        showDialog(
+          context: context,
+          builder:  (BuildContext context){
+            return CustomPopup(
+                content: "문의가 삭제 되었습니다.", confirmText: "확인",
+              onConfirm: () {
+                  Navigator.pop(context);
+                  setState(() {getQuestion(); });
+              },
+            );
+          }
+      );
+    } else {
+      showDialog(
+          context: context,
+          builder:  (BuildContext context){
+        return CustomPopup(
+          content: "문제가 발생했습니다.", confirmText: "확인",
+          onConfirm: () {
+            Navigator.pop(context);
+          },
+        );
+      },);
+    }
+  }
+
+  Widget answerDTOWidget(answerDTO) {
+    if (answerDTO == null) {
+      return Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Color(0xFF727272),
+        ),
+        padding: EdgeInsets.all(8),
+        child: Text(
+          "답변대기",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 12
+          ),
+        ),
+      );
+    } else {
+      // answerDTO가 null이 아니면 "답변등록"을 표시하는 위젯을 반환
+      return Container(
+        color: Color(0xFF0066FF),
+        padding: EdgeInsets.all(8),
+        child: Text(
+          "답변등록",
+          style: TextStyle(
+            color: Colors.white,
+              fontSize: 12
+          ),
+        ),
+      );
     }
   }
 }

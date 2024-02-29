@@ -115,7 +115,7 @@ class _ServiceFAQState extends State<ServiceFAQ> with TickerProviderStateMixin {
                             child: ExpansionTile(
                               title: Text(faq["title"],
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black
                                 ),),
@@ -124,7 +124,7 @@ class _ServiceFAQState extends State<ServiceFAQ> with TickerProviderStateMixin {
                                   padding: EdgeInsets.all(20),
                                   width: double.infinity,
                                   color: Colors.white,
-                                  child: Text("${faq["content"]}"),
+                                  child: Text("${faq["content"]}",style: TextStyle(fontSize: 16,color: Colors.black),),
                                 )
                                 ],
                             ),
