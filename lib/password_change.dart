@@ -54,16 +54,25 @@ class _PasswordChangeState extends State<PasswordChange> {
                 child: Column(
                   children: [
                     Container(
+                      padding: EdgeInsets.all(20),
                       width: double.infinity,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           infoName("아이디"),
+                          SizedBox(height: 10,),
                           userInput("아이디를 입력해주세요.", _idInfo, TextInputType.text),
+                          SizedBox(height: 10,),
                           infoName("핸드폰번호"),
+                          SizedBox(height: 10,),
                           PhoneWidet(),
+                          SizedBox(height: 10,),
                           infoName("새로운 비밀번호"),
+                          SizedBox(height: 10,),
                           userInput("새로운 비밀번호를 입력해주세요.", _newPassword, TextInputType.text),
+                          SizedBox(height: 10,),
                           infoName("새로운 비밀번호 확인"),
+                          SizedBox(height: 10,),
                           userInput("새로운 비밀번호를 다시 입력해주세요.", _checkPassword, TextInputType.text),
                         ],
                       ),
@@ -82,10 +91,11 @@ class _PasswordChangeState extends State<PasswordChange> {
   Widget infoName(String name){
     return Text(
       name,
+
       style: TextStyle(
           fontWeight: FontWeight.bold,
-          fontSize: 20,
-          color: Colors.white
+          fontSize: 16,
+          color: Colors.black
       ),
     );
   }
