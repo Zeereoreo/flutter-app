@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
+import 'horizontaldasheddivider.dart';
+
 class ServiceFAQ extends StatefulWidget {
   const ServiceFAQ({Key? key}) : super(key: key);
 
@@ -49,10 +51,11 @@ class _ServiceFAQState extends State<ServiceFAQ> with TickerProviderStateMixin {
           },
         ),
         centerTitle: true, // 제목 가운데 정렬
-        title: Text("FAQ",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 22),),
+        title: Text("디고 FAQ",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 22),),
 
       ),
       body: Container(
+        color: Color(0xFFF8F8F8),
         child: Column(
           children: [
             // const Header(),
@@ -101,24 +104,33 @@ class _ServiceFAQState extends State<ServiceFAQ> with TickerProviderStateMixin {
                     itemBuilder: (c, i) {
                       var faq = faqList["items"][i];
                       print("아이템빌더 : ${faq}");
-                      return Card(
-                        color: Colors.white38,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)
-                        ),
-                        child: ExpansionTile(
-                          title: Text(faq["title"],
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white
-                            ),),
-                          children: [
-                            Container(
-                              child: Text("${faq["content"]}"),
-                            )
-                            ],
-                        ),
+                      return Column(
+                        children: [
+                          Card(
+                            color: Colors.transparent,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)
+                            ),
+                            child: ExpansionTile(
+                              title: Text(faq["title"],
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black
+                                ),),
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(20),
+                                  width: double.infinity,
+                                  color: Colors.white,
+                                  child: Text("${faq["content"]}"),
+                                )
+                                ],
+                            ),
+                          ),
+                          HorizontalDashedDivider(thickness: 1,length: 3,color: Color(0xFFDCDCDC),indent: 20,endIndent: 20,),
+                        ],
                       );
                     })
             ),
