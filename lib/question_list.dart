@@ -302,14 +302,15 @@ class _MyQuestionWidgetState extends State<MyQuestionWidget> {
               decoration: InputDecoration(
                 hintText: "문의 내용을 입력해 주세요.",
                 filled: true,
-                fillColor: const Color(0xFFF5F7FB),
+                fillColor: Colors.white,
                 focusedBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  borderSide: BorderSide(width: 1, color: Colors.white),
+                  borderSide: BorderSide(width: 1, color: Color(0xFFB3B3B3)),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  borderSide: BorderSide(width: 1, color: Color(0xFFF5F7FB)),
+                  borderSide: BorderSide(width: 1, color: Color(0xFFB3B3B3)),
+
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -324,9 +325,9 @@ class _MyQuestionWidgetState extends State<MyQuestionWidget> {
           ),
           SizedBox(height: 20,),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              qnaBtn("취소", Colors.grey ,backNavigator),
-              qnaBtn("문의", Color(0xFF00BEFF), postQna),
+              qnaBtn("1:1 문의하기", Color(0xFF00BEFF), postQna),
             ],
           )
         ],
@@ -340,7 +341,11 @@ class _MyQuestionWidgetState extends State<MyQuestionWidget> {
       children: [
         Container(
           width: MediaQuery.of(context).size.width/1.11,
-          color: Colors.white,
+          decoration: BoxDecoration(
+            border: Border.all(color: Color(0xFFB3B3B3),width: 1),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(5)
+          ),
           child: DropdownButton<String>(
             value: _selectedItem,
             items: _list.map((String value) {
@@ -381,12 +386,17 @@ class _MyQuestionWidgetState extends State<MyQuestionWidget> {
   Widget qnacontent(String hint, TextEditingController controller, keyboardType) {
     return Container(
       width: double.infinity,
+      decoration: BoxDecoration(
+          border: Border.all(color: Color(0xFFB3B3B3),width: 1),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(5)
+      ),
       child: TextField(
         controller: controller,
         decoration: InputDecoration(
           hintText: "$hint",
           filled: true,
-          fillColor: const Color(0xFFF5F7FB),
+          fillColor: Colors.white,
           focusedBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
             borderSide: BorderSide(width: 1, color: Colors.white),
@@ -424,8 +434,8 @@ class _MyQuestionWidgetState extends State<MyQuestionWidget> {
 
     return Container(
       margin: EdgeInsets.all(3),
-      width: MediaQuery.of(context).size.width/2.3,
-      height: MediaQuery.of(context).size.height/13,
+      width: MediaQuery.of(context).size.width/1.2,
+      height: MediaQuery.of(context).size.height/14,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.0),
         color: color,
@@ -435,6 +445,7 @@ class _MyQuestionWidgetState extends State<MyQuestionWidget> {
           btnAction
         ,
         style: TextButton.styleFrom(
+          backgroundColor: Color(0xFF0066FF),
           padding: EdgeInsets.all(16),
         ),
         child: Center(
