@@ -26,7 +26,10 @@ class _UserInfoState extends State<UserInfo> {
   late TextEditingController _idInfo;
   late TextEditingController _emailInfo;
   late TextEditingController _phoneInfo;
- @override
+
+  bool _isPhoneVerified = false;
+
+  @override
   void initState() {
    _nameInfo = TextEditingController(text: context.read<userStore>().name);
    _idInfo = TextEditingController(text: context.read<userStore>().id);
@@ -80,7 +83,11 @@ class _UserInfoState extends State<UserInfo> {
                           SizedBox(height: 10,),
                           infoName("휴대전화 번호"),
                           SizedBox(height: 10,),
-                          PhoneWidet(),
+                          PhoneWidet(onPhoneVerified: (isVerified) {
+                            setState(() {
+                              _isPhoneVerified = isVerified; // 인증 여부 업데이트
+                            });
+                          },),
                         ],
                       ),
                     ),
@@ -88,7 +95,7 @@ class _UserInfoState extends State<UserInfo> {
                 ),
               ),
             ),
-            PostBtn(btnName: "변경", btnFunction: postChange),
+            PostBtn(btnName: "변경", btnFunction: postChange,isPhoneVerified: _isPhoneVerified,),
           ],
         ),
       ),
@@ -149,10 +156,11 @@ class _UserInfoState extends State<UserInfo> {
       });
 
       showDialog(context: context, builder: (BuildContext context){
-        return CustomPopup(title: "사용자 정보 변경", content: "변경이 완료되었습니다.", confirmText: "확인",
+        return CustomPopup( content: "정보가 변경되었습니다.", confirmText: "확인", 
           onConfirm: (){
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => Home(accessToken:context.read<AuthStore>().accessToken)));
           },
+          onCancel: () => Navigator.pop(context),
         );
       });
   }

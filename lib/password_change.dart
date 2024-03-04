@@ -20,6 +20,7 @@ class _PasswordChangeState extends State<PasswordChange> {
   late TextEditingController _idInfo;
   var _newPassword = TextEditingController();
   var _checkPassword = TextEditingController();
+  bool _isPhoneVerified = false;
 
   @override
   void initState() {
@@ -65,7 +66,11 @@ class _PasswordChangeState extends State<PasswordChange> {
                           SizedBox(height: 10,),
                           infoName("핸드폰번호"),
                           SizedBox(height: 10,),
-                          PhoneWidet(),
+                          PhoneWidet(onPhoneVerified: (isVerified) {
+                            setState(() {
+                              _isPhoneVerified = isVerified; // 인증 여부 업데이트
+                            });
+                          },),
                           SizedBox(height: 10,),
                           infoName("새로운 비밀번호"),
                           SizedBox(height: 10,),
@@ -81,7 +86,7 @@ class _PasswordChangeState extends State<PasswordChange> {
                 ),
               ),
             ),
-            PostBtn(btnName: "변경", btnFunction: postChange),
+            PostBtn(btnName: "변경", btnFunction: postChange, isPhoneVerified: _isPhoneVerified,),
           ],
         ),
       ),

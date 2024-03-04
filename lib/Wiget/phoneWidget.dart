@@ -9,9 +9,9 @@ import 'package:provider/provider.dart';
 import '../main.dart';
 
 class PhoneWidet extends StatefulWidget {
+  final ValueChanged<bool> onPhoneVerified;
 
-
-  const PhoneWidet({super.key});
+  const PhoneWidet({super.key, required this.onPhoneVerified});
 
 
   @override
@@ -32,6 +32,7 @@ class _PhoneWidetState extends State<PhoneWidet> {
   bool completeAuth = false;
   bool authenticationCompleted = false;
   String newPassword = "";
+  bool _isPhoneVerified = false;
 
   @override
   void initState() {
@@ -234,9 +235,10 @@ class _PhoneWidetState extends State<PhoneWidet> {
           completeAuth = true;
           authenticationCompleted = true;
           showAuthBtn = false;
-
+          _isPhoneVerified = true;
         });
         showCompletionDialog(context);
+        widget.onPhoneVerified(_isPhoneVerified);
         // 추가 작업 수행 가능
       } else {
         // 서버로의 인증번호 전송이 실패한 경우

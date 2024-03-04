@@ -2,9 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PostBtn extends StatefulWidget {
-  const PostBtn({super.key, required this.btnName, required this.btnFunction});
+  const PostBtn({super.key, required this.btnName, required this.btnFunction,required this.isPhoneVerified});
   final String btnName;
   final void Function() btnFunction;
+  final bool isPhoneVerified;
 
   @override
   State<PostBtn> createState() => _PostBtnState();
@@ -27,12 +28,10 @@ class _PostBtnState extends State<PostBtn> {
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12.0),
-          color: Color(0x0066FF),
+          color: widget.isPhoneVerified ? Color(0xFF0066FF) : Colors.grey
         ),
         child: TextButton(
-          onPressed: (){
-            widget.btnFunction();
-          },
+          onPressed: widget.isPhoneVerified ? widget.btnFunction : null,
           style: TextButton.styleFrom(
             padding: EdgeInsets.all(16),
           ),

@@ -29,6 +29,7 @@ class _FindPasswordState extends State<FindPassword> {
   bool authenticationCompleted = false;
   String newPassword = "";
   bool _passwordError = false;
+  bool _isPhoneVerified = false;
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +110,11 @@ class _FindPasswordState extends State<FindPassword> {
                     obscureText: true,
                   ),
                   SizedBox(height: 10),
-                  PhoneWidet(),
+                  PhoneWidet(onPhoneVerified: (isVerified) {
+                    setState(() {
+                      _isPhoneVerified = isVerified; // 인증 여부 업데이트
+                    });
+                  },),
                   SizedBox(height: 10,),
                   ElevatedButton(onPressed: (){
                     changePassword();

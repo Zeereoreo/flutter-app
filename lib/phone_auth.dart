@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:deego_client/Wiget/phoneWidget.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:deego_client/login.dart';
 import 'package:deego_client/sign.dart';
@@ -6,7 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
+import 'Wiget/postBtn.dart';
+
 class PhoneAuth extends StatefulWidget {
+
   const PhoneAuth({super.key});
 
   @override
@@ -23,154 +27,201 @@ class _PhoneAuthState extends State<PhoneAuth> {
   bool completeAuth = false;
   bool authenticationCompleted = false;
   bool isExist = false;
+  bool _isPhoneVerified = false;
+  late String phone;
+  bool _phoneError = false;
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          width: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height / 8,
-                margin: EdgeInsets.only(top: 100, right: 20, left: 20, bottom: 20),
-                child: const Image(image: AssetImage('assets/images/deego_logo.png')),
-              ),
-              Container(
-                child: Padding(
-                  padding: EdgeInsets.all(15),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          onChanged: (text) {
-                            setState(() {
-                              num = text;
-                              blueBtn = text.length == 11;
-                            });
-                          },
-                          decoration: InputDecoration(
-                            labelText: "핸드폰 번호",
-                            hintText: "-를 제외한 핸드폰번호를 입력해주세요",
+      appBar: AppBar(
+        elevation: 1,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          color: Colors.black,
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        centerTitle: true, // 제목 가운데 정렬
+        title: Text("회원가입",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 22),),
+      ),
+      body: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.all(20),
+            width: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height / 8,
+                  margin: EdgeInsets.only(top: 100, right: 20, left: 20, bottom: 20),
+                  child: const Image(image: AssetImage('assets/images/deego_logo.png')),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      child: TextField(
+                        onChanged: (text){
+                          setState(() {
+                            _phoneError = text.length < 10 || text.length > 12 ;
+                            phone = text;
+                            blueBtn = text.length == 11;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          hintText: "-를 제외한 핸드폰번호를 입력해주세요.",
+                          errorText: _phoneError ? "제대로 된 핸드폰 번호를 입력해주세요." : null,
+                          filled: true,
+                          fillColor: const Color(0xFFF5F7FB),
+                          focusedBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            borderSide: BorderSide(width: 1, color: Colors.white),
                           ),
-                          keyboardType: TextInputType.number,
-                          textInputAction: TextInputAction.done,
-                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                          maxLength: 11,
-                          enabled: !showAdditionalInput,
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            borderSide: BorderSide(width: 1, color: Color(0xFFF5F7FB)),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          ),
                         ),
+                        keyboardType: TextInputType.number,
+                        textInputAction: TextInputAction.done,
+                        enabled: !showAdditionalInput,
+                        // maxLength: 11,
                       ),
-                      SizedBox(width: 16.0),
-                      Container(
-                        margin: EdgeInsets.only(top: 10),
-                        padding: EdgeInsets.all(10),
-                        child: ElevatedButton(
-                          onPressed: blueBtn
-                              ? () async {
-                            sendPhoneNumberToServer(num);
-                            setState(() {
-                              isExist ? showAdditionalInput == true : showAdditionalInput == false;
-                              blueBtn = false;
-                            });
-                          }
-                              : null,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: blueBtn ? Colors.blue : Colors.grey,
+                    ),
+                    SizedBox(width: 10,),
+                    ElevatedButton(
+                        onPressed: blueBtn
+                            ? () async {
+                          sendPhoneNumberToServer(phone);
+                          setState(() {
+                            showAdditionalInput = true;
+                            blueBtn = false;
+                          });
+                        }
+                            : null,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: blueBtn ? Colors.white : Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: blueBtn? BorderSide(color: Colors.black) : BorderSide(color: Colors.grey),
                           ),
-                          child: Text("인증하기"),
+
                         ),
-                      )
+                        child: Text("인증번호 전송", style: TextStyle(color: Colors.black),)),
+                  ],
+                ),
+                if (showAdditionalInput)
+                  Container(
+                    margin: EdgeInsets.only(top: 20),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            child: TextField(
+                                onChanged: (text) {
+                                  setState(() {
+                                    authNum = text;
+                                    showAuthBtn = text.length == 4;
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                  hintText: "받으신 인증번호를 입력해 주세요",
+                                  filled: true,
+                                  fillColor: const Color(0xFFF5F7FB),
+                                  focusedBorder: const OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                    borderSide: BorderSide(width: 1, color: Colors.white),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                    borderSide: BorderSide(width: 1, color: Color(0xFFF5F7FB)),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                  ),
+                                ),
+                                keyboardType: TextInputType.number,
+                                textInputAction: TextInputAction.done,
+                                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                // maxLength: 4,
+                                enabled: !authenticationCompleted
+                            ),
+                          ),
+                          SizedBox(width: 16.0),
+                          Container(
+                            margin: EdgeInsets.only(top: 10),
+                            padding: EdgeInsets.all(10),
+                            child: ElevatedButton(
+                              onPressed: showAuthBtn
+                                  ? () async {
+                                await sendAuthCodeToServer(authNum, userId);
+                                setState(() {
+
+                                });
+                              }
+                                  : null,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: showAuthBtn ? Colors.white : Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  side: showAuthBtn? BorderSide(color: Colors.black) : BorderSide(color: Colors.grey),
+                                ),
+                              ),
+                              child: Text("인증번호 확인",style: TextStyle(color: Colors.black)),
+                            ),
+                          ),
+                        ]
+                    ),
+                  ),
+                Container(
+                  margin: EdgeInsets.all(50),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      // Expanded(
+                      //   child: ElevatedButton(
+                      //       onPressed: () {
+                      //         Navigator.of(context).push(MaterialPageRoute(builder: (context) => Log()));
+                      //       },
+                      //       style: ElevatedButton.styleFrom(
+                      //         primary: Color(0xFF0089DD),
+                      //         minimumSize: Size(150, 50), // 크기 조절
+                      //       ),
+                      //       child: Text("뒤로가기")
+                      //   ),
+                      // ),
+                      // SizedBox(width: 20,),
+                      ElevatedButton(
+                          onPressed: completeAuth ?
+                              () async {
+                            Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) => Sign(userId : userId),
+                                ));
+                          }
+                          : null ,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: completeAuth ? Color(0xFF0066FF) : Color(0xFFB6B6B6),
+                            minimumSize: Size(150, 50), // 크기 조절
+                          ),
+                          child: Text("다음으로")
+                      ),
                     ],
                   ),
                 ),
-              ),
-              if (showAdditionalInput)
-                Container(
-                  padding: EdgeInsets.all(15),
-                  child: Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            onChanged: (text) {
-                              setState(() {
-                                authNum = text;
-                                showAuthBtn = text.length == 4;
-                              });
-                            },
-                            decoration: InputDecoration(
-                              labelText: "인증 번호",
-                              hintText: "받으신 인증번호를 입력해 주세요",
-                            ),
-                            keyboardType: TextInputType.number,
-                            textInputAction: TextInputAction.done,
-                            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                            maxLength: 4,
-                              enabled: !authenticationCompleted
-                          ),
-                        ),
-                        SizedBox(width: 16.0),
-                        Container(
-                          margin: EdgeInsets.only(top: 10),
-                          padding: EdgeInsets.all(10),
-                          child: ElevatedButton(
-                            onPressed: showAuthBtn
-                                ? () async {
-                              await sendAuthCodeToServer(authNum, userId);
-                              setState(() {
 
-                              });
-                            }
-                                : null,
-                            style: ElevatedButton.styleFrom(
-                              primary: showAuthBtn ? Colors.blue : Colors.grey,
-                            ),
-                            child: Text("인증완료"),
-                          ),
-                        ),
-                      ]
-                  ),
-                ),
-              Container(
-                margin: EdgeInsets.all(50),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => Log()));
-                          },
-                          style: ElevatedButton.styleFrom(
-                            primary: Color(0xFF00BEFF),
-                            minimumSize: Size(150, 50), // 크기 조절
-                          ),
-                          child: Text("뒤로가기")
-                      ),
-                    ),
-                    ElevatedButton(
-                        onPressed: completeAuth ?
-                            () async {
-                          Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => Sign(userId : userId),
-                              ));
-                        }
-                        : null ,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: completeAuth ? Color(0xFF00BEFF) : Colors.grey,
-                          minimumSize: Size(150, 50), // 크기 조절
-                        ),
-                        child: Text("다음으로")
-                    ),
-                  ],
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -203,7 +254,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
-                      Navigator.of(context).pop(); // 다이얼로그 닫기
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Log()));
                     },
                     child: Text("확인"),
                   ),
