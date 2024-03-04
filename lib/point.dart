@@ -434,7 +434,6 @@ class _PointState extends State<Point> {
          context: context,
          builder: (BuildContext context){
            return CustomPopup(
-             title: "title",
              content: "30일 이내에 네이버 포인트 등록을 \n 하지 않으시면 적립된 포인트가 소멸됩니다. \n 동의하십니까?",
              confirmText: "동의하기",
              onConfirm: () => getPoint(item),

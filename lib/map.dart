@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'package:deego_client/Wiget/pop_up.dart';
 import 'package:deego_client/location.dart';
 import 'package:deego_client/main.dart';
 import 'package:flutter/material.dart';
@@ -129,14 +130,14 @@ class _NaverMapAppState extends State<NaverMapApp> {
                    itemBuilder: (c, i) {
                      var item = deegoList[i];
                      var serieal = item["serialNumber"];
-                     print("$serieal");
-                     print("$item");
+                     // print("$serieal");
+                     // print("$item");
                      return Container(
                        decoration: BoxDecoration(
                          border: Border.all(width: 1, color: Color(0xFFE0E0E0))
                        ),
                        margin: EdgeInsets.all(5),
-                       padding: EdgeInsets.all(10),
+                       padding: EdgeInsets.only(left: 10),
                        child: Row(
                          children: [
                            Image.asset("assets/images/deego_image.png",fit: BoxFit.cover,),
@@ -159,10 +160,10 @@ class _NaverMapAppState extends State<NaverMapApp> {
                                        children: [
                                          isBrokenWidget(item["isBroken"]),
                                          TextButton(onPressed: (){
-                                           // patchFavorite()
+                                           patchFavorite(serieal);
                                            print("클릭");
                                          },
-                                           child: Icon(Icons.star,color: Color(0xFFEBEBEB),size: 30,),
+                                           child: Icon(Icons.star,color: Color(0xFFEBEBEB),size: 40,),
                                            style: ElevatedButton.styleFrom(
                                                backgroundColor: Colors.white,
                                                elevation: 0,
@@ -208,7 +209,7 @@ class _NaverMapAppState extends State<NaverMapApp> {
   
   patchFavorite(String serieal)async{
     // print(serieal);
-    var res = await http.patch(Uri.parse("https://backend.deegolabs.com/mobile/deego/favorite"),
+    var res = await http.patch(Uri.parse("https://test.deegolabs.kr/mobile/deego/favorite"),
         headers:{
       "Authorization": "Bearer ${context.read<AuthStore>().accessToken}"
     },
@@ -216,16 +217,25 @@ class _NaverMapAppState extends State<NaverMapApp> {
           "deegoSerialNumber": serieal
         }
     );
+
     var favorite = jsonDecode(res.body);
 
         if(res.statusCode == 200){
-          print(favorite);
+          // print(favorite);
+          print("${res.body}");
+
           setState(() {
             isFavorite = favorite;
           });
+          showDialog(context: context, builder: (BuildContext context){
+            return CustomPopup(content: "즐겨찾기가 완료되었습니다.", confirmText: "확인", onConfirm: () => Navigator.pop(context),onCancel: () => Navigator.pop(context),);
+          });
         }
         else{
-          print(res.body);
+          print("${res.body}");
+          showDialog(context: context, builder: (BuildContext context){
+            return CustomPopup(content: "문제가 발생하였습니다.", confirmText: "확인", onConfirm: () => Navigator.pop(context),onCancel: () => Navigator.pop(context),);
+          });
         }
   }
 

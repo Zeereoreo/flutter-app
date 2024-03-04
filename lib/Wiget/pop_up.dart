@@ -34,27 +34,51 @@ class CustomPopup extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.min, // To allow vertical size to be as small as possible
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    if (onCancel != null)
-                      IconButton(
-                        icon: Icon(Icons.close,size: 28,),
-                        onPressed: onCancel,
+                Container(
+                  // decoration: BoxDecoration(
+                  //     border: Border.all()
+                  // ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.min, //
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          if (title != null) // Title이 존재할 경우에만 표시
+                            Container(
+                                width: MediaQuery.of(context).size.width*0.6,
+                                alignment: Alignment.center,
+                                // decoration: BoxDecoration(
+                                //     border: Border.all()
+                                // ),
+                                child: Text(title!, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), textAlign: TextAlign.center)),
+                          if (onCancel != null)
+                            Container(
+                              width: MediaQuery.of(context).size.width*0.1,
+                              alignment: Alignment.centerRight,
+                              // decoration: BoxDecoration(
+                              //     border: Border.all()
+                              // ),
+                              child: IconButton(
+                                icon: Icon(Icons.close,size: 28,),
+                                onPressed: onCancel,
+                              ),
+                            ),
+                        ],
                       ),
-                  ],
-                ),
-                if (title != null) // Title이 존재할 경우에만 표시
-                  Text(title!, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
-                SizedBox(height: 12), // 추가한 공간
-                Text(content, style: TextStyle(fontSize: 16,),textAlign: TextAlign.center,),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: onConfirm,
-                  child: Text(confirmText, style: TextStyle(fontSize: 16)),
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 16), // Added padding for better touch area
-                    backgroundColor: Color(0xFF0066FF),
+                      // SizedBox(height: 12), // 추가한 공간
+                      Text(content, style: TextStyle(fontSize: 16,),textAlign: TextAlign.center,),
+                      SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: onConfirm,
+                        child: Text(confirmText, style: TextStyle(fontSize: 16)),
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(vertical: 16), // Added padding for better touch area
+                          backgroundColor: Color(0xFF0066FF),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],

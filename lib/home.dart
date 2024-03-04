@@ -11,6 +11,7 @@ import 'package:deego_client/header.dart';
 import 'package:flutter/material.dart';
 import 'package:deego_client/point.dart';
 import 'package:provider/provider.dart';
+import 'Wiget/pop_up.dart';
 import 'main.dart';
 
 
@@ -26,6 +27,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   String id = "";
   var favoriteList;
+
+  var isFavorite;
 
   @override
   void initState() {
@@ -293,8 +296,56 @@ class _HomeState extends State<Home> {
                                       itemCount: favoriteList.length,
                                       itemBuilder: (context, index) {
                                         var item = favoriteList[index];
+                                        print("아이템 ${item}");
+                                        var serieal = item["deego"]["serialNumber"];
+
                                         return Container(
-                                          child: Text(item["name"]),
+                                            decoration: BoxDecoration(
+                                                border: Border.all(width: 1, color: Color(0xFFE0E0E0))
+                                            ),
+                                            margin: EdgeInsets.all(5),
+                                            padding: EdgeInsets.only(left: 10),
+                                            child: Row(
+                                              children: [
+                                                Image.asset("assets/images/deego_image.png",fit: BoxFit.cover,),
+                                                Expanded(
+                                                  child: Container(
+                                                      padding: EdgeInsets.all(10),
+                                                      // decoration: BoxDecoration(
+                                                      //   border: Border.all(width: 1,)
+                                                      // ),
+                                                      child:
+                                                      Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                        children: [
+                                                          Text("${item["deego"]["name"]}", style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),),
+                                                          // SizedBox(height: ,),
+                                                          Text("${item["deego"]["deegoLocationDTO"]["location"]}", style: TextStyle(color: Color(0xFFB3B3B3), fontSize: 14),),
+                                                          Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                            children: [
+                                                              isBrokenWidget(item["deego"]["isBroken"]),
+                                                              TextButton(onPressed: (){
+                                                                patchFavorite(serieal);
+                                                                print("클릭");
+                                                              },
+                                                                child: Icon(Icons.star,color: Color(0xFFEBEBEB),size: 40,),
+                                                                style: ElevatedButton.styleFrom(
+                                                                  backgroundColor: Colors.white,
+                                                                  elevation: 0,
+                                                                  shape: CircleBorder(),
+                                                                  // side: BorderSide(width: 2, color: Colors.grey),
+                                                                ),
+                                                              )
+                                                            ],
+                                                          )
+                                                        ],
+                                                      )
+                                                  ),
+                                                )
+                                              ],
+                                            )
                                         );
                                   },
                                 )
@@ -327,14 +378,77 @@ class _HomeState extends State<Home> {
         var res = await http.get(Uri.parse("https://test.deegolabs.kr/mobile/deego/favorite"),
           headers: {"Authorization": "Bearer ${context.read<AuthStore>().accessToken}"}
         );
+        var list = jsonDecode(res.body);
 
         if(res.statusCode == 200){
-          var list = jsonDecode(res.body);
           setState(() {
             favoriteList = list["favoriteDeegoPage"]["items"];
-            print(favoriteList);
+            print("리스트 ${favoriteList}");
           });
+        }else {
+          print("${list.body}");
         }
       }
+
+  patchFavorite(String serieal)async{
+    // print(serieal);
+    var res = await http.patch(Uri.parse("https://test.deegolabs.kr/mobile/deego/favorite"),
+        headers:{
+          "Authorization": "Bearer ${context.read<AuthStore>().accessToken}"
+        },
+        body: {
+          "deegoSerialNumber": serieal
+        }
+    );
+
+    var favorite = jsonDecode(res.body);
+
+    if(res.statusCode == 200){
+      // print(favorite);
+      setState(() {
+        isFavorite = favorite;
+      });
+      showDialog(context: context, builder: (BuildContext context){
+        return CustomPopup(content: "즐겨찾기가 완료되었습니다.", confirmText: "확인", onConfirm: () => Navigator.pop(context),onCancel: () => Navigator.pop(context),);
+      });
+    }
+    else{
+      showDialog(context: context, builder: (BuildContext context){
+        return CustomPopup(content: "문제가 발생하였습니다.", confirmText: "확인", onConfirm: () => Navigator.pop(context),onCancel: () => Navigator.pop(context),);
+      });
+    }
+  }
+
+  Widget isBrokenWidget(isBroken) {
+    if (isBroken) {
+      return Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Color(0xFF727272),
+        ),
+        // padding: EdgeInsets.all(1),
+        child: Text(
+          "사용불가능",
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: 12
+          ),
+        ),
+      );
+    } else {
+      // answerDTO가 null이 아니면 "답변등록"을 표시하는 위젯을 반환
+      return Container(
+        color: Color(0xFFEAF7FF),
+        padding: EdgeInsets.all(8),
+        child: Text(
+          "사용가능",
+          style: TextStyle(
+              color: Color(0xFF0066FF),
+              fontSize: 12
+          ),
+        ),
+      );
+    }
+  }
 
 }
