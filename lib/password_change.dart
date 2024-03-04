@@ -128,7 +128,7 @@ class _PasswordChangeState extends State<PasswordChange> {
   }
 
   postChange()async{
-    var res = await http.put(Uri.parse("https://test.deegolabs.kr/mobile/user/password"),
+    var res = await http.put(Uri.parse("https://backend.deegolabs.com/mobile/user/password"),
         headers: {"Authorization": "Bearer ${context.read<AuthStore>().accessToken}"},
         body: {
           "password": "string"
@@ -139,12 +139,12 @@ class _PasswordChangeState extends State<PasswordChange> {
 
 
     if(res.statusCode == 200){
-      print("${result}");
+      // print("${result}");
       setState(() {
 
       });
     }else {
-      print("${res.body}");
+      // print("${res.body}");
     }
   }
 }

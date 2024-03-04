@@ -105,7 +105,7 @@ class _AnnouncementsState extends State<Announcements> {
 
   Future<void> getAnn() async {
     var res = await http.get(
-      Uri.parse("https://test.deegolabs.kr/mobile/notice"),
+      Uri.parse("https://backend.deegolabs.com/mobile/notice"),
       headers: {"Authorization": "Bearer ${context.read<AuthStore>().accessToken}"},
     );
     var result = json.decode(res.body);
@@ -115,7 +115,7 @@ class _AnnouncementsState extends State<Announcements> {
         isLoading = false; // 데이터 로딩이 완료되었음을 나타내는 변수를 false로 설정
       });
     } else {
-      print("${res.body}");
+      // print("${res.body}");
     }
   }
 

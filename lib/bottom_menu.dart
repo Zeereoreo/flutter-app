@@ -45,16 +45,16 @@ class _BottomMenuState extends State<BottomMenu> {
               break;
             case 1:
               Navigator.pushReplacementNamed(context, "/map");
-              print("여기냐4");
+              // print("여기냐4");
 
               break;
             case 2:
               Navigator.pushReplacementNamed(context, "/point");
-              print("여기냐5");
+              // print("여기냐5");
               break;
             case 3:
               Navigator.pushReplacementNamed(context, "/setting");
-              print("여기냐6");
+              // print("여기냐6");
               break;
             case 4:
               Navigator.pushNamed(context, "/login");

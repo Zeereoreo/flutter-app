@@ -91,15 +91,15 @@ class _MyPageState extends State<MyPage> {
   deleteUser()async{
     bool? confirm = await _showConfirmationDialog();
     if (confirm != null && confirm){
-      var res = await http.delete(Uri.parse("https://test.deegolabs.kr/mobile/user/resign"),
+      var res = await http.delete(Uri.parse("https://backend.deegolabs.com/mobile/user/resign"),
       headers: {"Authorization": "Bearer ${context.read<AuthStore>().accessToken}"},);
     if(res.statusCode == 204){
-      print("${res.body}");
+      // print("${res.body}");
       SignCompletedSnackBar.show(context);
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => Log()));
     } else{
-      print("${res.statusCode}");
-      print("${res.body}");
+      // print("${res.statusCode}");
+      // print("${res.body}");
     }
   }
 

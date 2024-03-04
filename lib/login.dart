@@ -227,7 +227,7 @@ class _LogState extends State<Log> {
     );
   }
   Future<void> _loginToServer() async {
-    final Uri uri = Uri.parse("https://test.deegolabs.kr/mobile/auth");
+    final Uri uri = Uri.parse("https://backend.deegolabs.com/mobile/auth");
 
     final Map<String, dynamic> data = {
       'id': id,
@@ -292,9 +292,9 @@ class _LogState extends State<Log> {
 // }
 }
 Future<void> getUserPoint(BuildContext context) async {
-  print("context : ${context}");
-  final url = Uri.https("test.deegolabs.kr", "/mobile/point");
-  print("header : ${context.read<AuthStore>().accessToken}");
+  // print("context : ${context}");
+  final url = Uri.https("backend.deegolabs.com", "/mobile/point");
+  // print("header : ${context.read<AuthStore>().accessToken}");
   final response = await http.get(
       url,
       headers : {
@@ -302,19 +302,19 @@ Future<void> getUserPoint(BuildContext context) async {
       }
   );
 
-  print("body :${response.body}");
+  // print("body :${response.body}");
 
   if(response.statusCode == 200){
-    print("포인트불러오기성공");
+    // print("포인트불러오기성공");
     final Map<String, dynamic> responseData = json.decode(response.body);
     context.read<pointStore>().current = responseData["current"];
     context.read<pointStore>().spents = responseData["spents"];
 
-    print("point :${context.read<pointStore>().current}");
+    // print("point :${context.read<pointStore>().current}");
 
   } else{
 
-    print("실패 :${response.body}");
+    // print("실패 :${response.body}");
   }
 }
 
@@ -441,7 +441,7 @@ class _OuthBtnState extends State<OuthBtn> {
       });
 
     } catch (error) {
-      print('카카오톡으로 로그인 실패 $error');
+      // print('카카오톡으로 로그인 실패 $error');
     }
 
 

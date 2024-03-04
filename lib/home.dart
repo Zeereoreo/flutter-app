@@ -221,7 +221,7 @@ class _HomeState extends State<Home> {
                             child: ElevatedButton(
                               onPressed: () {
                                 context.read<footerStore>().tab = 2;
-                                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Point(accessToken: context.read<AuthStore>().accessToken,)));
+                                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => PointUsed()));
                               },
                               style: ElevatedButton.styleFrom(
                                 padding: EdgeInsets.all(16),
@@ -296,7 +296,7 @@ class _HomeState extends State<Home> {
                                       itemCount: favoriteList.length,
                                       itemBuilder: (context, index) {
                                         var item = favoriteList[index];
-                                        print("아이템 ${item}");
+                                        // print("아이템 ${item}");
                                         var serieal = item["deego"]["serialNumber"];
 
                                         return Container(
@@ -328,7 +328,7 @@ class _HomeState extends State<Home> {
                                                               isBrokenWidget(item["deego"]["isBroken"]),
                                                               TextButton(onPressed: (){
                                                                 patchFavorite(serieal);
-                                                                print("클릭");
+                                                                // print("클릭");
                                                               },
                                                                 child: Icon(Icons.star,color: Color(0xFFEBEBEB),size: 40,),
                                                                 style: ElevatedButton.styleFrom(
@@ -375,7 +375,7 @@ class _HomeState extends State<Home> {
       }
 
       getDeegoFavorite()async{
-        var res = await http.get(Uri.parse("https://test.deegolabs.kr/mobile/deego/favorite"),
+        var res = await http.get(Uri.parse("https://backend.deegolabs.com/mobile/deego/favorite"),
           headers: {"Authorization": "Bearer ${context.read<AuthStore>().accessToken}"}
         );
         var list = jsonDecode(res.body);
@@ -383,16 +383,16 @@ class _HomeState extends State<Home> {
         if(res.statusCode == 200){
           setState(() {
             favoriteList = list["favoriteDeegoPage"]["items"];
-            print("리스트 ${favoriteList}");
+            // print("리스트 ${favoriteList}");
           });
         }else {
-          print("${list.body}");
+          // print("${list.body}");
         }
       }
 
   patchFavorite(String serieal)async{
     // print(serieal);
-    var res = await http.patch(Uri.parse("https://test.deegolabs.kr/mobile/deego/favorite"),
+    var res = await http.patch(Uri.parse("https://backend.deegolabs.com/mobile/deego/favorite"),
         headers:{
           "Authorization": "Bearer ${context.read<AuthStore>().accessToken}"
         },

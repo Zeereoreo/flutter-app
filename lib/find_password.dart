@@ -139,14 +139,14 @@ class _FindPasswordState extends State<FindPassword> {
   }
 
   changePassword()async{
-    var res = await http.put(Uri.parse("https://test.deegolabs.kr/mobile/auth/password"),
+    var res = await http.put(Uri.parse("https://backend.deegolabs.com/mobile/auth/password"),
         body: {
           "userId" : name,
           "phoneId" : context.read<phoneUUIDStroe>().phoneUUID,
           "password" : newPassword,
         }
     );
-    print(res.body);
+    // print(res.body);
     //팝업창 + 로그인화면으로
 
     // var userId = jsonDecode(res.body);

@@ -276,7 +276,7 @@ class _PointState extends State<Point> {
                         child: ElevatedButton(
                           onPressed: () {
                             context.read<footerStore>().tab = 2;
-                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Point(accessToken: context.read<AuthStore>().accessToken,)));
+                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => PointUsed()));
                           },
                           style: ElevatedButton.styleFrom(
                               padding: EdgeInsets.all(16),
@@ -461,7 +461,7 @@ class _PointState extends State<Point> {
 
 
    getPoint(item)async{
-     var response =  await http.post(Uri.parse("https://test.deegolabs.kr/mobile/shop/item/${item["id"]}/purchase"),
+     var response =  await http.post(Uri.parse("https://backend.deegolabs.com/mobile/shop/item/${item["id"]}/purchase"),
          headers:
          {
            "Authorization": "Bearer ${context.read<AuthStore>().accessToken}"
@@ -474,22 +474,22 @@ class _PointState extends State<Point> {
        showPin(pin);
      }
      else {
-       print("실패");
+       // print("실패");
      };
    }
 
   getShop()async{
-    var response = await http.get(Uri.parse("https://test.deegolabs.kr/mobile/shop/item/list"),
+    var response = await http.get(Uri.parse("https://backend.deegolabs.com/mobile/shop/item/list"),
         headers:
         {
           "Authorization": "Bearer ${context.read<AuthStore>().accessToken}"
         });
     var itemList = jsonDecode(response.body);
     if(response.statusCode == 200) {
-      print("성공");
+      // print("성공");
     } else {
-      print(response.statusCode);
-      print("실패");
+      // print(response.statusCode);
+      // print("실패");
     };
     setState(() {
       shopList = itemList["shopItemPage"]["items"];
@@ -515,9 +515,9 @@ class _PurchaseState extends State<Purchase> {
 
   @override
   Widget build(BuildContext context) {
-    print("${widget.item["id"]}");
+    // print("${widget.item["id"]}");
     getPoint()async{
-      var response =  await http.post(Uri.parse("https://test.deegolabs.kr/mobile/shop/item/${widget.item["id"]}/purchase"),
+      var response =  await http.post(Uri.parse("https://backend.deegolabs.com/mobile/shop/item/${widget.item["id"]}/purchase"),
           headers:
           {
             "Authorization": "Bearer ${context.read<AuthStore>().accessToken}"
@@ -525,7 +525,7 @@ class _PurchaseState extends State<Purchase> {
 
       var itemList = jsonDecode(response.body);
       if(response.statusCode == 200) {
-        print("성공");
+        // print("성공");
         var result = jsonDecode(response.body);
         print("$result");
         setState(() {
@@ -533,9 +533,9 @@ class _PurchaseState extends State<Purchase> {
         });
       }
       else {
-        print(response.statusCode);
-        print(response.body);
-        print("실패");
+        // print(response.statusCode);
+        // print(response.body);
+        // print("실패");
       };
       setState(() {
 
@@ -666,9 +666,9 @@ class Confirm extends StatelessWidget {
 }
 
 Future<void> getUserPoint(BuildContext context) async {
-  print("context : ${context}");
-  final url = Uri.https("test.deegolabs.kr", "/mobile/point");
-  print("header : ${context.read<AuthStore>().accessToken}");
+  // print("context : ${context}");
+  final url = Uri.https("backend.deegolabs.com", "/mobile/point");
+  // print("header : ${context.read<AuthStore>().accessToken}");
   final response = await http.get(
       url,
       headers : {
@@ -676,16 +676,16 @@ Future<void> getUserPoint(BuildContext context) async {
       }
   );
 
-  print("body :${response.body}");
+  // print("body :${response.body}");
 
   if(response.statusCode == 200){
-    print("포인트불러오기성공");
+    // print("포인트불러오기성공");
     final Map<String, dynamic> responseData = json.decode(response.body);
     context.read<pointStore>().current = responseData["current"];
-    print("point :${context.read<pointStore>().current}");
+    // print("point :${context.read<pointStore>().current}");
 
   } else{
 
-    print("실패 :${response.body}");
+    // print("실패 :${response.body}");
   }
 }

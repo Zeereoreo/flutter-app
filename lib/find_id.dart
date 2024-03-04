@@ -31,7 +31,7 @@ class _FindIdState extends State<FindId> {
 
   @override
   Widget build(BuildContext context) {
-    print("$name");
+    // print("$name");
     return Scaffold(
       body: Container(
         child: Column(
@@ -209,10 +209,10 @@ class _FindIdState extends State<FindId> {
         "phoneId" : phoneUUID,
       }
     );
-    print("name : $name");
+    // print("name : $name");
     var userId = jsonDecode(res.body);
     if(res.statusCode == 200) {
-      print("$userId");
+      // print("$userId");
       setState(() {
         id = userId["userId"];
       });
@@ -224,12 +224,12 @@ class _FindIdState extends State<FindId> {
         );
       });
     }else{
-      print(res.body);
+      // print(res.body);
     }
   }
 
   Future<void> sendPhoneNumberToServer(String phoneNumber) async {
-    final Uri url = Uri.parse('https://test.deegolabs.kr/common/phone');
+    final Uri url = Uri.parse('https://backend.deegolabs.com/common/phone');
 
     try {
       final response = await http.post(
@@ -239,21 +239,21 @@ class _FindIdState extends State<FindId> {
 
       if (response.statusCode == 201) {
         // 서버로의 요청이 성공한 경우
-        print('핸드폰 번호 전송 성공');
-        print("리스폰스 값 : ${response.body}");
+        // print('핸드폰 번호 전송 성공');
+        // print("리스폰스 값 : ${response.body}");
         final Map<String, dynamic> responseData = json.decode(response.body);
         setState(() {
           phoneUUID = responseData['id'];
         });
       } else {
         // 서버로의 요청이 실패한 경우
-        print('핸드폰 번호 전송 실패');
-        print('HTTP Status Code: ${response.statusCode}');
-        print('Response Body: ${response.body}');
+        // print('핸드폰 번호 전송 실패');
+        // print('HTTP Status Code: ${response.statusCode}');
+        // print('Response Body: ${response.body}');
       }
     } catch (error) {
       // 오류 처리
-      print('에러 발생: $error');
+      // print('에러 발생: $error');
     }
   }
 
@@ -279,7 +279,7 @@ class _FindIdState extends State<FindId> {
 
   Future<void> sendAuthCodeToServer(String authCode, String userId) async {
     final Uri authUrl =
-    Uri.parse('https://test.deegolabs.kr/common/phone/$userId');
+    Uri.parse('https://backend.deegolabs.com/common/phone/$userId');
 
     try {
       final authResponse = await http.put(
@@ -289,7 +289,7 @@ class _FindIdState extends State<FindId> {
 
       if (authResponse.statusCode == 204) {
         // 서버로의 인증번호 전송이 성공한 경우
-        print('인증번호 전송 성공');
+        // print('인증번호 전송 성공');
         setState(() {
           completeAuth = true;
           authenticationCompleted = true;
@@ -299,13 +299,13 @@ class _FindIdState extends State<FindId> {
         // 추가 작업 수행 가능
       } else {
         // 서버로의 인증번호 전송이 실패한 경우
-        print('인증번호 전송 실패');
-        print('HTTP Status Code: ${authResponse.statusCode}');
-        print('Response Body: ${authResponse.body}');
+        // print('인증번호 전송 실패');
+        // print('HTTP Status Code: ${authResponse.statusCode}');
+        // print('Response Body: ${authResponse.body}');
       }
     } catch (error) {
       // 오류 처리
-      print('에러 발생: $error');
+      // print('에러 발생: $error');
     }
   }
 

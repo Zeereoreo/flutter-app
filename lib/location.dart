@@ -6,7 +6,7 @@ class Location {
 
   Future<void> getCurrentLocation() async {
     LocationPermission permission = await Geolocator.checkPermission();
-    print(permission);
+    // print(permission);
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
     }
@@ -16,7 +16,7 @@ class Location {
       latitude = position.latitude;
       longitude = position.longitude;
     } catch (e) {
-      print(e);
+      // print(e);
     }
   }
 }

@@ -243,7 +243,7 @@ class _SignState extends State<Sign> {
 
   Future<void> _sendDataToServer() async {
     // 여기에 실제 서버로 데이터를 전송하는 로직을 작성합니다.
-    final Uri uri = Uri.parse('https://test.deegolabs.kr/mobile/auth/user');
+    final Uri uri = Uri.parse('https://backend.deegolabs.com/mobile/auth/user');
     DateTime birthDateTime = DateTime.parse(birthText);
 
     // 생년월일을 타임스탬프로 변환
@@ -265,18 +265,18 @@ class _SignState extends State<Sign> {
     // 서버 응답에 대한 처리를 추가할 수 있습니다.
     if (response.statusCode == 201) {
       // 성공적으로 데이터를 전송한 경우
-      print('Data sent successfully');
-      print("${response.body}");
-      print(data);
+      // print('Data sent successfully');
+      // print("${response.body}");
+      // print(data);
       SignCompletedSnackBar.show(context);
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => Log()));
 
     } else {
-      print(data);
+      // print(data);
 
       // 데이터 전송 실패
-      print('Failed to send data. Status code: ${response.statusCode}');
-      print('Failed to send data. Status code: ${response.body}');
+      // print('Failed to send data. Status code: ${response.statusCode}');
+      // print('Failed to send data. Status code: ${response.body}');
 
     }
   }

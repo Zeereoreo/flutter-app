@@ -133,7 +133,7 @@ class _UserInfoState extends State<UserInfo> {
   }
 
   postChange()async{
-    var res = await http.put(Uri.parse("https://test.deegolabs.kr/mobile/user"),
+    var res = await http.put(Uri.parse("https://backend.deegolabs.com/mobile/user"),
         headers: {"Authorization": "Bearer ${context.read<AuthStore>().accessToken}"},
         body: {
           "name" : _nameInfo.text,

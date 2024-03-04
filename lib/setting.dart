@@ -50,10 +50,10 @@ class _SettingState extends State<Setting> {
   checkUserState() async {
     userInfo = await storage.read(key: 'login');
     if (userInfo == null) {
-      print('로그인 페이지로 이동');
+      // print('로그인 페이지로 이동');
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Log()));
     } else {
-      print('로그인 중');
+      // print('로그인 중');
     }
   }
 

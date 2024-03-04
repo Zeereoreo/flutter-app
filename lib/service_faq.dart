@@ -140,19 +140,19 @@ class _ServiceFAQState extends State<ServiceFAQ> with TickerProviderStateMixin {
     );
   }
  getFAQ(String category)async{
-    var res = await http.get(Uri.parse("https://test.deegolabs.kr/mobile/faq?page=1&itemLength=10&category=${category}"),
+    var res = await http.get(Uri.parse("https://backend.deegolabs.com/mobile/faq?page=1&itemLength=10&category=${category}"),
       headers: {
         "Authorization" : "Bearer ${context.read<AuthStore>().accessToken}"
       }
     );
     var result = jsonDecode(res.body);
     if(res.statusCode == 200){
-      print(result);
+      // print(result);
       setState(() {
         faqList = result["faqPage"];
       });
     } else {
-      print(res.body);
+      // print(res.body);
     }
  }
 }

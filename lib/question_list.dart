@@ -186,7 +186,7 @@ class _QuestionListState extends State<QuestionList> with TickerProviderStateMix
     );
   }
   getQuestion()async{
-    var res = await http.get(Uri.parse("https://test.deegolabs.kr/mobile/qna"),
+    var res = await http.get(Uri.parse("https://backend.deegolabs.com/mobile/qna"),
         headers: {
           "Authorization" : "Bearer ${context.read<AuthStore>().accessToken}"
         }
@@ -198,12 +198,12 @@ class _QuestionListState extends State<QuestionList> with TickerProviderStateMix
         qnaList = result["qnaPage"];
       });
     } else {
-      print(res.body);
+      // print(res.body);
     }
   }
 
   deleteQuestion(id)async{
-    var res = await http.delete(Uri.parse("https://test.deegolabs.kr/mobile/qna/$id"),
+    var res = await http.delete(Uri.parse("https://backend.deegolabs.com/mobile/qna/$id"),
         headers: {
           "Authorization" : "Bearer ${context.read<AuthStore>().accessToken}"
         }
@@ -465,7 +465,7 @@ class _MyQuestionWidgetState extends State<MyQuestionWidget> {
 
   postQna()async{
 
-    var res = await http.post(Uri.parse("https://test.deegolabs.kr/mobile/qna"),
+    var res = await http.post(Uri.parse("https://backend.deegolabs.com/mobile/qna"),
         headers: {"Authorization": "Bearer ${context.read<AuthStore>().accessToken}"},
         body: {
           "category": _selectedItem,
@@ -476,7 +476,7 @@ class _MyQuestionWidgetState extends State<MyQuestionWidget> {
     );
 
     if(res.statusCode == 201){
-      print("${res.body}");
+      // print("${res.body}");
       setState(() {
         _selectedItem = "서비스 이용";
         _qnaEmailController.clear();
@@ -485,7 +485,7 @@ class _MyQuestionWidgetState extends State<MyQuestionWidget> {
       });
       checkDialog("문의하기 성공", "문의하신 내용은 2~3일 뒤에 작성하신 이메일로 답변 받아보실 수 있습니다.");
     }else {
-      print("${res.body}");
+      // print("${res.body}");
       checkDialog("문의하기 실패", "빈 곳이 있는지 확인해주세요.");
     }
   }

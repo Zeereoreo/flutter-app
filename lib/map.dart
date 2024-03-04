@@ -36,14 +36,14 @@ class _NaverMapAppState extends State<NaverMapApp> {
 
     Location location = Location();
     await location.getCurrentLocation();
-    print(location.latitude);
-    print(location.longitude);
+    // print(location.latitude);
+    // print(location.longitude);
     setState(() {
       initialLat = location.latitude;
       initialLng = location.longitude;
     });
-    print(initialLat);
-    print(initialLng);
+    // print(initialLat);
+    // print(initialLng);
     // Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     // setState(() {
     //   initialLat = position.latitude;
@@ -161,7 +161,7 @@ class _NaverMapAppState extends State<NaverMapApp> {
                                          isBrokenWidget(item["isBroken"]),
                                          TextButton(onPressed: (){
                                            patchFavorite(serieal);
-                                           print("클릭");
+                                           // print("클릭");
                                          },
                                            child: Icon(Icons.star,color: Color(0xFFEBEBEB),size: 40,),
                                            style: ElevatedButton.styleFrom(
@@ -198,7 +198,7 @@ class _NaverMapAppState extends State<NaverMapApp> {
         });
     var beenList = jsonDecode(res.body);
     if(res.statusCode == 200){
-      print(beenList["deegoPage"]["items"]);
+      // print(beenList["deegoPage"]["items"]);
 
       setState(() {
         deegoList = beenList["deegoPage"]["items"];
@@ -209,7 +209,7 @@ class _NaverMapAppState extends State<NaverMapApp> {
   
   patchFavorite(String serieal)async{
     // print(serieal);
-    var res = await http.patch(Uri.parse("https://test.deegolabs.kr/mobile/deego/favorite"),
+    var res = await http.patch(Uri.parse("https://backend.deegolabs.com/mobile/deego/favorite"),
         headers:{
       "Authorization": "Bearer ${context.read<AuthStore>().accessToken}"
     },
@@ -222,7 +222,7 @@ class _NaverMapAppState extends State<NaverMapApp> {
 
         if(res.statusCode == 200){
           // print(favorite);
-          print("${res.body}");
+          // print("${res.body}");
 
           setState(() {
             isFavorite = favorite;
@@ -232,7 +232,7 @@ class _NaverMapAppState extends State<NaverMapApp> {
           });
         }
         else{
-          print("${res.body}");
+          // print("${res.body}");
           showDialog(context: context, builder: (BuildContext context){
             return CustomPopup(content: "문제가 발생하였습니다.", confirmText: "확인", onConfirm: () => Navigator.pop(context),onCancel: () => Navigator.pop(context),);
           });
