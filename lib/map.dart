@@ -24,12 +24,14 @@ class _NaverMapAppState extends State<NaverMapApp> {
   double? initialLng;
   var deegoList;
   var isFavorite = false;
+  List favoriteSerialNumbers = [];
 
   @override
   void initState() {
     super.initState();
     getInitialLocation();
     getDeego();
+    getDeegoFavorite();
   }
 
   void getInitialLocation() async {
@@ -100,7 +102,7 @@ class _NaverMapAppState extends State<NaverMapApp> {
                   // final marker1 = NMarker(id: '1', position: (37.568963,126.646476));
                   mapControllerCompleter.complete(controller);  // Completer에 지도 컨트롤러 완료 신호 전송
                   // getLocation();
-                  log("onMapReady", name: "onMapReady");
+                  // log("onMapReady", name: "onMapReady");
                       final marker = NMarker(
                       id: 'test',
                       position:
@@ -130,6 +132,8 @@ class _NaverMapAppState extends State<NaverMapApp> {
                    itemBuilder: (c, i) {
                      var item = deegoList[i];
                      var serieal = item["serialNumber"];
+                     bool isFavoriteItem = favoriteSerialNumbers.any((element) =>
+                     element["deego"]["serialNumber"] == serieal);
                      // print("$serieal");
                      // print("$item");
                      return Container(
@@ -163,7 +167,7 @@ class _NaverMapAppState extends State<NaverMapApp> {
                                            patchFavorite(serieal);
                                            // print("클릭");
                                          },
-                                           child: Icon(Icons.star,color: Color(0xFFEBEBEB),size: 40,),
+                                           child: isFavoriteItem ? Icon(Icons.star,color: Color(0xFFFFD014),size: 40,) : Icon(Icons.star,color: Color(0xFFEBEBEB),size: 40,),
                                            style: ElevatedButton.styleFrom(
                                                backgroundColor: Colors.white,
                                                elevation: 0,
@@ -206,6 +210,23 @@ class _NaverMapAppState extends State<NaverMapApp> {
     }
 
   }
+
+  getDeegoFavorite()async{
+    var res = await http.get(Uri.parse("https://backend.deegolabs.com/mobile/deego/favorite"),
+        headers: {"Authorization": "Bearer ${context.read<AuthStore>().accessToken}"}
+    );
+    var list = jsonDecode(res.body);
+
+    if(res.statusCode == 200){
+      setState(() {
+        favoriteSerialNumbers = list["favoriteDeegoPage"]["items"];
+        print("${favoriteSerialNumbers}");
+        // print("리스트 ${favoriteList}");
+      });
+    }else {
+      // print("${list.body}");
+    }
+  }
   
   patchFavorite(String serieal)async{
     // print(serieal);
@@ -221,16 +242,36 @@ class _NaverMapAppState extends State<NaverMapApp> {
     var favorite = jsonDecode(res.body);
 
         if(res.statusCode == 200){
-          // print(favorite);
+          // print(favorite["isRemoved"]);
           // print("${res.body}");
-
-          setState(() {
-            isFavorite = favorite;
-          });
-          showDialog(context: context, builder: (BuildContext context){
-            return CustomPopup(content: "즐겨찾기가 완료되었습니다.", confirmText: "확인", onConfirm: () => Navigator.pop(context),onCancel: () => Navigator.pop(context),);
-          });
-        }
+          if(favorite["isRemoved"]) {
+            showDialog(context: context, builder: (BuildContext context) {
+              return CustomPopup(
+                content: "즐겨찾기가 취소되었습니다.", confirmText: "확인", onConfirm: () {
+                Navigator.pop(context);
+                setState(() {
+                  getDeegoFavorite();
+                });
+              }, onCancel: () => Navigator.pop(context),);
+            });
+          } else {
+            showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return CustomPopup(
+                content: "즐겨찾기가 완료되었습니다.",
+                confirmText: "확인",
+                onConfirm: () {
+                  Navigator.pop(context);
+                  setState(() {
+                    getDeegoFavorite();
+                  });
+                },
+                onCancel: () => Navigator.pop(context),
+              );
+            });
+      }
+    }
         else{
           // print("${res.body}");
           showDialog(context: context, builder: (BuildContext context){

@@ -31,9 +31,9 @@ class _LogState extends State<Log> {
   String password = "";
   bool _idError = false;
   bool _passwordError = false;
-  final storage = FlutterSecureStorage();
-  dynamic userInfoAccessToken = '';
-  dynamic userInfoRefreshToken = '';
+  // final storage = FlutterSecureStorage();
+  // dynamic userInfoAccessToken = '';
+  // dynamic userInfoRefreshToken = '';
 
   @override
   void initState() {
@@ -46,19 +46,19 @@ class _LogState extends State<Log> {
   _asyncMethod() async {
     // read 함수로 key값에 맞는 정보를 불러오고 데이터타입은 String 타입
     // 데이터가 없을때는 null을 반환
-    userInfoAccessToken = await storage.read(key:'accessToken');
-    userInfoRefreshToken = await storage.read(key:'refreshToken');
-
-    // user의 정보가 있다면 로그인 후 들어가는 첫 페이지로 넘어가게 합니다.
-    if (userInfoRefreshToken != null) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => Home(accessToken: userInfoAccessToken),
-        ),
-      );
-    } else {
-      print('로그인이 필요합니다');
-    }
+    // userInfoAccessToken = await storage.read(key:'accessToken');
+    // userInfoRefreshToken = await storage.read(key:'refreshToken');
+    //
+    // // user의 정보가 있다면 로그인 후 들어가는 첫 페이지로 넘어가게 합니다.
+    // if (userInfoRefreshToken != null) {
+    //   Navigator.of(context).push(
+    //     MaterialPageRoute(
+    //       builder: (context) => Home(accessToken: userInfoAccessToken),
+    //     ),
+    //   );
+    // } else {
+    //   print('로그인이 필요합니다');
+    // }
   }
 
   @override
@@ -257,10 +257,10 @@ class _LogState extends State<Log> {
           builder: (context) => Home(accessToken: responseData['accessToken']),
         ),
       );
-      await storage.write(
-        key: 'login',
-        value: responseData['accessToken'],
-      );
+      // await storage.write(
+      //   key: 'login',
+      //   value: responseData['accessToken'],
+      // );
     }
     else{
       print("${response.statusCode}");

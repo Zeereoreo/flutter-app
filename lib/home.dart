@@ -330,7 +330,7 @@ class _HomeState extends State<Home> {
                                                                 patchFavorite(serieal);
                                                                 // print("클릭");
                                                               },
-                                                                child: Icon(Icons.star,color: Color(0xFFEBEBEB),size: 40,),
+                                                                child: Icon(Icons.star,color: Color(0xFFFFD014),size: 40,),
                                                                 style: ElevatedButton.styleFrom(
                                                                   backgroundColor: Colors.white,
                                                                   elevation: 0,
@@ -404,13 +404,33 @@ class _HomeState extends State<Home> {
     var favorite = jsonDecode(res.body);
 
     if(res.statusCode == 200){
-      // print(favorite);
-      setState(() {
-        isFavorite = favorite;
-      });
-      showDialog(context: context, builder: (BuildContext context){
-        return CustomPopup(content: "즐겨찾기가 완료되었습니다.", confirmText: "확인", onConfirm: () => Navigator.pop(context),onCancel: () => Navigator.pop(context),);
-      });
+      if(favorite["isRemoved"]) {
+        showDialog(context: context, builder: (BuildContext context) {
+          return CustomPopup(
+            content: "즐겨찾기가 취소되었습니다.", confirmText: "확인", onConfirm: () {
+            Navigator.pop(context);
+            setState(() {
+              getDeegoFavorite();
+            });
+          }, onCancel: () => Navigator.pop(context),);
+        });
+      } else {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return CustomPopup(
+                content: "즐겨찾기가 완료되었습니다.",
+                confirmText: "확인",
+                onConfirm: () {
+                  Navigator.pop(context);
+                  setState(() {
+                    getDeegoFavorite();
+                  });
+                },
+                onCancel: () => Navigator.pop(context),
+              );
+            });
+      }
     }
     else{
       showDialog(context: context, builder: (BuildContext context){

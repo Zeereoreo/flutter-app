@@ -33,7 +33,7 @@ class _SettingState extends State<Setting> {
 
 
   logout() async {
-    await storage.delete(key: 'login');
+    // await storage.delete(key: 'login');
     context.read<AuthStore>().accessToken = "";
     Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Log()));
   }

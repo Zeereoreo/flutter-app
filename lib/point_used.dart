@@ -25,7 +25,7 @@ class _PointUsedState extends State<PointUsed> {
   @override
   void initState() {
     super.initState();
-    _fetchPointList();
+    // _fetchPointList();
     _purchaseList();
   }
 
@@ -60,9 +60,9 @@ class _PointUsedState extends State<PointUsed> {
 
   @override
   Widget build(BuildContext context) {
-
-    if (purchaseList == null) {
-      return CircularProgressIndicator();
+    if (purchaseList == null || purchaseList['purchasedItemPage'] == null || purchaseList['purchasedItemPage']['items'] == null) {
+      // purchaseList 또는 해당 항목이 null인 경우 처리
+      return CircularProgressIndicator(); // 또는 다른 적절한 처리
     }
 
     return Scaffold(
@@ -77,27 +77,32 @@ class _PointUsedState extends State<PointUsed> {
           },
         ),
         centerTitle: true,
-        title: Text("포인트 전환내역",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 22),),
-
+        title: Text(
+          "포인트 전환내역",
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 22),
+        ),
       ),
       body: Container(
         padding: EdgeInsets.all(20),
         child: Column(
           children: [
-            // const Header(),
             Expanded(
-              child: ListView.builder(
+              child: purchaseList['purchasedItemPage']['items'].isEmpty
+                  ? Center(
+                child: Text(
+                  '전환내역이 없습니다.',
+                  style: TextStyle(fontSize: 18),
+                ),
+              )
+                  : ListView.builder(
                 padding: EdgeInsets.zero,
                 shrinkWrap: true,
                 itemCount: purchaseList['purchasedItemPage']['items'].length,
                 itemBuilder: (context, index) {
-                  // var useItem = usedList['page']['items'][index];
                   var item = purchaseList["purchasedItemPage"]["items"][index];
                   var createdDate = DateTime.parse(item["createdAt"]);
                   var monthData = DateFormat('yyyy년 MM일').format(createdDate);
                   var dayData = DateFormat('dd').format(createdDate);
-                  // print("아이템이고 : ${item}");
-                  // print("구매 아이템이고 : ${useItem}");
 
                   if (prevMonthData == monthData) {
                     monthData = "";
@@ -107,31 +112,47 @@ class _PointUsedState extends State<PointUsed> {
 
                   return Container(
                     padding: EdgeInsets.all(10),
-                    // decoration: BoxDecoration(
-                    //   border: Border.all(color: Colors.white, width: 1),
-                    // ),
                     child: Column(
                       children: [
                         if (monthData.isNotEmpty)
                           Container(
-                            // width: ,
-                              alignment: Alignment.centerLeft,
-                              padding: EdgeInsets.all(10),
-                              child: Text("${monthData}",
-                                style: TextStyle(fontSize: 14,color: Color(0xFFB3B3B3)),)
+                            alignment: Alignment.centerLeft,
+                            padding: EdgeInsets.all(10),
+                            child: Text(
+                              "${monthData}",
+                              style: TextStyle(fontSize: 14, color: Color(0xFFB3B3B3)),
+                            ),
                           ),
                         Row(
                           children: [
                             isBrokenWidget(item["statusCode"]),
                             Container(
-                                padding: EdgeInsets.all(10),
-                                width: MediaQuery.of(context).size.width*0.15,
-                                child: Text("${dayData}일",style: TextStyle(fontSize: 16,color: Color(0xFFB3B3B3)),)),
-                            TextButton(child: Expanded(child: onText("네이버포인트 전환"),),onPressed: (){
-                              showDialog(context: context, builder: (BuildContext context){
-                                return CustomPopup(content: "${item["pinNo"]}", confirmText: "확인", title: "핀번호", onConfirm:() => Navigator.pop(context),onCancel: () => Navigator.pop(context),);
-                              });
-                            },),
+                              padding: EdgeInsets.all(10),
+                              width: MediaQuery.of(context).size.width * 0.15,
+                              child: Text(
+                                "${dayData}일",
+                                style: TextStyle(fontSize: 16, color: Color(0xFFB3B3B3)),
+                              ),
+                            ),
+                            Expanded(
+                              child: TextButton(
+                                child: Text("네이버포인트 전환"),
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return CustomPopup(
+                                        content: "${item["pinNo"]}",
+                                        confirmText: "확인",
+                                        title: "핀번호",
+                                        onConfirm: () => Navigator.pop(context),
+                                        onCancel: () => Navigator.pop(context),
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
                             onText((item["point"] != null && item["point"] > 0) ? "+${item["point"]}" : (item["point"] ?? "").toString()),
                           ],
                         ),
@@ -146,6 +167,7 @@ class _PointUsedState extends State<PointUsed> {
       ),
     );
   }
+
 
   Widget onText(String text){
     return Text(text,
