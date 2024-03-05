@@ -1,4 +1,5 @@
 import 'package:deego_client/announcements.dart';
+import 'package:deego_client/deego_guide.dart';
 import 'package:deego_client/my_page.dart';
 import 'package:deego_client/privacy_policy.dart';
 import 'package:deego_client/question_list.dart';
@@ -201,7 +202,7 @@ class _SettingState extends State<Setting> {
                           ],
                         ),
                       ),
-                      SetBtn(buttonText: '디고 가이드',onPressed: (c) => ServiceFAQ(),),
+                      SetBtn(buttonText: '디고 가이드',onPressed: (c) => DeegoGuide(),),
                       HorizontalDashedDivider(thickness: 1,length: 5,color: Color(0xFFDCDCDC),indent: 20,endIndent: 20,),
                       SetBtn(buttonText: 'FAQ',onPressed: (c) => ServiceFAQ(),),
                       HorizontalDashedDivider(thickness: 1,length: 5,color: Color(0xFFDCDCDC),indent: 20,endIndent: 20,),
