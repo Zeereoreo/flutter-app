@@ -7,6 +7,9 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
+import 'Wiget/pop_up.dart';
+import 'login.dart';
+
 class FindPassword extends StatefulWidget {
   const FindPassword({super.key});
 
@@ -151,18 +154,35 @@ class _FindPasswordState extends State<FindPassword> {
           "password" : newPassword,
         }
     );
-    // print(res.body);
-    //팝업창 + 로그인화면으로
 
-    // var userId = jsonDecode(res.body);
-    // if(res.statusCode == 200) {
-    //   print(userId);
-    //   setState(() {
-    //     id = userId;
-    //   });
-    // }else{
-    //   print(res.body);
-    // }
+    if(res.statusCode == 200){
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return CustomPopup(
+              content: "비밀번호가 변경 완료 되었습니다.",
+              confirmText: "확인",
+              onCancel: () => Navigator.pop(context),
+              onConfirm: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => Log()));
+              },
+            );
+          });
+    }else {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return CustomPopup(
+              content: "정보를 다시한번 확인해 주시길 바랍니다.",
+              confirmText: "확인",
+              onCancel: () => Navigator.pop(context),
+              onConfirm: () {
+                 Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => FindPassword()));
+              },
+            );
+          });
+    }
   }
 
 

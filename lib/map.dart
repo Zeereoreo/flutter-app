@@ -220,7 +220,7 @@ class _NaverMapAppState extends State<NaverMapApp> {
     if(res.statusCode == 200){
       setState(() {
         favoriteSerialNumbers = list["favoriteDeegoPage"]["items"];
-        print("${favoriteSerialNumbers}");
+        // print("${favoriteSerialNumbers}");
         // print("리스트 ${favoriteList}");
       });
     }else {

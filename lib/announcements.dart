@@ -92,12 +92,32 @@ class _AnnouncementsState extends State<Announcements> {
   }
 
   Widget nullList() {
-    return Center(
-      child: Container(
-        width: double.infinity,
-        child: Text(
-            "디고의 기본 이용 안내는 고객센터 또는 서비스 이용 약관, 개인정보 처리방침 메뉴를 참고해주세요.",
-            style: TextStyle(fontSize: 18,color: Colors.black)
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 1,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          color: Colors.black,
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        centerTitle: true, // 제목 가운데 정렬
+        title: Text("공지사항",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 22),),
+      ),
+      body: Container(
+        color: Colors.white,
+        padding: EdgeInsets.all(20),
+        child: Center(
+          child: Container(
+            width: double.infinity,
+            color: Colors.white,
+            child: Text(
+                "디고의 기본 이용 안내는 고객센터 또는 서비스 이용 약관, 개인정보 처리방침 메뉴를 참고해주세요.",
+                style: TextStyle(fontSize: 18,color: Colors.black)
+            ),
+          ),
         ),
       ),
     );
@@ -110,6 +130,8 @@ class _AnnouncementsState extends State<Announcements> {
     );
     var result = json.decode(res.body);
     if (res.statusCode == 200) {
+      // print("${res.body}");
+
       setState(() {
         annList = result["noticePage"]["items"];
         isLoading = false; // 데이터 로딩이 완료되었음을 나타내는 변수를 false로 설정

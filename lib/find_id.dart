@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:deego_client/Wiget/phoneWidget.dart';
 import 'package:deego_client/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 import 'Wiget/pop_up.dart';
+import 'Wiget/postBtn.dart';
 
 class FindId extends StatefulWidget {
   const FindId({super.key});
@@ -28,6 +30,8 @@ class _FindIdState extends State<FindId> {
   bool showAuthBtn = false;
   bool completeAuth = false;
   bool authenticationCompleted = false;
+  bool _isPhoneVerified = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -77,122 +81,13 @@ class _FindIdState extends State<FindId> {
                       textInputAction: TextInputAction.next,
                     ),
                   SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          onChanged: (text){
-                            setState(() {
-                              _phoneError = text.length < 10 || text.length > 12 ;
-                              phone = text;
-                              blueBtn = text.length == 11;
-                            });
-                          },
-                          decoration: InputDecoration(
-                            labelText: '핸드폰 번호',
-                            hintText: "-를 제외한 핸드폰번호를 입력해주세요.",
-                            errorText: _phoneError ? "제대로 된 핸드폰 번호를 입력해주세요." : null,
-                            filled: true,
-                            fillColor: const Color(0xFFF5F7FB),
-                            focusedBorder: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                              borderSide: BorderSide(width: 1, color: Colors.white),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                              borderSide: BorderSide(width: 1, color: Color(0xFFF5F7FB)),
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            ),
-                          ),
-                          keyboardType: TextInputType.number,
-                          textInputAction: TextInputAction.done,
-                          enabled: !showAdditionalInput,
-                          maxLength: 11,
-                        ),
-                      ),
-                      SizedBox(width: 10,),
-                      ElevatedButton(onPressed: blueBtn
-                          ? () async {
-                        sendPhoneNumberToServer(phone);
-                        setState(() {
-                          showAdditionalInput = true;
-                          blueBtn = false;
-                        });
-                      }
-                          : null,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: blueBtn ? Colors.blue : Colors.grey,
-                          ),
-                          child: Text("인증하기"))
-                    ],
-                  ),
+                  PhoneWidet(onPhoneVerified: (isVerified) {
+                    setState(() {
+                      _isPhoneVerified = isVerified; // 인증 여부 업데이트
+                    });
+                  },),
                   SizedBox(height: 10,),
-                  if (showAdditionalInput)
-                    Container(
-                      padding: EdgeInsets.all(15),
-                      child: Row(
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                  onChanged: (text) {
-                                    setState(() {
-                                      authNum = text;
-                                      showAuthBtn = text.length == 4;
-                                    });
-                                  },
-                                  decoration: InputDecoration(
-                                    labelText: "인증 번호",
-                                    hintText: "받으신 인증번호를 입력해 주세요",
-                                  ),
-                                  keyboardType: TextInputType.number,
-                                  textInputAction: TextInputAction.done,
-                                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                                  maxLength: 4,
-                                  enabled: !authenticationCompleted
-                              ),
-                            ),
-                            SizedBox(width: 16.0),
-                            Container(
-                              margin: EdgeInsets.only(top: 10),
-                              padding: EdgeInsets.all(10),
-                              child: ElevatedButton(
-                                onPressed: showAuthBtn
-                                    ? () async {
-                                  await sendAuthCodeToServer(authNum, phoneUUID);
-                                  setState(() {
-
-                                  });
-                                }
-                                    : null,
-                                style: ElevatedButton.styleFrom(
-                                  primary: showAuthBtn ? Colors.blue : Colors.grey,
-                                ),
-                                child: Text("인증완료"),
-                              ),
-                            ),
-                          ]
-                      ),
-                    ),
-                    SizedBox(height: 10,),
-                  ElevatedButton(onPressed: (){
-                    findId();
-                  }, child: Text("아이디 찾기"),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: !_nameError && !_phoneError ?
-                      Color(0xFF00BEFF) :
-                      Color(0xFFB2EBFC)
-                    ),
-                  ),
-                  // Visibility(
-                  //   visible: id.isNotEmpty,
-                  //   child: Text(id,style: TextStyle(
-                  //     color: Colors.white,
-                  //     fontWeight: FontWeight.bold,
-                  //     fontSize: 20,
-                  //   ),),
-                  // )
+                  PostBtn(btnName: "아이디찾기", btnFunction: findId,isPhoneVerified: _isPhoneVerified,),
                 ],
               ),
             )
@@ -203,7 +98,7 @@ class _FindIdState extends State<FindId> {
   }
 
   findId()async{
-    var res = await http.post(Uri.parse("https://test.deegolabs.kr/mobile/auth/id"),
+    var res = await http.post(Uri.parse("https://backend.deegolabs.com/mobile/auth/id"),
       body: {
         "name" : name,
         "phoneId" : phoneUUID,
@@ -218,13 +113,14 @@ class _FindIdState extends State<FindId> {
       });
       showDialog(context: context, builder: (BuildContext context){
         return CustomPopup(title: "찾으시는 아이디는", content: "${id}",confirmText: "확인",
+          onCancel: ()=>Navigator.pop(context),
           onConfirm: (){
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => Log()));
           },
         );
       });
     }else{
-      // print(res.body);
+      print(res.body);
     }
   }
 
@@ -286,22 +182,25 @@ class _FindIdState extends State<FindId> {
         authUrl,
         body: {'code': authCode},
       );
-
       if (authResponse.statusCode == 204) {
         // 서버로의 인증번호 전송이 성공한 경우
         // print('인증번호 전송 성공');
+
         setState(() {
           completeAuth = true;
           authenticationCompleted = true;
           showAuthBtn = false;
         });
+        // var result = json.decode(authResponse.body);
+        //
+        // print("${result}");
         showCompletionDialog(context);
         // 추가 작업 수행 가능
       } else {
         // 서버로의 인증번호 전송이 실패한 경우
         // print('인증번호 전송 실패');
         // print('HTTP Status Code: ${authResponse.statusCode}');
-        // print('Response Body: ${authResponse.body}');
+        print('Response Body: ${authResponse.body}');
       }
     } catch (error) {
       // 오류 처리

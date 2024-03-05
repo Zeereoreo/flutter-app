@@ -177,7 +177,7 @@ class _LogState extends State<Log> {
                           ElevatedButton.styleFrom(
 
                             backgroundColor: !_idError && !_passwordError ?
-                                Color(0xFF0099FF)
+                                Color(0xFF0066FF)
                                 :
                                 Color(0xFFB2EBFC),
 
